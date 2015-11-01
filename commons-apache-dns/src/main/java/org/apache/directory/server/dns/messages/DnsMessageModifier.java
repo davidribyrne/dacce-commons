@@ -23,6 +23,8 @@ package org.apache.directory.server.dns.messages;
 
 import java.util.List;
 
+import org.apache.directory.server.dns.records.ResourceRecord;
+
 
 /**
  * All communications inside of the domain protocol are carried in a single

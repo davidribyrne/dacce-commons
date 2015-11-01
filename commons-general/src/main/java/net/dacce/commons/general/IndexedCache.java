@@ -11,7 +11,10 @@ import java.util.concurrent.ConcurrentMap;
 // TODO: Make this thread safe
 public class IndexedCache<T> implements Iterable<T>
 {
+	/** Each key has only one value */
 	private final ConcurrentMap<Field, SingleValueIndex> singleValueIndexes;
+	
+	/** Each key can have multiple values */
 	private final ConcurrentMap<Field, MultiValueIndex> multiValueIndexes;
 	private final UniqueList<T> indexedObjects;
 

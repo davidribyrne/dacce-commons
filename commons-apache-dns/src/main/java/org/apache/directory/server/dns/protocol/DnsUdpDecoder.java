@@ -23,7 +23,7 @@ package org.apache.directory.server.dns.protocol;
 
 import java.io.IOException;
 
-import org.apache.directory.server.dns.io.decoder.DnsMessageDecoder;
+import org.apache.directory.server.dns.io.DnsMessageDecoder;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolDecoderAdapter;

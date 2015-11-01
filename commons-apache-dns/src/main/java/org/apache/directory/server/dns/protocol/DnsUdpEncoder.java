@@ -21,7 +21,7 @@
 package org.apache.directory.server.dns.protocol;
 
 
-import org.apache.directory.server.dns.io.encoder.DnsMessageEncoder;
+import org.apache.directory.server.dns.io.DnsMessageEncoder;
 import org.apache.directory.server.dns.messages.DnsMessage;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;

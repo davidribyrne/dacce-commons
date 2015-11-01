@@ -83,6 +83,16 @@ public class QuestionRecord
         this.recordClass = recordClass;
     }
 
+    /**
+     * Creates a new instance of QuestionRecord with IN class.
+     *
+     * @param domainName
+     * @param recordType
+     */
+    public QuestionRecord( String domainName, RecordType recordType )
+    {
+    	this(domainName, recordType, RecordClass.IN);
+    }
 
     /**
      * The domain name of this query.

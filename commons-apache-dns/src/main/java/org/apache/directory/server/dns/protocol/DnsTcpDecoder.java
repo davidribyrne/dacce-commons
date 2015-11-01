@@ -21,7 +21,7 @@
 package org.apache.directory.server.dns.protocol;
 
 
-import org.apache.directory.server.dns.io.decoder.DnsMessageDecoder;
+import org.apache.directory.server.dns.io.DnsMessageDecoder;
 import org.apache.directory.server.i18n.I18n;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;

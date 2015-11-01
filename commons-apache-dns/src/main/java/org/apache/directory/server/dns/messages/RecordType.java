@@ -21,6 +21,7 @@
 package org.apache.directory.server.dns.messages;
 
 
+import org.apache.directory.server.dns.records.ResourceRecord;
 import org.apache.directory.server.dns.util.EnumConverter;
 import org.apache.directory.server.dns.util.ReverseEnumMap;
 
