@@ -6,8 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.channels.Channels;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,35 +19,16 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-public class FileUtils
+public class FileUtils extends org.apache.commons.io.FileUtils
 {
 	final static Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
 
-	public static List<String> getFileAsLines(String filePath) throws FileNotFoundException, IOException
-	{
-		BufferedReader reader = new BufferedReader(new FileReader(filePath));
-		String line;
-		ArrayList<String> lines = new ArrayList<String>();
-		while ((line = reader.readLine()) != null)
-		{
-			lines.add(line);
-		}
-		reader.close();
-
-		return lines;
-	}
 
 
-	public static String slurp(String filePath) throws FileNotFoundException, IOException
-	{
-		return new String(Files.readAllBytes(Paths.get(filePath)));
-	}
-
-	
 	/**
 	 * Adds quotes if needed
+	 * 
 	 * @param file
 	 * @return
 	 */
@@ -55,7 +40,8 @@ public class FileUtils
 		}
 		return file;
 	}
-	
+
+
 	/**
 	 * Searches the PATH environment variable for the specified executable name. In Windows,
 	 * the extension (usually .exe) must be included.
@@ -158,5 +144,15 @@ public class FileUtils
 	{
 		return !filename.matches(BAD_FILENAME_CHARACTERS);
 	}
-
+	
+	public static String readFileToString(String path) throws IOException
+	{
+		return readFileToString(new File(path));
+	}
+	
+	
+	public static List<String> readLines(String path) throws IOException
+	{
+		return readLines(new File(path));
+	}
 }

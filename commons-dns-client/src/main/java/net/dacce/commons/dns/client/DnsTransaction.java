@@ -1,30 +1,50 @@
 package net.dacce.commons.dns.client;
 
-import org.apache.directory.server.dns.messages.QuestionRecord;
-import org.apache.directory.server.dns.records.ResourceRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.*;
+import net.dacce.commons.dns.client.cache.DnsCache;
+import net.dacce.commons.dns.messages.QuestionRecord;
+import net.dacce.commons.dns.records.ResourceRecord;
 
 public class DnsTransaction
 {
 
 	private QuestionRecord question;
-	private List<ResourceRecord> responses;
+	private final List<ResourceRecord> answers;
+	private int negativeResponseCount;
+	private DnsCache dnsCache;
+	private boolean recurse;
 
-	public DnsTransaction(QuestionRecord question)
+	public DnsTransaction(QuestionRecord question, boolean recurse)
 	{
 		this.question = question;
+		this.recurse = recurse;
+		answers = new ArrayList<ResourceRecord>(1);
 	}
 	
-	public void addResponse(ResourceRecord response)
+
+	public void addAnswers(List<ResourceRecord> newAnswers)
 	{
-		if (responses == null)
+		if (newAnswers == null)
+			return;
+
+		if (dnsCache != null)
 		{
-			responses = new ArrayList<ResourceRecord>(1);
+			dnsCache.add(question, newAnswers);
 		}
-		responses.add(response);
+		
+		if (newAnswers.isEmpty())
+		{
+			negativeResponseCount++;
+			return;
+		}
+		
+		for(ResourceRecord response: newAnswers)
+		{
+			if (response != null)
+				this.answers.add(response);
+		}
 	}
 
 	public QuestionRecord getQuestion()
@@ -32,8 +52,52 @@ public class DnsTransaction
 		return question;
 	}
 
-	public List<ResourceRecord> getResponses()
+	public boolean hasAnswer()
 	{
-		return responses;
+		return (answers != null && !answers.isEmpty());
+	}
+	
+	public List<ResourceRecord> getAnswers()
+	{
+		return answers;
+	}
+
+	public int getNegativeResponseCount()
+	{
+		return negativeResponseCount;
+	}
+
+	public DnsCache getCache()
+	{
+		return dnsCache;
+	}
+
+	public void setCache(DnsCache cache)
+	{
+		this.dnsCache = cache;
+	}
+
+
+	public boolean isRecurse()
+	{
+		return recurse;
+	}
+
+
+	public void setRecurse(boolean recurse)
+	{
+		this.recurse = recurse;
+	}
+
+
+	public void addNegativeResponse()
+	{
+		negativeResponseCount++;
+	}
+
+
+	public boolean isNegativeResponse()
+	{
+		return !hasAnswer() && negativeResponseCount > 0;
 	}
 }

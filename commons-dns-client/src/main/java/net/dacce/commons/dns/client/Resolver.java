@@ -1,78 +1,92 @@
 package net.dacce.commons.dns.client;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+import net.dacce.commons.dns.client.cache.DnsCache;
 import net.dacce.commons.dns.client.cache.SimpleDnsCache;
-import net.dacce.commons.dns.client.exceptions.DnsClientConnectException;
-import net.dacce.commons.dns.client.exceptions.DnsResponseTimeoutException;
-import net.dacce.commons.dns.client.exceptions.NoRecordFound;
-import net.dacce.commons.general.StringUtils;
-import net.dacce.commons.netaddr.IPUtils;
-import net.dacce.commons.netaddr.InvalidIPAddressFormatException;
+import net.dacce.commons.dns.exceptions.DnsClientConnectException;
+import net.dacce.commons.dns.exceptions.DnsNoRecordFoundException;
+import net.dacce.commons.dns.exceptions.DnsResponseTimeoutException;
+import net.dacce.commons.dns.messages.QuestionRecord;
+import net.dacce.commons.dns.messages.RecordClass;
+import net.dacce.commons.dns.records.ARecord;
+import net.dacce.commons.dns.records.RecordType;
+import net.dacce.commons.dns.records.ResourceRecord;
+import net.dacce.commons.general.EventCounter;
+import net.dacce.commons.general.UnexpectedException;
+import net.dacce.commons.general.UniqueList;
 import net.dacce.commons.netaddr.SimpleInetAddress;
 
-import org.apache.directory.server.dns.messages.DnsMessage;
-import org.apache.directory.server.dns.messages.DnsMessageModifier;
-import org.apache.directory.server.dns.messages.QuestionRecord;
-import org.apache.directory.server.dns.messages.RecordClass;
-import org.apache.directory.server.dns.messages.RecordType;
-import org.apache.directory.server.dns.records.ARecord;
-import org.apache.directory.server.dns.records.ResourceRecord;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
-import java.util.*;
 
 
 public class Resolver
 {
 	private final static Logger logger = LoggerFactory.getLogger(Resolver.class);
-	private final List<InetSocketAddress> upstreamServers;
-	private boolean roundRobin;
-	private final SimpleDnsCache cache = new SimpleDnsCache();
-	private long timeout = 30000;
-	private boolean cacheNegativeResponses = true;
-	private int nextServerIndex = 0;
-	
-	/** Wait for responses from all DNS servers before declaring a negative response */
-	private boolean waitForAllResponses = true;
+//	private final DnsClientPool clientPool;
+	private final EventCounter totalRequestCounter;
 
-	
+	private final DnsCache cache = new SimpleDnsCache();
+	private long responseTimeout = 30000;
+	private boolean cacheNegativeResponses = true;
+	private int maxTotalRequestsPerSecond = 100;
+	private int maxRequestsPerServerPerSecond = 30;
+	private static final String PUBLIC_DNS_SERVERS_FILE = "/public_dns_servers.txt";
+	private final List<String> upstreamServers;
+	private boolean padSecondRequest;
+	private boolean roundRobin = true;
+	private int roundRobinDuplicateCount;
 	
 	/**
 	 * Attempt to use system DNS servers. Note that Java does not have a reliable way to determine this.
 	 */
 	public Resolver()
 	{
-		this(SystemDnsServers.getSystemDnsServers());
+		this(SystemDnsServers.getSystemDnsServers(), false);
 	}
 
 
-	public Resolver(List<String> upstreamServers)
+	/**
+	 * 
+	 * @param upstreamServers
+	 * @param padSecondRequest Makes the second request a throw-away to accommodate Google, et al
+	 */
+	public Resolver(List<String> upstreamServers, boolean padSecondRequest)
 	{
-		this.upstreamServers = getSocketsFromStrings(upstreamServers);
+		this.upstreamServers = upstreamServers;
+		this.padSecondRequest = padSecondRequest;
+		totalRequestCounter = new EventCounter(1000, true);
 	}
+	
 
-	private synchronized int getNextServerIndex()
+	public static Resolver createPublicServersResolver() throws IOException
 	{
-		if (nextServerIndex == upstreamServers.size())
-			nextServerIndex = 0;
-		return nextServerIndex++;
-	}
-
-	private List<InetSocketAddress> getSocketsFromStrings(List<String> servers)
-	{
-		List<InetSocketAddress> sockets = new ArrayList<InetSocketAddress>(1);
-		for (String server : servers)
+		URL url = Resolver.class.getResource(PUBLIC_DNS_SERVERS_FILE);
+		InputStream is = url.openStream();
+		List<String> servers = new UniqueList<String>();
+		for(String l: IOUtils.readLines(is))
 		{
-			sockets.add(new InetSocketAddress(server, 53));
+			String line = l.trim();
+			if (l.isEmpty() || l.startsWith("#"))
+				continue;
+			servers.add(line);
 		}
-		return sockets;
+		is.close();
+		return new Resolver(servers, true);
 	}
 
 
-	public List<SimpleInetAddress> simpleResolve(String hostname, boolean useCache) throws DnsResponseTimeoutException, DnsClientConnectException, NoRecordFound
+	public List<SimpleInetAddress> simpleResolve(String hostname, boolean useCache) throws DnsResponseTimeoutException, DnsClientConnectException,
+			DnsNoRecordFoundException
 	{
 		List<SimpleInetAddress> addresses = new ArrayList<SimpleInetAddress>();
 		QuestionRecord question = new QuestionRecord(hostname, RecordType.A, RecordClass.IN);
@@ -89,125 +103,105 @@ public class Resolver
 	}
 
 
-	private DnsClient[] getClients()
+	public List<ResourceRecord> query(QuestionRecord question, boolean useCache, boolean recurse) throws DnsClientConnectException,
+			DnsResponseTimeoutException, DnsNoRecordFoundException
 	{
-		DnsClient[] clients;
-		if (roundRobin)
-		{
-			clients = new DnsClient[0];
-			clients[0] = new DnsUdpClient(upstreamServers.get(getNextServerIndex()));
-		}
-		else
-		{
-			clients = new DnsClient[upstreamServers.size()];
-			for (int i = 0; i < clients.length; i++)
-			{
-				clients[i] = new DnsUdpClient(upstreamServers.get(i));
-			}
-		}
-		return clients;
+		DnsTransaction transaction = new DnsTransaction(question, recurse);
+		bulkQuery(Collections.singletonList(transaction), useCache, true);
+
+		if (transaction.isNegativeResponse())
+			throw new DnsNoRecordFoundException();
+		
+		if (transaction.hasAnswer())
+			return transaction.getAnswers();
+		
+		throw new UnexpectedException("This shouldn't be possible");
 	}
 
-	private void closeClients(DnsClient[] clients)
-	{
-		for(DnsClient client: clients)
-		{
-			if (client.isConnected())
-				client.close(true);
-		}
-	}
-	
-	public List<ResourceRecord> query(QuestionRecord question, boolean useCache, boolean recurse) throws DnsClientConnectException, DnsResponseTimeoutException, NoRecordFound
-	{
-		if (useCache && cache.contains(question))
-			return cache.get(question);
 
-		DnsClient[] clients = getClients();
-		int[] messageIds = new int[clients.length];
+	/**
+	 * If blocking, returns number of unanswered queries
+	 * @param transactions
+	 * @param useCache
+	 * @param recurse
+	 * @param block
+	 * @return
+	 * @throws DnsClientConnectException
+	 * @throws DnsResponseTimeoutException
+	 */
+	public int bulkQuery(List<DnsTransaction> transactions, boolean useCache, boolean block) throws DnsClientConnectException, DnsResponseTimeoutException
+	{
+		logger.trace("Starting Resolver.bulkQuery");
+		List<DnsTransaction> unansweredTransactions = new ArrayList<DnsTransaction>(transactions);
 		
-		Exception[] exceptions = new Exception[clients.length];
-		int exceptionCount = 0;
-		for (int i = 0; i < clients.length; i++)
-		{
-			try
-			{
-				messageIds[i] = clients[i].asyncQuery(question, recurse).getTransactionId();
-			}
-			catch (DnsClientConnectException e)
-			{
-				exceptionCount++;
-				exceptions[i] = e;
-				logger.debug("Problem with DNS client: " + e.getLocalizedMessage(), e);
-			}
-		}
-		
-		// All clients failed to connect
-		if (exceptionCount == clients.length)
-		{
-			throw new DnsClientConnectException("Failed to connect to DNS servers");
-		}
-
+		DnsClientPool clientPool = new DnsClientPool(upstreamServers, padSecondRequest, maxRequestsPerServerPerSecond, roundRobin, roundRobinDuplicateCount);
 		try
 		{
-			long start = System.currentTimeMillis();
-			int responseCount = 0;
-			do
+			for (DnsTransaction transaction : transactions)
 			{
-				responseCount = 0;
-				for (int i = 0; i < messageIds.length; i++)
+				QuestionRecord question = transaction.getQuestion();
+				logger.trace("Processing DNS question for " + question.toString());
+				if (useCache && cache.contains(question))
 				{
-					DnsMessage response = clients[i].getResponse(messageIds[i]);
-					if (response != null)
-					{
-						if (!waitForAllResponses || !response.getAnswerRecords().isEmpty())
-						{
-							cache.add(question, response.getAnswerRecords());
-							return response.getAnswerRecords();
-						}
-						responseCount++;
-					}
+					logger.trace("Answer found in cache.");
+					transaction.addAnswers(cache.get(question));
+					unansweredTransactions.remove(transaction);
+					continue;
 				}
+				// Tell the transaction about the cache so it can be recorded when the response comes in
+				transaction.setCache(cache);
 				
-				// We've seen all of the responses and they are all empty
-				if (responseCount == clients.length)
-				{
-					break;
-				}
-				synchronized(Thread.currentThread())
+				for (DnsClient client: clientPool.chooseNextClients())
 				{
 					try
 					{
-						Thread.currentThread().wait(10);
+						totalRequestCounter.waitForThrottle(maxTotalRequestsPerSecond);
 					}
 					catch (InterruptedException e)
 					{
-						logger.trace("DNS client wait interrupted: " + e.getLocalizedMessage(), e);
+						clientPool.close();
 						Thread.currentThread().interrupt();
 					}
+					totalRequestCounter.trackEvent();
+					logger.trace("Sending question to client");
+					client.sendQuery(transaction);
 				}
-			} while (start + timeout > System.currentTimeMillis());
-			
-			// If we saw at least one empty response
-			if (responseCount > 0)
-			{
-				if (cacheNegativeResponses)
-				{
-					cache.add(question, Collections.emptyList());
-				}
-				throw new NoRecordFound();
 			}
-			throw new DnsResponseTimeoutException("Query timed out after " + timeout + " miliseconds.");
+	
+			if (block)
+			{
+				long lastQueryTime = System.currentTimeMillis();
+				
+				while (System.currentTimeMillis() - lastQueryTime < responseTimeout && !unansweredTransactions.isEmpty())
+				{
+					for (Iterator<DnsTransaction> iterator = unansweredTransactions.iterator(); iterator.hasNext();)
+					{
+						DnsTransaction transaction = iterator.next();
+						if(transaction.hasAnswer() || transaction.getNegativeResponseCount() >= roundRobinDuplicateCount)
+							iterator.remove();
+					}
+					synchronized(unansweredTransactions)
+					{
+						try
+						{
+							unansweredTransactions.wait(10);
+						}
+						catch (InterruptedException e)
+						{
+							//TODO: Not sure if this is a good idea
+							Thread.currentThread().interrupt();
+						}
+					}
+				}
+		
+				return unansweredTransactions.size();
+			}
+			return -1;
 		}
 		finally
 		{
-			closeClients(clients);
+			clientPool.close();
 		}
-	}
-
-
-	public void bulkQuery(List<DnsTransaction> questions, boolean useCache, boolean recurse)
-	{
-
 	}
 
 
@@ -235,24 +229,61 @@ public class Resolver
 
 
 	/**
-	 * In miliseconds
+	 * In milliseconds
 	 * 
 	 * @return
 	 */
-	public long getTimeout()
+	public long getResponseTimeout()
 	{
-		return timeout;
+		return responseTimeout;
 	}
 
 
 	/**
 	 * 
-	 * @param timeout
-	 *            in miliseconds
+	 * @param responseTimeout in milliseconds
 	 */
-	public void setTimeout(long timeout)
+	public void setResponseTimeout(long responseTimeout)
 	{
-		this.timeout = timeout;
+		this.responseTimeout = responseTimeout;
+	}
+
+
+
+
+	public boolean isCacheNegativeResponses()
+	{
+		return cacheNegativeResponses;
+	}
+
+
+	public void setCacheNegativeResponses(boolean cacheNegativeResponses)
+	{
+		this.cacheNegativeResponses = cacheNegativeResponses;
+	}
+
+
+	public int getMaxTotalRequestsPerSecond()
+	{
+		return maxTotalRequestsPerSecond;
+	}
+
+
+	public void setMaxTotalRequestsPerSecond(int maxTotalRequestsPerSecond)
+	{
+		this.maxTotalRequestsPerSecond = maxTotalRequestsPerSecond;
+	}
+
+
+	public int getMaxRequestsPerServerPerSecond()
+	{
+		return maxRequestsPerServerPerSecond;
+	}
+
+
+	public void setMaxRequestsPerServerPerSecond(int maxRequestsPerServerPerSecond)
+	{
+		this.maxRequestsPerServerPerSecond = maxRequestsPerServerPerSecond;
 	}
 
 
@@ -268,16 +299,23 @@ public class Resolver
 	}
 
 
-	public boolean isCacheNegativeResponses()
+	public int getRoundRobinDuplicateCount()
 	{
-		return cacheNegativeResponses;
+		return roundRobinDuplicateCount;
 	}
 
 
-	public void setCacheNegativeResponses(boolean cacheNegativeResponses)
+	public void setRoundRobinDuplicateCount(int roundRobinDuplicateCount)
 	{
-		this.cacheNegativeResponses = cacheNegativeResponses;
+		if (roundRobinDuplicateCount > upstreamServers.size())
+		{
+			logger.debug("Round robin duplicate count can't be larger than the number of servers. Setting to the number of servers.");
+			roundRobinDuplicateCount = upstreamServers.size();
+		}
+		this.roundRobinDuplicateCount = roundRobinDuplicateCount;
 	}
+
+
 
 
 }

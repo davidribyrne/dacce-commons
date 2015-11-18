@@ -1,17 +1,14 @@
 package net.dacce.commons.dns.client.cache;
 
 
-import net.dacce.commons.dns.client.DnsTransaction;
-import net.dacce.commons.general.UniqueList;
+import java.util.List;
 
-import org.apache.directory.server.dns.messages.QuestionRecord;
-import org.apache.directory.server.dns.messages.RecordType;
-import org.apache.directory.server.dns.records.ResourceRecord;
+import net.dacce.commons.dns.messages.QuestionRecord;
+import net.dacce.commons.dns.records.ResourceRecord;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
-public class SimpleDnsCache 
+public class SimpleDnsCache implements DnsCache 
 {
 	private final static Logger logger = LoggerFactory.getLogger(SimpleDnsCache.class);
 
@@ -32,6 +29,10 @@ public class SimpleDnsCache
 	}
 
 
+	/* (non-Javadoc)
+	 * @see net.dacce.commons.dns.client.cache.DnsCache#get(net.dacce.commons.dns.messages.QuestionRecord)
+	 */
+	@Override
 	public List<ResourceRecord> get(QuestionRecord question)
 	{
 //		if (cacheNegativeResponses && negativeCache.contains(question))
@@ -41,6 +42,10 @@ public class SimpleDnsCache
 		return questionCache.getRecords(question);
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.dacce.commons.dns.client.cache.DnsCache#add(net.dacce.commons.dns.messages.QuestionRecord, java.util.List)
+	 */
+	@Override
 	public void add(QuestionRecord question, List<ResourceRecord> records)
 	{
 //		negativeCache.remove(question);
@@ -48,11 +53,19 @@ public class SimpleDnsCache
 		anyCache.addRecords(question.getDomainName(), records);
 	}
 
+	/* (non-Javadoc)
+	 * @see net.dacce.commons.dns.client.cache.DnsCache#contains(net.dacce.commons.dns.messages.QuestionRecord)
+	 */
+	@Override
 	public boolean contains(QuestionRecord question)
 	{
 		return questionCache.containsKey(question); // || negativeCache.contains(question);
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.dacce.commons.dns.client.cache.DnsCache#getAny(java.lang.String)
+	 */
+	@Override
 	public List<ResourceRecord> getAny(String domainName)
 	{
 		return anyCache.getRecords(domainName);

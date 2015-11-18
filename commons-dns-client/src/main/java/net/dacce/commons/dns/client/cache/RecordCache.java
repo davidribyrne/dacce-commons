@@ -1,11 +1,13 @@
 package net.dacce.commons.dns.client.cache;
 
-import org.apache.directory.server.dns.messages.RecordType;
-import org.apache.directory.server.dns.records.ResourceRecord;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import net.dacce.commons.dns.records.ResourceRecord;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 public class RecordCache <K> extends HashMap<K, List<ResourceRecord>>
 {

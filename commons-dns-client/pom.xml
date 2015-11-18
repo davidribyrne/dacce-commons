@@ -17,12 +17,18 @@
 			<artifactId>commons-netaddr</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.dacce</groupId>
-			<artifactId>commons-apache-dns</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.mina</groupId>
 			<artifactId>mina-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
 		</dependency>
 	</dependencies>
 </project>

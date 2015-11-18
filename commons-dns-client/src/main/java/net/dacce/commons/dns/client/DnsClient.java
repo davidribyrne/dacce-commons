@@ -1,20 +1,28 @@
 package net.dacce.commons.dns.client;
 
-import net.dacce.commons.dns.client.exceptions.DnsClientConnectException;
-import net.dacce.commons.dns.client.exceptions.DnsResponseTimeoutException;
+import java.net.InetSocketAddress;
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.apache.directory.server.dns.messages.DnsMessage;
-import org.apache.directory.server.dns.messages.DnsMessageModifier;
-import org.apache.directory.server.dns.messages.MessageType;
-import org.apache.directory.server.dns.messages.OpCode;
-import org.apache.directory.server.dns.messages.QuestionRecord;
-import org.apache.directory.server.dns.messages.ResponseCode;
-import org.apache.directory.server.dns.protocol.DnsProtocolTcpCodecFactory;
-import org.apache.directory.server.dns.protocol.DnsProtocolUdpCodecFactory;
-import org.apache.mina.core.buffer.IoBuffer;
+import net.dacce.commons.dns.exceptions.DnsClientConnectException;
+import net.dacce.commons.dns.messages.DnsMessage;
+import net.dacce.commons.dns.messages.MessageType;
+import net.dacce.commons.dns.messages.OpCode;
+import net.dacce.commons.dns.messages.QuestionRecord;
+import net.dacce.commons.dns.messages.ResponseCode;
+import net.dacce.commons.dns.protocol.DnsProtocolTcpCodecFactory;
+import net.dacce.commons.dns.protocol.DnsProtocolUdpCodecFactory;
+import net.dacce.commons.dns.records.RecordType;
+import net.dacce.commons.general.EventCounter;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;
-import org.apache.mina.core.future.IoFutureListener;
 import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -24,154 +32,211 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetSocketAddress;
-import java.nio.channels.IllegalSelectorException;
-import java.security.SecureRandom;
-import java.util.*;
-
-public abstract class DnsClient extends IoHandlerAdapter
+public class DnsClient 
 {
 	private final static Logger logger = LoggerFactory.getLogger(DnsClient.class);
 	private SecureRandom random;
 
-	private IoConnector connector;
-	protected abstract IoConnector makeIoConnector();
-	private IoSession dnsSession;
-	private Map<Integer, DnsMessage> pendingRequests;
-	private Map<Integer, DnsMessage> responses;
-	private int connectTimeout = 30000;
-	final private InetSocketAddress serverAddress;
+	private Map<RequestKey, DnsTransaction> unansweredRequests;
+	private int maxRequestsPerSecond = 30;
+	private EventCounter requestCounter;
+	private int connectTimeout = 10000;
+
+	private int count;
+	private boolean padSecondRequest;
+	private DnsUdpConnection udpConnection;
+	private final Map<DnsTcpConnection, RequestKey> tcpConnections;
+	private final InetSocketAddress serverAddress;
+	private boolean forceTcpZoneTransfer = true;
 	
-	public DnsClient(InetSocketAddress serverAddress) 
+	protected DnsClient(InetSocketAddress serverAddress, boolean padSecondRequest) throws DnsClientConnectException 
 	{
 		this.serverAddress = serverAddress;
-		pendingRequests = new HashMap<Integer, DnsMessage>();
-		responses = new HashMap<Integer, DnsMessage>();
+		tcpConnections = new HashMap<DnsTcpConnection, RequestKey>(1);
+		this.padSecondRequest = padSecondRequest;
+		unansweredRequests = new HashMap<RequestKey, DnsTransaction>();
 		random = new SecureRandom();
-		connector = makeIoConnector();
-		connector.setHandler(this);
+		requestCounter = new EventCounter(1000, true);
+		udpConnection = new DnsUdpConnection(this, serverAddress);
 	}
 	
-	protected void connect() throws DnsClientConnectException
+	public void connectionClosed(DnsConnection connection)
 	{
-		ConnectFuture connFuture = connector.connect(serverAddress);
+		// If the TCP connection closed without a response
+		if (connection.isTcp() && connection.getReadBytes() == 0) 
+		{
+			logger.debug("TCP connection closed without reading data from server.");
+			RequestKey requestKey = tcpConnections.remove(connection);
+			synchronized(unansweredRequests)
+			{
+				DnsTransaction transaction = unansweredRequests.remove(requestKey);
+				transaction.addNegativeResponse();
+			}
+		}
+	}
+	
+	public void messageReceived(DnsConnection connection, DnsMessage response) throws Exception
+	{
+		logger.trace("DnsClient has received response message.");
+		if (connection.isTcp())
+		{
+			logger.trace("The message was on a TCP connection so we're closing it");
+			connection.close(true);
+			tcpConnections.remove(connection);
+		}
+		
+		RequestKey key = new RequestKey(response.getQuestionRecords().get(0), response.getTransactionId());
+		DnsTransaction transaction = null;
+		synchronized (unansweredRequests)
+		{
+			logger.trace("{} unanswered requests remain in DNS client. Starting to prune.", unansweredRequests.size());
+			if (unansweredRequests.containsKey(key))
+			{
+				transaction = unansweredRequests.remove(key);
+				if (!response.isTruncated())
+				{
+					transaction.addAnswers(response.getAnswerRecords());
+					return;
+				}
+				if(connection.isTcp())
+				{
+					logger.error("A TCP DNS response was truncated? That makes no sense.");
+					return;
+				}
+			}
+			else
+			{
+				logger.debug("DNS response recieved, but there is no record of request.");
+				return;
+			}
+		}
+		
+		// If we get here, it's because the request needs to be repeated over TCP
+		sendQuery(transaction, true);
+	}
+
+	
+	public synchronized WriteFuture sendQuery(DnsTransaction transaction) throws DnsClientConnectException
+	{
+		return sendQuery(transaction, false);
+	}
+	
+	/**
+	 * 
+	 * Query is asynchronous, but the connection is not. 
+	 * @param question
+	 * @param recurse
+	 * @return DNS transaction ID
+	 * @throws DnsClientConnectException 
+	 */
+	public synchronized WriteFuture sendQuery(DnsTransaction transaction, boolean tcp) throws DnsClientConnectException
+	{
+		DnsConnection connection;
+		logger.trace("Starting sendQuery");
+
+		count++;
+		DnsMessage message = new DnsMessage ();
+		message.setTransactionId(random.nextInt() & 0xffff);
+		message.setQuestionRecords(Collections.singletonList(transaction.getQuestion()));
+		message.setMessageType(MessageType.QUERY);
+		message.setOpCode(OpCode.QUERY);
+		message.setRecursionDesired(transaction.isRecurse());
+		message.setResponseCode(ResponseCode.NO_ERROR);
+		
+		RequestKey key = new RequestKey(transaction.getQuestion(), message.getTransactionId());
+
+		if (transaction.getQuestion().getRecordType().equals(RecordType.AXFR) && forceTcpZoneTransfer)
+			tcp = true;
+		
+		if (tcp)
+		{
+			DnsTcpConnection tcpConnection = new DnsTcpConnection(this, serverAddress);
+			tcpConnections.put(tcpConnection, key);
+			connection = tcpConnection;
+		}
+		else
+			connection = udpConnection;
+		
+		if (count == 2 && isPadSecondRequest() && !tcp)
+		{
+			WriteFuture wf = sendDummyQuery();
+			wf.getException();
+		}
+		synchronized(unansweredRequests)
+		{
+			if (unansweredRequests.containsKey(key))
+			{
+				logger.error("Duplicate DNS transaction ID (" + message.getTransactionId() + ") in queries for " + transaction.getQuestion().getDomainName() + ".");
+			}
+			else
+			{
+				unansweredRequests.put(key, transaction);
+			}
+		}
 		try
 		{
-			if (!connFuture.await(connectTimeout))
-			{
-				throw new DnsClientConnectException("Failed to connect to server (" + serverAddress.toString() + ").");
-			}
-			dnsSession = connFuture.getSession();
+			requestCounter.waitForThrottle(maxRequestsPerSecond);
 		}
 		catch (InterruptedException e)
 		{
-			logger.trace("DNS client connect interrupted: " + e.getLocalizedMessage(), e);
+			close(true);
 			Thread.currentThread().interrupt();
 		}
-		if (!connFuture.isConnected())
+		requestCounter.trackEvent();
+		return connection.sendMessage(message);
+	}
+
+	public void close(boolean immediately)
+	{
+		udpConnection.close(immediately);
+		for (DnsTcpConnection t: tcpConnections.keySet())
 		{
-			throw new DnsClientConnectException("Timeout after " + connectTimeout + " ms connecting to " + serverAddress.toString());
+			t.close(immediately);
 		}
 	}
 	
 	
-	public boolean isConnected()
+	private class RequestKey
 	{
-		return dnsSession != null && dnsSession.isConnected();
-	}
-	
-	public CloseFuture close(boolean immediately)
-	{
-		if (dnsSession == null)
+		QuestionRecord question;
+		int transactionId;
+		RequestKey(QuestionRecord question, int transactionId)
 		{
-			logger.trace("Can't close. DNS session not created.");
+			this.question = question;
+			this.transactionId = transactionId;
 		}
-		if (dnsSession.isConnected())
+		@Override
+		public int hashCode()
 		{
-			logger.trace("Can't close. DNS session not connected.");
+			return new HashCodeBuilder().append(question).append(transactionId).toHashCode();
 		}
-		IoService s = dnsSession.getService();
-		s.dispose(true);
-		return dnsSession.close(immediately);
-	}
-
-	@Override
-    public void sessionCreated( IoSession session ) throws Exception
-    {
-        if ( session.getTransportMetadata().isConnectionless() )
-        {
-            session.getFilterChain().addFirst( "codec",
-                new ProtocolCodecFilter( DnsProtocolUdpCodecFactory.getInstance() ) );
-        }
-        else
-        {
-            session.getFilterChain().addFirst( "codec",
-                new ProtocolCodecFilter( DnsProtocolTcpCodecFactory.getInstance() ) );
-        }
-    }
-
-	
-	@Override
-	public void messageReceived(IoSession session, Object message) throws Exception
-	{
-		logger.debug( "{} RCVD:  {}", session.getRemoteAddress(), message );
-		DnsMessage response = (DnsMessage) message;
-		responses.put(response.getTransactionId(), response);
-	}
-	
-	
-	public DnsMessage getResponse(int transactionId)
-	{
-		return responses.get(transactionId);
-	}
-	
-	/**
-	 * 
-	 * Query is asynchronous, but the connection is not
-	 * 
-	 * @param question
-	 * @param recursion
-	 * @return DNS transaction ID
-	 * @throws InterruptedException 
-	 * @throws DnsResponseTimeoutException 
-	 * @throws DnsClientConnectException 
-	 */
-	public DnsMessage asyncQuery(QuestionRecord question, boolean recursion) throws DnsResponseTimeoutException, DnsClientConnectException
-	{
-		DnsMessageModifier modifier = new DnsMessageModifier ();
-		modifier.setTransactionId(random.nextInt() & 0xffff);
-		modifier.setQuestionRecords(Collections.singletonList(question));
-		modifier.setMessageType(MessageType.QUERY);
-		modifier.setOpCode(OpCode.QUERY);
-		modifier.setRecursionDesired(recursion);
-		modifier.setResponseCode(ResponseCode.NO_ERROR);
-		DnsMessage message = modifier.getDnsMessage();
-		asyncQuery(message);
-		return message;
-	}
-
-	/**
-	 * Query is asynchronous, but the connection is not
-	 * @param message
-	 * @return
-	 * @throws DnsResponseTimeoutException
-	 * @throws DnsClientConnectException 
-	 * @throws InterruptedException
-	 */
-	public WriteFuture asyncQuery(DnsMessage message) throws DnsClientConnectException
-	{
-		connect();
 		
-		synchronized(pendingRequests)
+		@Override
+		public boolean equals(Object obj)
 		{
-			if (pendingRequests.containsKey(message.getTransactionId()))
-			{
-				throw new IllegalArgumentException("Duplicate DNS transaction ID (" + message.getTransactionId() + ").");
-			}
-			pendingRequests.put(message.getTransactionId(), message);
+			RequestKey r = (RequestKey) obj;
+			return new EqualsBuilder().append(r.question, question).append(r.transactionId, transactionId).isEquals();
 		}
-		return dnsSession.write(message);
 	}
+	
+
+	
+	
+	/**
+	 * For Google bug
+	 */
+	private WriteFuture sendDummyQuery()
+	{
+		DnsMessage message = new DnsMessage ();
+		message.setTransactionId(0);
+		message.setQuestionRecords(Collections.singletonList(new QuestionRecord("www.google.com", RecordType.A)));
+		message.setMessageType(MessageType.QUERY);
+		message.setOpCode(OpCode.QUERY);
+		message.setRecursionDesired(true);
+		message.setResponseCode(ResponseCode.NO_ERROR);
+		return udpConnection.sendMessage(message);
+	}
+
 
 	
 
@@ -193,6 +258,36 @@ public abstract class DnsClient extends IoHandlerAdapter
 	public void setConnectTimeout(int connectTimeout)
 	{
 		this.connectTimeout = connectTimeout;
+	}
+
+	public int getMaxRequestsPerSecond()
+	{
+		return maxRequestsPerSecond;
+	}
+
+	public void setMaxRequestsPerSecond(int maxRequestsPerSecond)
+	{
+		this.maxRequestsPerSecond = maxRequestsPerSecond;
+	}
+
+	public boolean isPadSecondRequest()
+	{
+		return padSecondRequest;
+	}
+
+	public void setPadSecondRequest(boolean padSecondRequest)
+	{
+		this.padSecondRequest = padSecondRequest;
+	}
+
+	public boolean isForceTcpZoneTransfer()
+	{
+		return forceTcpZoneTransfer;
+	}
+
+	public void setForceTcpZoneTransfer(boolean forceTcpZoneTransfer)
+	{
+		this.forceTcpZoneTransfer = forceTcpZoneTransfer;
 	}
 
 }

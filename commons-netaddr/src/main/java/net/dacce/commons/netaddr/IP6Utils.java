@@ -1,6 +1,8 @@
 package net.dacce.commons.netaddr;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class IP6Utils

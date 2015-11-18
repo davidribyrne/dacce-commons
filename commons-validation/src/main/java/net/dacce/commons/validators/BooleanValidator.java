@@ -1,7 +1,5 @@
 package net.dacce.commons.validators;
 
-import java.util.*;
-
 import net.dacce.commons.general.BooleanFormatException;
 import net.dacce.commons.general.BooleanUtils;
 

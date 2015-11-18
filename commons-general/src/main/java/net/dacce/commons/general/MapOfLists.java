@@ -20,6 +20,11 @@ public class MapOfLists<Key, Value>
 		map = new HashMap<Key, List<Value>>();
 	}
 
+	public MapOfLists(int initialMapSize)
+	{
+		map = new HashMap<Key, List<Value>>(initialMapSize);
+	}
+
 
 	public List<Value> get(Object key)
 	{
