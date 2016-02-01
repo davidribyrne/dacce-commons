@@ -8,12 +8,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import net.dacce.commons.general.FileUtils;
-
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -23,7 +19,6 @@ import org.slf4j.LoggerFactory;
  */
 public class PublicSuffixList
 {
-	private final static Logger logger = LoggerFactory.getLogger(PublicSuffixList.class);
 	private final static String DEFAULT_PATH = "/public_suffix_list.dat";
 	private final static PublicSuffixList instance = new PublicSuffixList();
 

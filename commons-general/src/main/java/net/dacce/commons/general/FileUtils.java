@@ -1,21 +1,16 @@
 package net.dacce.commons.general;
 
-import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.channels.Channels;
-import java.nio.channels.SeekableByteChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +36,45 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 		return file;
 	}
 
+	
+	public static List<String> readConfigFileLines(URL url) throws IOException
+	{
+		InputStream is = url.openStream();
+		return readConfigFileLines(is);
+	}
+	
+	
+	public static List<String> readConfigFileLines(String file) throws FileNotFoundException, IOException
+	{
+		File f = new File(file);
+		return readConfigFileLines(f);
+	}
+	
+	public static List<String> readConfigFileLines(File file) throws FileNotFoundException, IOException
+	{
+		InputStream is = new FileInputStream(file);
+		return readConfigFileLines(is);
+	}
+	
+	/**
+	 * Ignores empty lines and lines that start with octothorpe (#) or semicolon (;)
+	 * @param is
+	 * @return
+	 * @throws IOException
+	 */
+	public static List<String> readConfigFileLines(InputStream is) throws IOException
+	{
+		List<String> lines = new ArrayList<String>();
+		for(String l: IOUtils.readLines(is))
+		{
+			String line = l.trim();
+			if (l.isEmpty() || l.startsWith("#") || l.startsWith(";"))
+				continue;
+			lines.add(line);
+		}
+		is.close();
+		return lines;
+	}
 
 	/**
 	 * Searches the PATH environment variable for the specified executable name. In Windows,

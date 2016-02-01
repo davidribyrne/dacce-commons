@@ -3,9 +3,6 @@ package net.dacce.commons.general;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Should be thread-safe
  * @author dbyrne
@@ -13,9 +10,6 @@ import org.slf4j.LoggerFactory;
  */
 public class EventCounter
 {
-	private final static Logger logger = LoggerFactory.getLogger(EventCounter.class);
-
-
 	/** Length of time to monitor in ms */
 	private final long masterDuration;
 	private final LinkedList<Long> events;

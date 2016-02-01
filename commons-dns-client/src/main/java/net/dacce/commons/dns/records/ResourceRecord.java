@@ -23,7 +23,6 @@ package net.dacce.commons.dns.records;
 
 import net.dacce.commons.dns.io.DnsEncodingUtils;
 import net.dacce.commons.dns.messages.RecordClass;
-
 import org.apache.mina.core.buffer.IoBuffer;
 
 

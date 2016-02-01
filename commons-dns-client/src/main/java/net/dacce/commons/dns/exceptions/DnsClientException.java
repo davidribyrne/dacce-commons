@@ -1,14 +1,8 @@
 package net.dacce.commons.dns.exceptions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DnsClientException extends Exception
 {
-	private final static Logger logger = LoggerFactory.getLogger(DnsClientException.class);
-
-
-
 
 	public DnsClientException()
 	{

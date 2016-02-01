@@ -1,7 +1,6 @@
 package net.dacce.commons.dns.client.cache;
 
 import java.util.List;
-
 import net.dacce.commons.dns.messages.QuestionRecord;
 import net.dacce.commons.dns.records.ResourceRecord;
 

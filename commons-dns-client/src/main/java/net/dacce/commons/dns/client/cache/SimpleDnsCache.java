@@ -2,16 +2,10 @@ package net.dacce.commons.dns.client.cache;
 
 
 import java.util.List;
-
 import net.dacce.commons.dns.messages.QuestionRecord;
 import net.dacce.commons.dns.records.ResourceRecord;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 public class SimpleDnsCache implements DnsCache 
 {
-	private final static Logger logger = LoggerFactory.getLogger(SimpleDnsCache.class);
-
 	private final RecordCache<String> anyCache;
 	private final RecordCache<QuestionRecord> questionCache;
 //	private final List<QuestionRecord> negativeCache;

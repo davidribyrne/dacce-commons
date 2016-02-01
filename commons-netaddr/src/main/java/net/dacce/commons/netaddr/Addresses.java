@@ -2,7 +2,6 @@ package net.dacce.commons.netaddr;
 
 import java.util.Collection;
 import java.util.List;
-
 import net.dacce.commons.general.CollectionUtils;
 import net.dacce.commons.general.StringUtils;
 import net.dacce.commons.general.UniqueList;

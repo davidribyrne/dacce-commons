@@ -1,14 +1,11 @@
 package net.dacce.commons.dns.client;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetSocketAddress;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
 import net.dacce.commons.dns.client.cache.DnsCache;
 import net.dacce.commons.dns.client.cache.SimpleDnsCache;
 import net.dacce.commons.dns.exceptions.DnsClientConnectException;
@@ -20,11 +17,9 @@ import net.dacce.commons.dns.records.ARecord;
 import net.dacce.commons.dns.records.RecordType;
 import net.dacce.commons.dns.records.ResourceRecord;
 import net.dacce.commons.general.EventCounter;
+import net.dacce.commons.general.FileUtils;
 import net.dacce.commons.general.UnexpectedException;
-import net.dacce.commons.general.UniqueList;
 import net.dacce.commons.netaddr.SimpleInetAddress;
-
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +30,7 @@ public class Resolver
 //	private final DnsClientPool clientPool;
 	private final EventCounter totalRequestCounter;
 
-	private final DnsCache cache = new SimpleDnsCache();
+	private DnsCache cache = new SimpleDnsCache();
 	private long responseTimeout = 30000;
 	private boolean cacheNegativeResponses = true;
 	private int maxTotalRequestsPerSecond = 100;
@@ -51,7 +46,7 @@ public class Resolver
 	 */
 	public Resolver()
 	{
-		this(SystemDnsServers.getSystemDnsServers(), false);
+		this(SystemDnsServers.getSystemDnsServers(), true);
 	}
 
 
@@ -71,17 +66,7 @@ public class Resolver
 	public static Resolver createPublicServersResolver() throws IOException
 	{
 		URL url = Resolver.class.getResource(PUBLIC_DNS_SERVERS_FILE);
-		InputStream is = url.openStream();
-		List<String> servers = new UniqueList<String>();
-		for(String l: IOUtils.readLines(is))
-		{
-			String line = l.trim();
-			if (l.isEmpty() || l.startsWith("#"))
-				continue;
-			servers.add(line);
-		}
-		is.close();
-		return new Resolver(servers, true);
+		return new Resolver(FileUtils.readConfigFileLines(url), true);
 	}
 
 
@@ -313,6 +298,18 @@ public class Resolver
 			roundRobinDuplicateCount = upstreamServers.size();
 		}
 		this.roundRobinDuplicateCount = roundRobinDuplicateCount;
+	}
+
+
+	public DnsCache getCache()
+	{
+		return cache;
+	}
+
+
+	public void setCache(DnsCache cache)
+	{
+		this.cache = cache;
 	}
 
 

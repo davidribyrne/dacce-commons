@@ -3,15 +3,10 @@ package net.dacce.commons.dns.records;
 import net.dacce.commons.dns.io.DnsDecodingUtils;
 import net.dacce.commons.dns.io.DnsEncodingUtils;
 import net.dacce.commons.dns.messages.RecordClass;
-
 import org.apache.mina.core.buffer.IoBuffer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class AbstractHostnameRecord extends ResourceRecord
 {
-
-	private final static Logger logger = LoggerFactory.getLogger(AbstractHostnameRecord.class);
 
 	private String name;
 	

@@ -3,14 +3,8 @@ package net.dacce.commons.dns.records;
 import net.dacce.commons.dns.messages.RecordClass;
 import net.dacce.commons.general.NotImplementedException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class RecordFactory
 {
-	private final static Logger logger = LoggerFactory.getLogger(RecordFactory.class);
-
-
 
 	private RecordFactory()
 	{

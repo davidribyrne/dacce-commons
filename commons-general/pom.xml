@@ -6,7 +6,7 @@
 		<artifactId>commons</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
+
 	<artifactId>commons-general</artifactId>
 	<name>commons-general</name>
 	<dependencies>
@@ -18,5 +18,14 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.esotericsoftware.yamlbeans</groupId>
+			<artifactId>yamlbeans</artifactId>
+		</dependency>
+
 	</dependencies>
 </project>

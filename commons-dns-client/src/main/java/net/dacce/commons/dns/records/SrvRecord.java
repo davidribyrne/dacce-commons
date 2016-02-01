@@ -3,17 +3,12 @@ package net.dacce.commons.dns.records;
 import net.dacce.commons.dns.io.DnsDecodingUtils;
 import net.dacce.commons.dns.io.DnsEncodingUtils;
 import net.dacce.commons.dns.messages.RecordClass;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.mina.core.buffer.IoBuffer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class SrvRecord extends ResourceRecord
 {
-	private final static Logger logger = LoggerFactory.getLogger(SrvRecord.class);
-
 	private int priority;
 	private int weight;
 	private int port;

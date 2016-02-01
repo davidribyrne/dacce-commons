@@ -22,12 +22,10 @@ package net.dacce.commons.dns.messages;
 
 
 import java.util.List;
-
 import net.dacce.commons.dns.records.ResourceRecord;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 /**

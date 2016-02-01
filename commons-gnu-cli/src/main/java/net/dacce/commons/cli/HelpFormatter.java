@@ -17,10 +17,7 @@
 
 package net.dacce.commons.cli;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.Serializable;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,6 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import org.apache.commons.lang3.text.WordUtils;
 
 
 /**
@@ -187,31 +185,29 @@ public class HelpFormatter
 	private String header;
 	private Options options;
 	private String footer;
-	private int defaultWidth = 90;
+	private int width = 90;
 	private int defaultLeftPad = 1;
-	private int defaultDescPad = 3;
-	private int optionNameWidth = 30;
+	private int optionNameWidth = 10;
 
 
 	public HelpFormatter(int width, String cmdLineSyntax,
 			String header, Options options, int leftPad,
-			int descPad, String footer)
+			String footer)
 	{
-		this.cmdLineSyntax = cmdLineSyntax;
-		this.header = header;
+		this.cmdLineSyntax = cleanString(cmdLineSyntax);
+		this.header = cleanString(header);
 		this.options = options;
-		this.footer = footer;
-		defaultDescPad = descPad;
-		defaultWidth = width;
+		this.footer = cleanString(footer);
+		this.width = width;
 		defaultLeftPad = leftPad;
 	}
 
 
 	public static String makeHelp(int width, String cmdLineSyntax,
 			String header, Options options, int leftPad,
-			int descPad, String footer)
+			String footer)
 	{
-		HelpFormatter hf = new HelpFormatter(width, cmdLineSyntax, header, options, leftPad, descPad, footer);
+		HelpFormatter hf = new HelpFormatter(width, cmdLineSyntax, header, options, leftPad, footer);
 		return hf.printHelp();
 	}
 
@@ -230,7 +226,7 @@ public class HelpFormatter
 		{
 			sb.append(getNewLine());
 			sb.append(getNewLine());
-			sb.append(printWrapped(defaultWidth, 0, header));
+			sb.append(WordUtils.wrap(header, width));
 		}
 
 		sb.append(getNewLine());
@@ -241,11 +237,15 @@ public class HelpFormatter
 		{
 			sb.append(getNewLine());
 			sb.append(getNewLine());
-			sb.append(printWrapped(defaultWidth, 0, footer));
+			sb.append(WordUtils.wrap(footer, width));
 		}
 		return sb.toString();
 	}
 
+	private String cleanString(String s)
+	{
+		return s.replace('\t', ' ').replaceAll(" {2,}", " ").trim();
+	}
 
 	/**
 	 * Prints the usage statement for the specified application.
@@ -313,7 +313,8 @@ public class HelpFormatter
 		}
 
 		// call printWrapped
-		return printWrapped(defaultWidth, buff.toString().indexOf(' ') + 1, buff.toString());
+//		return printWrapped(defaultWidth, buff.toString().indexOf(' ') + 1, buff.toString());
+		return WordUtils.wrap(buff.toString(), width - defaultLeftPad, getNewLine() + createPadding(defaultLeftPad), true);
 	}
 
 
@@ -451,10 +452,10 @@ public class HelpFormatter
 	 * @param text
 	 *            The text to be written to the PrintWriter
 	 */
-	private String printWrapped(int width, int nextLineTabStop, String text)
-	{
-		return renderWrappedTextBlock(width, nextLineTabStop, text);
-	}
+//	private String printWrapped(int width, int nextLineTabStop, String text)
+//	{
+//		return renderWrappedTextBlock(width, nextLineTabStop, text);
+//	}
 
 
 	private String printOption(Option option)
@@ -498,17 +499,17 @@ public class HelpFormatter
 		{
 			description += " Default is '" + option.getDefaultValue() + "'.";
 		}
-		sb.append(renderWrappedTextBlock(defaultWidth, optionNameWidth, description));
-
+//		sb.append(renderWrappedTextBlock(defaultWidth, optionNameWidth, description));
+		sb.append(WordUtils.wrap(description, width - optionNameWidth, "\n" + createPadding(optionNameWidth), true));
 		return sb.toString();
 	}
 
 
 	private void printOptionContainer(OptionContainer container, String groupChain, StringBuffer sb)
 	{
-		if (container instanceof Group)
+		if (container instanceof OptionGroup)
 		{
-			Group group = (Group) container;
+			OptionGroup group = (OptionGroup) container;
 			String newChain = groupChain + (groupChain.isEmpty() ? "" : groupSeperator) + group.getName();
 			sb.append(getNewLine());
 //			sb.append(newChain);
@@ -545,49 +546,49 @@ public class HelpFormatter
 	 *
 	 * @return the StringBuffer with the rendered Options contents.
 	 */
-	protected String renderWrappedText(int width,
-			int nextLineTabStop, String text)
-	{
-		StringBuffer sb = new StringBuffer();
-		int pos = findWrapPos(text, width, 0);
-
-		if (pos == -1)
-		{
-			sb.append(rtrim(text));
-
-			return sb.toString();
-		}
-		sb.append(rtrim(text.substring(0, pos))).append(getNewLine());
-
-		if (nextLineTabStop >= width)
-		{
-			// stops infinite loop happening
-			nextLineTabStop = 1;
-		}
-
-		// all following lines must be padded with nextLineTabStop space characters
-		final String padding = createPadding(nextLineTabStop);
-
-		while (true)
-		{
-			text = padding + text.substring(pos).trim();
-			pos = findWrapPos(text, width, 0);
-
-			if (pos == -1)
-			{
-				sb.append(text);
-
-				return sb.toString();
-			}
-
-			if ((text.length() > width) && (pos == (nextLineTabStop - 1)))
-			{
-				pos = width;
-			}
-
-			sb.append(rtrim(text.substring(0, pos))).append(getNewLine());
-		}
-	}
+//	protected String renderWrappedText(int width,
+//			int nextLineTabStop, String text)
+//	{
+//		StringBuffer sb = new StringBuffer();
+//		int pos = findWrapPos(text, width, 0);
+//
+//		if (pos == -1)
+//		{
+//			sb.append(rtrim(text));
+//
+//			return sb.toString();
+//		}
+//		sb.append(rtrim(text.substring(0, pos))).append(getNewLine());
+//
+//		if (nextLineTabStop >= width)
+//		{
+//			// stops infinite loop happening
+//			nextLineTabStop = 1;
+//		}
+//
+//		// all following lines must be padded with nextLineTabStop space characters
+//		final String padding = createPadding(nextLineTabStop);
+//
+//		while (true)
+//		{
+//			text = padding + text.substring(pos).trim();
+//			pos = findWrapPos(text, width, 0);
+//
+//			if (pos == -1)
+//			{
+//				sb.append(text);
+//
+//				return sb.toString();
+//			}
+//
+//			if ((text.length() > width) && (pos == (nextLineTabStop - 1)))
+//			{
+//				pos = width;
+//			}
+//
+//			sb.append(rtrim(text.substring(0, pos))).append(getNewLine());
+//		}
+//	}
 
 
 	/**
@@ -603,33 +604,33 @@ public class HelpFormatter
 	 * @param text
 	 *            The text to be rendered.
 	 */
-	private String renderWrappedTextBlock(int width, int nextLineTabStop, String text)
-	{
-		StringBuffer sb = new StringBuffer();
-		try
-		{
-			BufferedReader in = new BufferedReader(new StringReader(text));
-			String line;
-			boolean firstLine = true;
-			while ((line = in.readLine()) != null)
-			{
-				if (!firstLine)
-				{
-					sb.append(getNewLine());
-				}
-				else
-				{
-					firstLine = false;
-				}
-				sb.append(renderWrappedText(width, nextLineTabStop, line));
-			}
-		}
-		catch (IOException e) // NOPMD
-		{
-			// cannot happen
-		}
-		return sb.toString();
-	}
+//	private String renderWrappedTextBlock(int width, int nextLineTabStop, String text)
+//	{
+//		StringBuffer sb = new StringBuffer();
+//		try
+//		{
+//			BufferedReader in = new BufferedReader(new StringReader(text));
+//			String line;
+//			boolean firstLine = true;
+//			while ((line = in.readLine()) != null)
+//			{
+//				if (!firstLine)
+//				{
+//					sb.append(getNewLine());
+//				}
+//				else
+//				{
+//					firstLine = false;
+//				}
+//				sb.append(renderWrappedText(width, nextLineTabStop, line));
+//			}
+//		}
+//		catch (IOException e) // NOPMD
+//		{
+//			// cannot happen
+//		}
+//		return sb.toString();
+//	}
 
 
 	/**
@@ -649,47 +650,47 @@ public class HelpFormatter
 	 * @return position on which the text must be wrapped or -1 if the wrap
 	 *         position is at the end of the text
 	 */
-	protected int findWrapPos(String text, int width, int startPos)
-	{
-		// the line ends before the max wrap pos or a new line char found
-		int pos = text.indexOf('\n', startPos);
-		if ((pos != -1) && (pos <= width))
-		{
-			return pos + 1;
-		}
-
-		pos = text.indexOf('\t', startPos);
-		if ((pos != -1) && (pos <= width))
-		{
-			return pos + 1;
-		}
-
-		if ((startPos + width) >= text.length())
-		{
-			return -1;
-		}
-
-		// look for the last whitespace character before startPos+width
-		for (pos = startPos + width; pos >= startPos; --pos)
-		{
-			final char c = text.charAt(pos);
-			if ((c == ' ') || (c == '\n') || (c == '\r'))
-			{
-				break;
-			}
-		}
-
-		// if we found it - just return
-		if (pos > startPos)
-		{
-			return pos;
-		}
-
-		// if we didn't find one, simply chop at startPos+width
-		pos = startPos + width;
-
-		return pos == text.length() ? -1 : pos;
-	}
+//	protected int findWrapPos(String text, int width, int startPos)
+//	{
+//		// the line ends before the max wrap pos or a new line char found
+//		int pos = text.indexOf('\n', startPos);
+//		if ((pos != -1) && (pos <= width))
+//		{
+//			return pos + 1;
+//		}
+//
+//		pos = text.indexOf('\t', startPos);
+//		if ((pos != -1) && (pos <= width))
+//		{
+//			return pos + 1;
+//		}
+//
+//		if ((startPos + width) >= text.length())
+//		{
+//			return -1;
+//		}
+//
+//		// look for the last whitespace character before startPos+width
+//		for (pos = startPos + width; pos >= startPos; --pos)
+//		{
+//			final char c = text.charAt(pos);
+//			if ((c == ' ') || (c == '\n') || (c == '\r'))
+//			{
+//				break;
+//			}
+//		}
+//
+//		// if we found it - just return
+//		if (pos > startPos)
+//		{
+//			return pos;
+//		}
+//
+//		// if we didn't find one, simply chop at startPos+width
+//		pos = startPos + width;
+//
+//		return pos == text.length() ? -1 : pos;
+//	}
 
 
 	/**
@@ -717,22 +718,22 @@ public class HelpFormatter
 	 *
 	 * @return The String of without the trailing padding
 	 */
-	protected String rtrim(String s)
-	{
-		if ((s == null) || (s.length() == 0))
-		{
-			return s;
-		}
-
-		int pos = s.length();
-
-		while ((pos > 0) && Character.isWhitespace(s.charAt(pos - 1)))
-		{
-			--pos;
-		}
-
-		return s.substring(0, pos);
-	}
+//	protected String rtrim(String s)
+//	{
+//		if ((s == null) || (s.length() == 0))
+//		{
+//			return s;
+//		}
+//
+//		int pos = s.length();
+//
+//		while ((pos > 0) && Character.isWhitespace(s.charAt(pos - 1)))
+//		{
+//			--pos;
+//		}
+//
+//		return s.substring(0, pos);
+//	}
 
 	// ------------------------------------------------------ Package protected
 	// ---------------------------------------------------------------- Private

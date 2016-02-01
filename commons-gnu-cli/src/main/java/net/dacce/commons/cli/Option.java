@@ -20,7 +20,6 @@ package net.dacce.commons.cli;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import net.dacce.commons.cli.exceptions.ParseException;
 import net.dacce.commons.general.StringUtils;
 import net.dacce.commons.validators.ValidationException;

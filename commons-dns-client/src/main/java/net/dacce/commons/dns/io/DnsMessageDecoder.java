@@ -24,7 +24,6 @@ package net.dacce.commons.dns.io;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import net.dacce.commons.dns.messages.DnsMessage;
 import net.dacce.commons.dns.messages.MessageType;
 import net.dacce.commons.dns.messages.OpCode;
@@ -34,7 +33,6 @@ import net.dacce.commons.dns.messages.ResponseCode;
 import net.dacce.commons.dns.records.RecordFactory;
 import net.dacce.commons.dns.records.RecordType;
 import net.dacce.commons.dns.records.ResourceRecord;
-
 import org.apache.mina.core.buffer.IoBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

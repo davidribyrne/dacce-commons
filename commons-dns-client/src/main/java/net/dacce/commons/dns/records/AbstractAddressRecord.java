@@ -3,9 +3,8 @@ package net.dacce.commons.dns.records;
 import net.dacce.commons.dns.messages.RecordClass;
 import net.dacce.commons.netaddr.InvalidIPAddressFormatException;
 import net.dacce.commons.netaddr.SimpleInetAddress;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

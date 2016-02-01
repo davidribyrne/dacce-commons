@@ -1,16 +1,10 @@
 package net.dacce.commons.dns.io;
 
 import net.dacce.commons.general.StringUtils;
-
 import org.apache.mina.core.buffer.IoBuffer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DnsEncodingUtils
 {
-	private final static Logger logger = LoggerFactory.getLogger(DnsEncodingUtils.class);
-
-
 
 	private DnsEncodingUtils()
 	{

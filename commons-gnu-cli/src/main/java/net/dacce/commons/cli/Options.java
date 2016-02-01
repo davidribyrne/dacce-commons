@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import net.dacce.commons.cli.exceptions.AlreadySelectedException;
 import net.dacce.commons.cli.exceptions.UnrecognizedOptionException;
 
@@ -63,7 +62,7 @@ public class Options implements Serializable
 		{
 			processOption((Option) option);
 		}
-		else if (option instanceof Group)
+		else if (option instanceof OptionGroup)
 		{
 			processGroup((AbstractGroup) option);
 		}
@@ -167,7 +166,7 @@ public class Options implements Serializable
 		}
 		else
 		{
-			Group g = (Group) group;
+			OptionGroup g = (OptionGroup) group;
 			for (OptionContainer container : g.getChildren())
 			{
 				if (container instanceof Option)
@@ -176,7 +175,7 @@ public class Options implements Serializable
 				}
 				else
 				{
-					processGroup((Group) container);
+					processGroup((OptionGroup) container);
 				}
 			}
 		}

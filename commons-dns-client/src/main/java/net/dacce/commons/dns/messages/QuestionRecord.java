@@ -22,10 +22,9 @@ package net.dacce.commons.dns.messages;
 
 
 import net.dacce.commons.dns.records.RecordType;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 /**
@@ -72,7 +71,8 @@ public class QuestionRecord
 
 
     /**
-     * Creates a new instance of QuestionRecord.
+     * Creates a new instance of QuestionRecord. You probably don't want to use this since recordClass
+     * should always be IN
      *
      * @param domainName
      * @param recordType

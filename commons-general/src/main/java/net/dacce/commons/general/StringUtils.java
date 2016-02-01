@@ -1,9 +1,11 @@
 package net.dacce.commons.general;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
-public class StringUtils
+public class StringUtils extends org.apache.commons.lang3.StringUtils
 {
 
 	private StringUtils()
@@ -11,6 +13,26 @@ public class StringUtils
 	}
 
 
+	/**
+	 * Trims strings and removes all empty or null items
+	 * @param strings
+	 * @return
+	 */
+	public static List<String> trim(List<String> strings)
+	{
+		List<String> newList = new ArrayList<String>();
+		for(String string: strings)
+		{
+			if (string == null)
+				continue;
+			String newString = string.trim();
+			if (newString.isEmpty())
+				continue;
+			newList.add(newString);
+		}
+		return newList;
+	}
+	
 	public static boolean isEmptyOrNull(String string)
 	{
 		return (string == null) || string.isEmpty();
