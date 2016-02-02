@@ -15,6 +15,8 @@ import org.apache.commons.io.IOUtils;
 /**
  * Based on regdom4j
  * https://github.com/hamano/regdom4j/
+ * 
+ * The list can be downloaded from https://publicsuffix.org/list/public_suffix_list.dat
  *
  */
 public class PublicSuffixList

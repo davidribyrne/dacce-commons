@@ -37,9 +37,9 @@ public class MultiClassIndexedCache
 		return getCache(clazz).getMembers(field, key);
 	}
 
-	public List<?> getMembers(Class clazz)
+	public IndexedCache<?> getMembers(Class clazz)
 	{
-		return getCache(clazz).getAllMembers();
+		return getCache(clazz);
 	}
 	
 	

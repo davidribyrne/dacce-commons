@@ -7,17 +7,14 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.mina.core.buffer.IoBuffer;
 
-public class MxRecord extends ResourceRecord
+public class MxRecord extends AbstractHostnameRecord
 {
 	private int preference;
-	private String server;
-
-
 
 	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder().append(preference).append(server).toHashCode();
+		return new HashCodeBuilder().append(preference).appendSuper(super.hashCode()).toHashCode();
 	}
 
 
@@ -25,7 +22,7 @@ public class MxRecord extends ResourceRecord
 	public boolean equals(Object obj)
 	{
 		MxRecord o = (MxRecord) obj;
-		return new EqualsBuilder().append(preference, o.preference).append(server, o.server).isEquals();
+		return new EqualsBuilder().append(preference, o.preference).appendSuper(super.equals(obj)).isEquals();
 	}
 
 
@@ -38,10 +35,8 @@ public class MxRecord extends ResourceRecord
 	@Override
 	public void decodeData(IoBuffer byteBuffer, short length)
 	{
-		
         preference = byteBuffer.getShort() ;
-        server = DnsDecodingUtils.getDomainName( byteBuffer );
-
+        super.decodeData(byteBuffer, (short) (length - 2));
 	}
 
 
@@ -49,6 +44,6 @@ public class MxRecord extends ResourceRecord
 	public void encodeData(IoBuffer byteBuffer)
 	{
         byteBuffer.putShort( (short) preference );
-        DnsEncodingUtils.putDomainName( byteBuffer, server );
+        super.encodeData(byteBuffer);
 	}
 }

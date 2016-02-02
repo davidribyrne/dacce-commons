@@ -3,12 +3,14 @@ package net.dacce.commons.dns.records;
 import net.dacce.commons.dns.io.DnsDecodingUtils;
 import net.dacce.commons.dns.io.DnsEncodingUtils;
 import net.dacce.commons.dns.messages.RecordClass;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.mina.core.buffer.IoBuffer;
 
 public abstract class AbstractHostnameRecord extends ResourceRecord
 {
 
-	private String name;
+	private String value;
 	
 	protected AbstractHostnameRecord(String domainName, RecordType recordType, RecordClass recordClass, int timeToLive)
 	{
@@ -28,7 +30,7 @@ public abstract class AbstractHostnameRecord extends ResourceRecord
 	@Override
 	public int hashCode()
 	{
-		return name.hashCode();
+		return new HashCodeBuilder().append(value).toHashCode();
 	}
 
 
@@ -36,7 +38,7 @@ public abstract class AbstractHostnameRecord extends ResourceRecord
 	public boolean equals(Object obj)
 	{
 		AbstractHostnameRecord c = (AbstractHostnameRecord) obj;
-		return name.equals(c.name);
+		return new EqualsBuilder().append(value, c.value).isEquals();
 	}
 
 
@@ -44,14 +46,26 @@ public abstract class AbstractHostnameRecord extends ResourceRecord
 	@Override
 	public void decodeData(IoBuffer byteBuffer, short length)
 	{
-		name = DnsDecodingUtils.getDomainName(byteBuffer);
+		value = DnsDecodingUtils.getDomainName(byteBuffer);
 	}
 
 
 	@Override
 	protected void encodeData(IoBuffer byteBuffer)
 	{
-        DnsEncodingUtils.putDomainName( byteBuffer, name );
+        DnsEncodingUtils.putDomainName( byteBuffer, value );
+	}
+
+
+	public String getValue()
+	{
+		return value;
+	}
+
+
+	public void setValue(String value)
+	{
+		this.value = value;
 	}
 
 }
