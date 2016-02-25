@@ -1,6 +1,7 @@
 package net.dacce.commons.netaddr;
 
 import java.util.Arrays;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 
 
@@ -36,12 +37,17 @@ public abstract class SimpleInetAddress
 	@Override
 	public int hashCode()
 	{
-		return Arrays.hashCode(address);
+		return new HashCodeBuilder().append(address).toHashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj)
 	{
+		if (!(obj instanceof SimpleInetAddress))
+			return false;
+		if (obj == this)
+			return true;
+		
 		return Arrays.equals(address, ((SimpleInetAddress) obj).address);
 	}
 

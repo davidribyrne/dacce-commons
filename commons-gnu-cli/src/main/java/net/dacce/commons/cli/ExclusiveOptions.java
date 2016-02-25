@@ -20,6 +20,7 @@ package net.dacce.commons.cli;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import net.dacce.commons.cli.exceptions.AlreadySelectedException;
 
 
@@ -123,4 +124,17 @@ public class ExclusiveOptions extends AbstractGroup implements Serializable
 	{
 		members.add(option);
 	}
+	
+	@Override
+	public String toString()
+	{
+		ToStringBuilder tsb = new ToStringBuilder(this);
+		for(Option option: members)
+		{
+			tsb.append("member", option.getName());
+		}
+		tsb.appendSuper(super.toString());
+		return tsb.build();
+	}
+	
 }

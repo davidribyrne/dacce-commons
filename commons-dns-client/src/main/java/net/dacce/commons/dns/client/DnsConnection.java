@@ -7,6 +7,7 @@ import net.dacce.commons.dns.protocol.DnsProtocolTcpCodecFactory;
 import net.dacce.commons.dns.protocol.DnsProtocolUdpCodecFactory;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.future.WriteFuture;
@@ -119,20 +120,6 @@ public abstract class DnsConnection extends IoHandlerAdapter
 		return dnsSession.write(message);
 	}
 
-
-	@Override
-	public int hashCode()
-	{
-		return new HashCodeBuilder().append(dnsSession).append(connector).appendSuper(super.hashCode()).toHashCode();
-	}
-
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		DnsConnection c = (DnsConnection) obj;
-		return new EqualsBuilder().append(c.dnsSession, dnsSession).append(c.connector, connector).appendSuper(super.equals(obj)).isEquals();
-	}
 	
 	@Override
 	public void sessionClosed(IoSession session) throws Exception
@@ -144,6 +131,12 @@ public abstract class DnsConnection extends IoHandlerAdapter
 	public long getReadBytes()
 	{
 		return dnsSession.getReadBytes();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return new ToStringBuilder(this).append("serverAddress", serverAddress).build();
 	}
 
 }

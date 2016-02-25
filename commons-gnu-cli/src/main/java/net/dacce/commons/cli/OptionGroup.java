@@ -2,6 +2,7 @@ package net.dacce.commons.cli;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 public class OptionGroup extends AbstractGroup
@@ -27,4 +28,16 @@ public class OptionGroup extends AbstractGroup
 	{
 		children.add(option);
 	}
+	
+	@Override
+	public String toString()
+	{
+		ToStringBuilder tsb = new ToStringBuilder(this).appendSuper(super.toString());
+		for(OptionContainer child: children)
+		{
+			tsb.append("child", child.getName());
+		}
+		return tsb.build();
+	}
+	
 }

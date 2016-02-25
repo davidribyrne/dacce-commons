@@ -17,15 +17,22 @@ public class SrvRecord extends ResourceRecord
 	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder().append(priority).append(weight).append(port).append(name).toHashCode();
+		return new HashCodeBuilder().append(priority).append(weight).append(port).append(name)
+				.appendSuper(super.hashCode()).toHashCode();
 	}
 
 
 	@Override
 	public boolean equals(Object obj)
 	{
+		if (!(obj instanceof SrvRecord))
+			return false;
+		if (obj == this)
+			return true;
+		
 		SrvRecord s = (SrvRecord) obj;
-		return new EqualsBuilder().append(priority, s.priority).append(weight, s.weight).append(port, s.port).
+		return new EqualsBuilder().appendSuper(super.equals(obj)).append(priority, s.priority)
+				.append(weight, s.weight).append(port, s.port).
 				append(name, s.name).isEquals();
 	}
 

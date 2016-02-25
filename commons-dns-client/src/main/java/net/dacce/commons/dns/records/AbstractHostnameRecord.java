@@ -5,6 +5,7 @@ import net.dacce.commons.dns.io.DnsEncodingUtils;
 import net.dacce.commons.dns.messages.RecordClass;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.mina.core.buffer.IoBuffer;
 
 public abstract class AbstractHostnameRecord extends ResourceRecord
@@ -21,24 +22,27 @@ public abstract class AbstractHostnameRecord extends ResourceRecord
 	@Override
 	public String toString()
 	{
-		StringBuilder sb = new StringBuilder();
-
-		return sb.toString();
+		return new ToStringBuilder(this).appendSuper(super.toString()).append("value", value).build();
 	}
 
 
 	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder().append(value).toHashCode();
+		return new HashCodeBuilder().appendSuper(super.hashCode()).append(value).toHashCode();
 	}
 
 
 	@Override
 	public boolean equals(Object obj)
 	{
+		if (!(obj instanceof AbstractHostnameRecord))
+			return false;
+		if (obj == this)
+			return true;
+		
 		AbstractHostnameRecord c = (AbstractHostnameRecord) obj;
-		return new EqualsBuilder().append(value, c.value).isEquals();
+		return new EqualsBuilder().appendSuper(super.equals(obj)).append(value, c.value).isEquals();
 	}
 
 

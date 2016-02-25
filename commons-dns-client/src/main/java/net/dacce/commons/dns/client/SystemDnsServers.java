@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import net.dacce.commons.general.UniqueList;
 
 
 public class SystemDnsServers
@@ -24,9 +25,10 @@ public class SystemDnsServers
 
 	static public List<String> getSystemDnsServers()
 	{
-		List<String> servers = new ArrayList<String>();
+		List<String> servers = new UniqueList<String>();
 
-		getJvmDnsServers(servers);
+		// Disabled because it is returning DNS servers from inactive VPN connections
+//		getJvmDnsServers(servers);
 		if (!servers.isEmpty())
 			return servers;
 
@@ -57,7 +59,7 @@ public class SystemDnsServers
 		}
 
 
-		return null;
+		return servers;
 	}
 
 

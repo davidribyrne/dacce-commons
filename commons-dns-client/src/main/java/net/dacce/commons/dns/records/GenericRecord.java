@@ -21,15 +21,20 @@ public class GenericRecord extends ResourceRecord
 	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder().append(data).toHashCode();
+		return new HashCodeBuilder().appendSuper(super.hashCode()).append(data).toHashCode();
 	}
 
 
 	@Override
 	public boolean equals(Object obj)
 	{
+		if (!(obj instanceof GenericRecord))
+			return false;
+		if (obj == this)
+			return true;
+		
 		GenericRecord o = (GenericRecord) obj;
-		return new EqualsBuilder().append(data, o.data).isEquals();
+		return new EqualsBuilder().appendSuper(super.equals(obj)).append(data, o.data).isEquals();
 	}
 
 

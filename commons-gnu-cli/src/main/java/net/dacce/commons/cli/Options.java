@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import net.dacce.commons.cli.exceptions.AlreadySelectedException;
 import net.dacce.commons.cli.exceptions.UnrecognizedOptionException;
 
@@ -192,15 +193,12 @@ public class Options implements Serializable
 	@Override
 	public String toString()
 	{
-		StringBuilder buf = new StringBuilder();
-
-		buf.append("[ Options: [ short ");
-		// buf.append(shortOpts.toString());
-		buf.append(" ] [ long ");
-		// buf.append(longOpts);
-		buf.append(" ]");
-
-		return buf.toString();
+		ToStringBuilder tsb = new ToStringBuilder(this);
+		for (OptionContainer option: options)
+		{
+			tsb.append("option", option.getName());
+		}
+		return tsb.toString();
 	}
 
 

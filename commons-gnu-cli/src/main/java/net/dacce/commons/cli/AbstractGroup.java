@@ -1,5 +1,6 @@
 package net.dacce.commons.cli;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public abstract class AbstractGroup implements OptionContainer
 {
@@ -13,6 +14,11 @@ public abstract class AbstractGroup implements OptionContainer
 		this.description = description;
 	}
 
+	@Override
+	public String toString()
+	{
+		return new ToStringBuilder(this).append("name", name).append("description", description).build();
+	}
 
 	public String getName()
 	{

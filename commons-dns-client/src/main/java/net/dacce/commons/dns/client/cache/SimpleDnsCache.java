@@ -2,6 +2,9 @@ package net.dacce.commons.dns.client.cache;
 
 
 import java.util.List;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import net.dacce.commons.dns.messages.QuestionRecord;
 import net.dacce.commons.dns.records.ResourceRecord;
 public class SimpleDnsCache implements DnsCache 
@@ -64,4 +67,38 @@ public class SimpleDnsCache implements DnsCache
 	{
 		return anyCache.getRecords(domainName);
 	}
+	
+	@Override
+	public String toString()
+	{
+		return new ToStringBuilder(this)
+			.append("anyCache", anyCache)
+			.append("questionCache")
+			.toString();
+	}
+
+
+	@Override
+	public int hashCode()
+	{
+		return new HashCodeBuilder()
+			.append(anyCache.hashCode())
+			.append(questionCache.hashCode())
+			.toHashCode();
+	}
+
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (!(obj instanceof SimpleDnsCache))
+			return false;
+		
+		SimpleDnsCache o = (SimpleDnsCache) obj;
+		return new EqualsBuilder()
+			.append(anyCache, o.anyCache)
+			.append(o.questionCache, questionCache)
+			.isEquals();
+	}
+
 }

@@ -13,6 +13,7 @@ import net.dacce.commons.dns.messages.QuestionRecord;
 import net.dacce.commons.dns.messages.ResponseCode;
 import net.dacce.commons.dns.records.RecordType;
 import net.dacce.commons.general.EventCounter;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.mina.core.future.WriteFuture;
@@ -27,7 +28,7 @@ public class DnsClient
 	private Map<RequestKey, DnsTransaction> unansweredRequests;
 	private int maxRequestsPerSecond = 30;
 	private EventCounter requestCounter;
-	private int connectTimeout = 10000;
+	private int connectTimeout = 5000;
 
 	private int count;
 	private boolean padSecondRequest;
@@ -275,6 +276,28 @@ public class DnsClient
 	public void setForceTcpZoneTransfer(boolean forceTcpZoneTransfer)
 	{
 		this.forceTcpZoneTransfer = forceTcpZoneTransfer;
+	}
+
+	@Override
+	public String toString()
+	{
+		return new ToStringBuilder(this)
+				.append("unansweredRequests", unansweredRequests)
+				.append("maxRequestsPerSecond", maxRequestsPerSecond)
+				.append("requestCounter", requestCounter)
+				.append("connectTimeout", connectTimeout)
+				.append("count", count)
+				.append("padSecondRequest", padSecondRequest)
+				.append("udpConnection", udpConnection)
+				.append("tcpConnections", tcpConnections)
+				.append("serverAddress", serverAddress)
+				.append("forceTcpZoneTransfer", forceTcpZoneTransfer)
+				.build();
+	}
+
+	public InetSocketAddress getServerAddress()
+	{
+		return serverAddress;
 	}
 
 }

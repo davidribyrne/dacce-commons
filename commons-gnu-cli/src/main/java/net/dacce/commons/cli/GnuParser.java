@@ -147,7 +147,7 @@ public class GnuParser
 		}
 		else if ((currentOption != null) && currentOption.isArgAccepted() && isArgument(token))
 		{
-			currentOption.addValue(Util.stripLeadingAndTrailingQuotes(token));
+			currentOption.addValue(stripLeadingAndTrailingQuotes(token));
 		}
 		else if (token.startsWith("--"))
 		{
@@ -394,4 +394,26 @@ public class GnuParser
 			group.setSelected(option);
 		}
 	}
+
+	/**
+	 * Remove the leading and trailing quotes from <code>str</code>.
+	 * E.g. if str is '"one two"', then 'one two' is returned.
+	 *
+	 * @param str
+	 *            The string from which the leading and trailing quotes
+	 *            should be removed.
+	 *
+	 * @return The string without the leading and trailing quotes.
+	 */
+	static String stripLeadingAndTrailingQuotes(String str)
+	{
+		int length = str.length();
+		if ((length > 1) && str.startsWith("\"") && str.endsWith("\"") && (str.substring(1, length - 1).indexOf('"') == -1))
+		{
+			str = str.substring(1, length - 1);
+		}
+
+		return str;
+	}
+
 }

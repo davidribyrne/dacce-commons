@@ -23,18 +23,23 @@ public class SoaRecord extends ResourceRecord
 	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder().append(mName).append(rName).append(serial).append(refresh).
-				append(retry).append(expire).append(minimum).toHashCode();
+		return new HashCodeBuilder().appendSuper(super.hashCode()).append(mName).append(rName)
+				.append(serial).append(refresh).append(retry).append(expire)
+				.append(minimum).toHashCode();
 	}
 
 
 	@Override
 	public boolean equals(Object obj)
 	{
+		if (!(obj instanceof SoaRecord))
+			return false;
+		if (obj == this)
+			return true;
 		SoaRecord s = (SoaRecord) obj;
 		return new EqualsBuilder().append(mName, s.mName).append(rName, s.rName).append(serial, s.rName).
 				append(refresh, s.refresh).append(retry, s.retry).append(expire, s.expire).
-				append(minimum, s.minimum).isEquals();
+				append(minimum, s.minimum).appendSuper(super.equals(obj)).isEquals();
 	}
 
 

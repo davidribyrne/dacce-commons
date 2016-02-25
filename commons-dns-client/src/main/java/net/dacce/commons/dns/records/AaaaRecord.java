@@ -17,4 +17,5 @@ public class AaaaRecord extends AbstractAddressRecord
 	{
 		return 16;
 	}
+
 }

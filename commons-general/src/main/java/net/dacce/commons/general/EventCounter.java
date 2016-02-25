@@ -96,13 +96,13 @@ public class EventCounter
 	}
 	
 	
-	
-	/**
-	 * Add an event at a specific time
-	 * @param time
-	 */
-	public void trackEvent(long time)
-	{
-		
-	}
+//	
+//	/**
+//	 * Add an event at a specific time
+//	 * @param time
+//	 */
+//	public void trackEvent(long time)
+//	{
+//		
+//	}
 }

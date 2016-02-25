@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.dacce.commons.dns.exceptions.DnsClientConnectException;
 import net.dacce.commons.general.UnexpectedException;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,12 +20,20 @@ public class DnsClientPool
 	private int lastServerIndex = -1;
 
 	public DnsClientPool(List<String> serverAddresses, boolean padSecondRequest, int maxRequestsPerServerPerSecond, 
-			boolean roundRobin, int roundRobinDuplicateCount)
+			boolean roundRobin, int roundRobinDuplicateCount) throws IllegalArgumentException
 	{
+		if (serverAddresses == null || serverAddresses.isEmpty())
+		{
+			throw new IllegalArgumentException("No server addresses provided.");
+		}
 		if (roundRobinDuplicateCount > serverAddresses.size())
 		{
 			logger.debug("Round robin duplicate count can't be larger than the number of servers. Setting to the number of servers.");
 			roundRobinDuplicateCount = serverAddresses.size();
+		}
+		if (roundRobinDuplicateCount == 0)
+		{
+			roundRobinDuplicateCount = serverAddresses.size(); 
 		}
 		this.roundRobin = roundRobin;
 		this.roundRobinDuplicateCount = roundRobinDuplicateCount;
@@ -69,6 +78,19 @@ public class DnsClientPool
 		{
 			client.close(true);
 		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		ToStringBuilder tsb = new ToStringBuilder(this);
+		for (DnsClient client: clients)
+		{
+			tsb.append("client", client.getServerAddress().toString());
+		}
+		tsb.append("roundRobin", roundRobin);
+		tsb.append("roundRobinDuplicateCount", roundRobinDuplicateCount);
+		return tsb.build();
 	}
 	
 }

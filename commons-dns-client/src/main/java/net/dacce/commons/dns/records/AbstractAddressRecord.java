@@ -5,6 +5,7 @@ import net.dacce.commons.netaddr.InvalidIPAddressFormatException;
 import net.dacce.commons.netaddr.SimpleInetAddress;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,25 +26,26 @@ public abstract class AbstractAddressRecord extends ResourceRecord
 	@Override
 	public String toString()
 	{
-		StringBuilder sb = new StringBuilder();
-		sb.append(super.toString());
-		sb.append(" ");
-		sb.append(address.toString());
-		return sb.toString();
+		return new ToStringBuilder(this).appendSuper(super.toString()).append("address", address).build();
 	}
 
 
 	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder().append(address).toHashCode();
+		return new HashCodeBuilder().appendSuper(super.hashCode()).append(address).toHashCode();
 	}
 
 
 	@Override
 	public boolean equals(Object obj)
 	{
-		return new EqualsBuilder().append(address, ((AbstractAddressRecord)obj).address).isEquals();
+		if (!(obj instanceof AbstractAddressRecord))
+			return false;
+		if (obj == this)
+			return true;
+		
+		return new EqualsBuilder().appendSuper(super.equals(obj)).append(address, ((AbstractAddressRecord)obj).address).isEquals();
 	}
 
 	@Override

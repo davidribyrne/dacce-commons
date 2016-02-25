@@ -20,7 +20,9 @@ package net.dacce.commons.cli;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import net.dacce.commons.cli.exceptions.ParseException;
+import net.dacce.commons.general.CollectionUtils;
 import net.dacce.commons.general.StringUtils;
 import net.dacce.commons.validators.ValidationException;
 import net.dacce.commons.validators.Validator;
@@ -88,25 +90,17 @@ public class Option implements Cloneable, Serializable, OptionContainer
 			throws IllegalArgumentException
 	{
 		if (longOption == null)
-		{
 			longOption = "";
-		}
 		
 		if (shortOption == null)
-		{
 			shortOption = "";
-		}
 
 		if (longOption.isEmpty() && shortOption.isEmpty())
-		{
 			throw new IllegalArgumentException("The long or short option must be set");
-		}
 
 		if (shortOption.length() > 1)
-		{
 			throw new IllegalArgumentException("The short option can only be one character in length.");
-		}
-		
+
 
 		validateOption(longOption);
 		validateOption(shortOption);
@@ -336,71 +330,50 @@ public class Option implements Cloneable, Serializable, OptionContainer
 	@Override
 	public String toString()
 	{
-		StringBuilder buf = new StringBuilder().append("[ option: ");
-
-		// buf.append(opt);
-
-		if (longOpt != null)
-		{
-			buf.append(" ").append(longOpt);
-		}
-
-		buf.append(" ");
-		//
-		// if (hasArgs())
-		// {
-		// buf.append("[ARG...]");
-		// }
-		// else if (hasArg())
-		// {
-		// buf.append(" [ARG]");
-		// }
-
-		buf.append(" :: ").append(description);
-
-
-		buf.append(" ]");
-
-		return buf.toString();
+		return new ToStringBuilder(this).append("longOpt", longOpt).append("shortOpt", shortOpt)
+				.append("argTypeDescriptor", argTypeDescriptor).append("description", description)
+				.append("required", required).append("argRequired", argRequired)
+				.append("forceEnabled", forceEnabled).append("values", CollectionUtils.joinObjects(",", values))
+				.append("defaultValue", defaultValue).append("callCount", callCount).build();
 	}
 
 
-	@Override
-	public boolean equals(Object o)
-	{
-		if (this == o)
-		{
-			return true;
-		}
-		if ((o == null) || (getClass() != o.getClass()))
-		{
-			return false;
-		}
-
-		Option option = (Option) o;
-
-
-		if (shortOpt != null ? !shortOpt.equals(option.shortOpt) : option.shortOpt != null)
-		{
-			return false;
-		}
-		if (longOpt != null ? !longOpt.equals(option.longOpt) : option.longOpt != null)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-
-	@Override
-	public int hashCode()
-	{
-		int result;
-		result = shortOpt != null ? shortOpt.hashCode() : 0;
-		result = (31 * result) + (longOpt != null ? longOpt.hashCode() : 0);
-		return result;
-	}
+//	@Override
+//	public boolean equals(Object o)
+//	{
+//		if (this == o)
+//		{
+//			return true;
+//		}
+//		if ((o == null) || (getClass() != o.getClass()))
+//		{
+//			return false;
+//		}
+//
+//		Option option = (Option) o;
+//
+//
+//		if (shortOpt != null ? !shortOpt.equals(option.shortOpt) : option.shortOpt != null)
+//		{
+//			return false;
+//		}
+//		if (longOpt != null ? !longOpt.equals(option.longOpt) : option.longOpt != null)
+//		{
+//			return false;
+//		}
+//
+//		return true;
+//	}
+//
+//
+//	@Override
+//	public int hashCode()
+//	{
+//		int result;
+//		result = shortOpt != null ? shortOpt.hashCode() : 0;
+//		result = (31 * result) + (longOpt != null ? longOpt.hashCode() : 0);
+//		return result;
+//	}
 
 
 	/**
@@ -484,4 +457,6 @@ public class Option implements Cloneable, Serializable, OptionContainer
 	{
 		return forceEnabled || (callCount > 0) || (values.size() > 0);
 	}
+
+
 }

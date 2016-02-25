@@ -2,6 +2,7 @@ package net.dacce.commons.netaddr;
 
 import java.util.Collection;
 import java.util.List;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import net.dacce.commons.general.CollectionUtils;
 import net.dacce.commons.general.StringUtils;
 import net.dacce.commons.general.UniqueList;
@@ -74,11 +75,8 @@ public class Addresses
 	@Override
 	public String toString()
 	{
-		StringBuilder sb = new StringBuilder();
-		sb.append("Base definitions:\n");
-		sb.append(StringUtils.indentText(1, true, CollectionUtils.joinObjects("\n", blocks)));
-		sb.append("\nExpanded addresses:\n");
-		sb.append(StringUtils.indentText(1, true, CollectionUtils.joinObjects("\n", addresses)));
-		return sb.toString();
+		return new ToStringBuilder(this).append(CollectionUtils.joinObjects(",", blocks))
+				.append("Expanded addresses", CollectionUtils.joinObjects(",", addresses))
+				.build();
 	}
 }

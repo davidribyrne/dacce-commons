@@ -20,6 +20,7 @@ import net.dacce.commons.general.EventCounter;
 import net.dacce.commons.general.FileUtils;
 import net.dacce.commons.general.UnexpectedException;
 import net.dacce.commons.netaddr.SimpleInetAddress;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,7 @@ public class Resolver
 	private final EventCounter totalRequestCounter;
 
 	private DnsCache cache = new SimpleDnsCache();
-	private long responseTimeout = 30000;
+	private long responseTimeout = 10000;
 	private boolean cacheNegativeResponses = true;
 	private int maxTotalRequestsPerSecond = 100;
 	private int maxRequestsPerServerPerSecond = 30;
@@ -55,18 +56,33 @@ public class Resolver
 	 * @param upstreamServers
 	 * @param padSecondRequest Makes the second request a throw-away to accommodate Google, et al
 	 */
-	public Resolver(List<String> upstreamServers, boolean padSecondRequest)
+	public Resolver(List<String> upstreamServers, boolean padSecondRequest) throws IllegalArgumentException
 	{
+		if (upstreamServers == null || upstreamServers.isEmpty())
+		{
+			throw new IllegalArgumentException("No server addresses provided.");
+		}
 		this.upstreamServers = upstreamServers;
 		this.padSecondRequest = padSecondRequest;
 		totalRequestCounter = new EventCounter(1000, true);
 	}
 	
 
-	public static Resolver createPublicServersResolver() throws IOException
+	public static Resolver createPublicServersResolver()
 	{
 		URL url = Resolver.class.getResource(PUBLIC_DNS_SERVERS_FILE);
-		return new Resolver(FileUtils.readConfigFileLines(url), true);
+		List<String> servers = new ArrayList<String>(1);
+		try
+		{
+			servers.addAll(FileUtils.readConfigFileLines(url));
+		}
+		catch (IOException e)
+		{
+			logger.warn("Failed to open list of publicd DNS servers. Using Google only.");
+			servers.add("8.8.8.8");
+			servers.add("8.8.4.4");
+		}
+		return new Resolver(servers, true);
 	}
 
 
@@ -193,23 +209,12 @@ public class Resolver
 	@Override
 	public String toString()
 	{
-		StringBuilder sb = new StringBuilder();
-
-		return sb.toString();
-	}
-
-
-	@Override
-	public int hashCode()
-	{
-		return super.hashCode();
-	}
-
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		return super.equals(obj);
+		ToStringBuilder tsb = new ToStringBuilder(this);
+		for(String server: upstreamServers)
+		{
+			tsb.append("server", server);
+		}
+		return tsb.build();
 	}
 
 

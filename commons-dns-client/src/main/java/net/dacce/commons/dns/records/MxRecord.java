@@ -5,6 +5,7 @@ import net.dacce.commons.dns.io.DnsEncodingUtils;
 import net.dacce.commons.dns.messages.RecordClass;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.mina.core.buffer.IoBuffer;
 
 public class MxRecord extends AbstractHostnameRecord
@@ -21,10 +22,20 @@ public class MxRecord extends AbstractHostnameRecord
 	@Override
 	public boolean equals(Object obj)
 	{
+		if (!(obj instanceof MxRecord))
+			return false;
+		if (obj == this)
+			return true;
+		
 		MxRecord o = (MxRecord) obj;
 		return new EqualsBuilder().append(preference, o.preference).appendSuper(super.equals(obj)).isEquals();
 	}
 
+	@Override
+	public String toString()
+	{
+		return new ToStringBuilder(this).appendSuper(super.toString()).append("preference", preference).build();
+	}
 
 	public MxRecord(String domainName, RecordClass recordClass, int timeToLive)
 	{

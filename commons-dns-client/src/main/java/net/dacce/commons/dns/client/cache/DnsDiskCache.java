@@ -1,5 +1,8 @@
 package net.dacce.commons.dns.client.cache;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.esotericsoftware.yamlbeans.YamlException;
@@ -45,21 +48,33 @@ public class DnsDiskCache implements DnsCache
 	@Override
 	public String toString()
 	{
-		StringBuilder sb = new StringBuilder();
-
-		return sb.toString();
+		return new ToStringBuilder(this)
+				.append("filename", filename)
+				.append("internalCache", internalCache)
+				.toString();
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return super.hashCode();
+		return new HashCodeBuilder()
+				.appendSuper(super.hashCode())
+				.append(filename.hashCode())
+				.append(internalCache.hashCode())
+				.toHashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj)
 	{
-		return super.equals(obj);
+		if (! (obj instanceof DnsDiskCache))
+			return false;
+		
+		DnsDiskCache o = (DnsDiskCache) obj;
+		return new EqualsBuilder()
+				.append(filename, o.filename)
+				.append(internalCache, o.internalCache)
+				.isEquals();
 	}
 
 	public List<ResourceRecord> get(QuestionRecord question)

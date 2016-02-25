@@ -2,6 +2,7 @@ package net.dacce.commons.dns.client;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import net.dacce.commons.dns.client.cache.DnsCache;
 import net.dacce.commons.dns.messages.QuestionRecord;
 import net.dacce.commons.dns.records.ResourceRecord;
@@ -99,4 +100,18 @@ public class DnsTransaction
 	{
 		return !hasAnswer() && negativeResponseCount > 0;
 	}
+	
+	@Override
+	public String toString()
+	{
+		ToStringBuilder tsb = new ToStringBuilder(this).append("question", question);
+		for (ResourceRecord answer: answers)
+		{
+			tsb.append("answer", answer);
+		}
+		tsb.append("negativeResponseCount", negativeResponseCount);
+		tsb.append("recurse", recurse);
+		return tsb.build();
+	}
+
 }

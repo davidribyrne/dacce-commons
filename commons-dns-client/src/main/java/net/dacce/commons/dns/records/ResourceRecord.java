@@ -23,6 +23,9 @@ package net.dacce.commons.dns.records;
 
 import net.dacce.commons.dns.io.DnsEncodingUtils;
 import net.dacce.commons.dns.messages.RecordClass;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.mina.core.buffer.IoBuffer;
 
 
@@ -104,16 +107,12 @@ public abstract class ResourceRecord
         this.timeToLive = timeToLive;
     }
 
-    public String toString()
-    {
-    	StringBuilder sb = new StringBuilder();
-    	sb.append(domainName);
-    	sb.append("\n\tType: ");
-    	sb.append(recordType);
-    	sb.append("\n\tTTL: ");
-    	sb.append(timeToLive);
-    	return sb.toString();
-    }
+	@Override
+	public String toString()
+	{
+		return new ToStringBuilder(this).append("domainName", domainName).append("recordType", recordType)
+				.append("recordClass", recordClass).append("TTL", timeToLive).build();
+	}
 
 
     /**
@@ -154,10 +153,24 @@ public abstract class ResourceRecord
 
 
 
-    public abstract boolean equals( Object o );
+    public boolean equals( Object o )
+    {
+    	if (!(o instanceof ResourceRecord))
+    		return false;
+    	if (o == this)
+    		return true;
+    	
+    	ResourceRecord rr = (ResourceRecord) o;
+    	return new EqualsBuilder().append(domainName, rr.domainName).append(recordType, rr.recordType).
+    			append(recordClass, rr.recordClass).append(timeToLive, rr.timeToLive).isEquals();
+    }
 
 
-    public abstract int hashCode();
+    public int hashCode()
+    {
+    	return new HashCodeBuilder().append(domainName).append(recordType).append(recordClass).append(timeToLive).hashCode();
+    }
+    
 
     public abstract void decodeData(IoBuffer byteBuffer, short length);
     
