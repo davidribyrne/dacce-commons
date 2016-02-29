@@ -4,6 +4,9 @@ package net.dacce.commons.dns.exceptions;
 public class DnsClientException extends Exception
 {
 
+	private static final long serialVersionUID = 1L;
+
+
 	public DnsClientException()
 	{
 	}

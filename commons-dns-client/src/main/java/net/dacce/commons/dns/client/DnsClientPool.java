@@ -3,11 +3,11 @@ package net.dacce.commons.dns.client;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
-import net.dacce.commons.dns.exceptions.DnsClientConnectException;
-import net.dacce.commons.general.UnexpectedException;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import net.dacce.commons.dns.exceptions.DnsClientConnectException;
+import net.dacce.commons.general.UnexpectedException;
 
 public class DnsClientPool
 {

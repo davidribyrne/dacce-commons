@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import net.dacce.commons.general.CollectionUtils;
-import net.dacce.commons.general.StringUtils;
 import net.dacce.commons.general.UniqueList;
 
 

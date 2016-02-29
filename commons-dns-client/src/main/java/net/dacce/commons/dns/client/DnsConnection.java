@@ -1,12 +1,6 @@
 package net.dacce.commons.dns.client;
 
 import java.net.InetSocketAddress;
-import net.dacce.commons.dns.exceptions.DnsClientConnectException;
-import net.dacce.commons.dns.messages.DnsMessage;
-import net.dacce.commons.dns.protocol.DnsProtocolTcpCodecFactory;
-import net.dacce.commons.dns.protocol.DnsProtocolUdpCodecFactory;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;
@@ -18,6 +12,10 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import net.dacce.commons.dns.exceptions.DnsClientConnectException;
+import net.dacce.commons.dns.messages.DnsMessage;
+import net.dacce.commons.dns.protocol.DnsProtocolTcpCodecFactory;
+import net.dacce.commons.dns.protocol.DnsProtocolUdpCodecFactory;
 
 
 public abstract class DnsConnection extends IoHandlerAdapter

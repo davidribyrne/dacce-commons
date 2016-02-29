@@ -1,16 +1,16 @@
 package net.dacce.commons.jobqueue;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-
 public class JobQueue implements BlockingQueue<Runnable>
 {
-	private final static Logger logger = LoggerFactory.getLogger(JobQueue.class);
-
 	private final List<Job> jobs;
 
 	public JobQueue()

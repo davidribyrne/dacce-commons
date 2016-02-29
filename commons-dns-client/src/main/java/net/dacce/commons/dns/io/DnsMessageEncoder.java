@@ -23,13 +23,13 @@ package net.dacce.commons.dns.io;
 
 import java.util.Iterator;
 import java.util.List;
+import org.apache.mina.core.buffer.IoBuffer;
 import net.dacce.commons.dns.messages.DnsMessage;
 import net.dacce.commons.dns.messages.MessageType;
 import net.dacce.commons.dns.messages.OpCode;
 import net.dacce.commons.dns.messages.QuestionRecord;
 import net.dacce.commons.dns.messages.ResponseCode;
 import net.dacce.commons.dns.records.ResourceRecord;
-import org.apache.mina.core.buffer.IoBuffer;
 
 
 /**

@@ -94,6 +94,11 @@ public class EventCounter
 		}
 		return count;
 	}
+
+	public long getTotalCount()
+	{
+		return totalCount;
+	}
 	
 	
 //	

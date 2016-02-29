@@ -1,9 +1,9 @@
 package net.dacce.commons.dns.records;
 
-import net.dacce.commons.dns.messages.RecordClass;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.mina.core.buffer.IoBuffer;
+import net.dacce.commons.dns.messages.RecordClass;
 
 public class GenericRecord extends ResourceRecord
 {

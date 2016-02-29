@@ -1,9 +1,9 @@
 package net.dacce.commons.dns.client;
 
 import java.net.InetSocketAddress;
-import net.dacce.commons.dns.exceptions.DnsClientConnectException;
 import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.transport.socket.nio.NioDatagramConnector;
+import net.dacce.commons.dns.exceptions.DnsClientConnectException;
 
 public class DnsUdpConnection extends DnsConnection
 {

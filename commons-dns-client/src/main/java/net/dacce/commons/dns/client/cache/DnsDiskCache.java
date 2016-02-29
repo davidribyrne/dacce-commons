@@ -1,5 +1,8 @@
 package net.dacce.commons.dns.client.cache;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -9,9 +12,6 @@ import com.esotericsoftware.yamlbeans.YamlException;
 import net.dacce.commons.dns.messages.QuestionRecord;
 import net.dacce.commons.dns.records.ResourceRecord;
 import net.dacce.commons.general.YamlUtils;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.*;
 
 public class DnsDiskCache implements DnsCache
 {

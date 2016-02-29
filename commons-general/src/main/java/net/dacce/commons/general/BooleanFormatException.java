@@ -3,6 +3,12 @@ package net.dacce.commons.general;
 public class BooleanFormatException extends IllegalArgumentException
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	public BooleanFormatException()
 	{
 		// TODO Auto-generated constructor stub

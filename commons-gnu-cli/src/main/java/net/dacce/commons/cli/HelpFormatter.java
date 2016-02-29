@@ -17,12 +17,9 @@
 
 package net.dacce.commons.cli;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.commons.lang3.text.WordUtils;

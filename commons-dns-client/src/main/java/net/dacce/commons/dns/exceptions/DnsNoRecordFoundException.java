@@ -3,6 +3,9 @@ package net.dacce.commons.dns.exceptions;
 
 public class DnsNoRecordFoundException extends DnsClientException
 {
+	private static final long serialVersionUID = 1L;
+
+
 	public DnsNoRecordFoundException()
 	{
 	}

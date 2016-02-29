@@ -3,6 +3,12 @@ package net.dacce.commons.dns.exceptions;
 
 public class DnsClientConnectException extends DnsClientException
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	public DnsClientConnectException()
 	{
 	}

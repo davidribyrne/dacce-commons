@@ -8,6 +8,9 @@ import net.dacce.commons.dns.records.ResourceRecord;
 
 public class RecordCache <K> extends HashMap<K, List<ResourceRecord>>
 {
+	private static final long serialVersionUID = 1L;
+
+
 	public RecordCache()
 	{
 	}

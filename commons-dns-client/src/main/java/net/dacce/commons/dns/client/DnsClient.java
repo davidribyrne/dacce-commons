@@ -5,6 +5,12 @@ import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.mina.core.future.WriteFuture;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.dacce.commons.dns.exceptions.DnsClientConnectException;
 import net.dacce.commons.dns.messages.DnsMessage;
 import net.dacce.commons.dns.messages.MessageType;
@@ -13,12 +19,6 @@ import net.dacce.commons.dns.messages.QuestionRecord;
 import net.dacce.commons.dns.messages.ResponseCode;
 import net.dacce.commons.dns.records.RecordType;
 import net.dacce.commons.general.EventCounter;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.mina.core.future.WriteFuture;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DnsClient 
 {

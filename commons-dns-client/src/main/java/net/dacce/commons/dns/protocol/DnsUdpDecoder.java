@@ -22,11 +22,11 @@ package net.dacce.commons.dns.protocol;
 
 
 import java.io.IOException;
-import net.dacce.commons.dns.io.DnsMessageDecoder;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolDecoderAdapter;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
+import net.dacce.commons.dns.io.DnsMessageDecoder;
 
 
 /**

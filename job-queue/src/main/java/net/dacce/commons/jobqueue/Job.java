@@ -1,7 +1,6 @@
 package net.dacce.commons.jobqueue;
 
-import java.util.*;
-import java.util.concurrent.Callable;
+import java.util.List;
 
 public interface Job extends Runnable
 {

@@ -1,7 +1,7 @@
 package net.dacce.commons.dns.io;
 
-import net.dacce.commons.general.StringUtils;
 import org.apache.mina.core.buffer.IoBuffer;
+import net.dacce.commons.general.StringUtils;
 
 public class DnsEncodingUtils
 {

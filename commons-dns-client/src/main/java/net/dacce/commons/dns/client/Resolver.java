@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.dacce.commons.dns.client.cache.DnsCache;
 import net.dacce.commons.dns.client.cache.SimpleDnsCache;
 import net.dacce.commons.dns.exceptions.DnsClientConnectException;
@@ -20,9 +23,6 @@ import net.dacce.commons.general.EventCounter;
 import net.dacce.commons.general.FileUtils;
 import net.dacce.commons.general.UnexpectedException;
 import net.dacce.commons.netaddr.SimpleInetAddress;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class Resolver
