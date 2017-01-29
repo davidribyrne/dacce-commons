@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.io.IOUtils;
@@ -36,7 +38,6 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 		return file;
 	}
 
-	
 	public static List<String> readConfigFileLines(URL url) throws IOException
 	{
 		InputStream is = url.openStream();
@@ -139,7 +140,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 	 * @throws IllegalArgumentException
 	 *             thrown if the name exists, but isn't a directory
 	 */
-	public static void createDirectory(File file) throws IllegalArgumentException
+	public static void createDirectory(File file) throws FileAlreadyExistsException
 	{
 		if (!file.exists())
 		{
@@ -147,7 +148,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 		}
 		else if (!file.isDirectory())
 		{
-			throw new IllegalArgumentException(file.getAbsolutePath() + " exists, but isn't a directory");
+			throw new FileAlreadyExistsException(file.getAbsolutePath() + " exists, but isn't a directory");
 		}
 	}
 

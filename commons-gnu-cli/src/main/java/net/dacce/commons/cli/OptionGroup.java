@@ -26,7 +26,10 @@ public class OptionGroup extends AbstractGroup
 
 	public void addChild(OptionContainer option)
 	{
-		children.add(option);
+		if (option != null)
+		{
+			children.add(option);
+		}
 	}
 	
 	@Override

@@ -16,7 +16,7 @@ import net.dacce.commons.general.YamlUtils;
 public class DnsDiskCache implements DnsCache
 {
 	private final static Logger logger = LoggerFactory.getLogger(DnsDiskCache.class);
-	
+	private int addCount = 0;
 	private String filename;
 	private SimpleDnsCache internalCache;
 	
@@ -54,28 +54,28 @@ public class DnsDiskCache implements DnsCache
 				.toString();
 	}
 
-	@Override
-	public int hashCode()
-	{
-		return new HashCodeBuilder()
-				.appendSuper(super.hashCode())
-				.append(filename.hashCode())
-				.append(internalCache.hashCode())
-				.toHashCode();
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (! (obj instanceof DnsDiskCache))
-			return false;
-		
-		DnsDiskCache o = (DnsDiskCache) obj;
-		return new EqualsBuilder()
-				.append(filename, o.filename)
-				.append(internalCache, o.internalCache)
-				.isEquals();
-	}
+//	@Override
+//	public int hashCode()
+//	{
+//		return new HashCodeBuilder()
+//				.appendSuper(super.hashCode())
+//				.append(filename.hashCode())
+//				.append(internalCache.hashCode())
+//				.toHashCode();
+//	}
+//
+//	@Override
+//	public boolean equals(Object obj)
+//	{
+//		if (! (obj instanceof DnsDiskCache))
+//			return false;
+//		
+//		DnsDiskCache o = (DnsDiskCache) obj;
+//		return new EqualsBuilder()
+//				.append(filename, o.filename)
+//				.append(internalCache, o.internalCache)
+//				.isEquals();
+//	}
 
 	public List<ResourceRecord> get(QuestionRecord question)
 	{
@@ -85,6 +85,15 @@ public class DnsDiskCache implements DnsCache
 	public void add(QuestionRecord question, List<ResourceRecord> records)
 	{
 		internalCache.add(question, records);
+		if (addCount++ % 10 == 0)
+			try
+			{
+				writeToDisk();
+			}
+			catch (IOException e)
+			{
+				logger.error("Failed to save DNS cache to disk.", e);
+			}
 	}
 
 	public boolean contains(QuestionRecord question)

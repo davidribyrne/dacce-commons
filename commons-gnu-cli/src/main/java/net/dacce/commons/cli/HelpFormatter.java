@@ -33,21 +33,18 @@ public class HelpFormatter
 	private String groupSeperator = "->";
 
 
-
-
-
 	private String cmdLineSyntax;
 	private String header;
 	private Options options;
 	private String footer;
 	private int width = 90;
 	private int leftPad = 1;
-	private int optionNameWidth = 10;
+	private boolean usage;
 
 
 	public HelpFormatter(int width, String cmdLineSyntax,
 			String header, Options options, int leftPad,
-			String footer)
+			String footer, boolean usage)
 	{
 		this.cmdLineSyntax = cleanString(cmdLineSyntax);
 		this.header = cleanString(header);
@@ -55,6 +52,7 @@ public class HelpFormatter
 		this.footer = cleanString(footer);
 		this.width = width;
 		this.leftPad = leftPad;
+		this.usage = usage;
 	}
 
 
@@ -62,25 +60,28 @@ public class HelpFormatter
 			String header, Options options, int leftPad,
 			String footer)
 	{
-		HelpFormatter hf = new HelpFormatter(width, cmdLineSyntax, header, options, leftPad, footer);
+		HelpFormatter hf = new HelpFormatter(width, cmdLineSyntax, header, options, leftPad, footer, true);
 		return hf.printHelp();
 	}
-	
+
 
 	public String printHelp()
 	{
 		StringBuffer sb = new StringBuffer();
 
-		sb.append(generateUsage());
-		
+		if (usage)
+		{
+			sb.append(generateUsage());
+		}
+
 		if ((header != null) && (header.trim().length() > 0))
 		{
 			sb.append(newLine);
 			sb.append(newLine);
 			sb.append(WordUtils.wrap(header, width));
+			sb.append(newLine);
 		}
 
-		sb.append(newLine);
 		sb.append(newLine);
 		sb.append(printOptions());
 
@@ -92,6 +93,7 @@ public class HelpFormatter
 		}
 		return sb.toString();
 	}
+
 
 	private String cleanString(String s)
 	{
@@ -220,7 +222,8 @@ public class HelpFormatter
 			return "";
 		}
 		String name = option.getArgName();
-		return (option.isArgRequired() ? "": "[") + (longOpt ? "=" : " ") + (StringUtils.isEmptyOrNull(name)? "arg" : name) + (option.isArgRequired() ? "": "]");
+		return (option.isArgRequired() ? "" : "[") + (longOpt ? "=" : " ") + (StringUtils.isEmptyOrNull(name) ? "arg" : name)
+				+ (option.isArgRequired() ? "" : "]");
 	}
 
 
@@ -234,8 +237,6 @@ public class HelpFormatter
 
 		return sb.toString();
 	}
-
-
 
 
 	private String printOption(Option option)
@@ -262,16 +263,8 @@ public class HelpFormatter
 			sb.append(getArgText(option, option.hasLongOpt()));
 		}
 		int tab;
-		if (sb.length() > (optionNameWidth - 2))
-		{
-			sb.append(newLine);
-			tab = optionNameWidth;
-		}
-		else
-		{
-			sb.append(" ");
-			tab = optionNameWidth - sb.length();
-		}
+		sb.append(newLine);
+		tab = leftPad + 6;
 		sb.append(createPadding(tab));
 		String description = option.getDescription();
 
@@ -279,7 +272,7 @@ public class HelpFormatter
 		{
 			description += " Default is '" + option.getDefaultValue() + "'.";
 		}
-		sb.append(WordUtils.wrap(description, width - optionNameWidth, "\n" + createPadding(optionNameWidth), true));
+		sb.append(WordUtils.wrap(description, width - tab, "\n" + createPadding(tab), true));
 		return sb.toString();
 	}
 
@@ -291,8 +284,8 @@ public class HelpFormatter
 			OptionGroup group = (OptionGroup) container;
 			String newChain = groupChain + (groupChain.isEmpty() ? "" : groupSeperator) + group.getName();
 			sb.append(newLine);
-//			sb.append(newChain);
-//			sb.append(" -- ");
+			// sb.append(newChain);
+			// sb.append(" -- ");
 			sb.append(group.getDescription());
 			sb.append(":");
 			sb.append(newLine);
@@ -301,13 +294,23 @@ public class HelpFormatter
 				printOptionContainer(child, newChain, sb);
 			}
 		}
+
 		else // actual option
 		{
 			sb.append(printOption((Option) container));
+			
+			// Module sub-options
+			if (container instanceof ModuleOptions) 
+			{
+				ModuleOptions moduleOptions = (ModuleOptions) container;
+				Options subOptions = moduleOptions.getSubOptions();
+				HelpFormatter moduleFormater = new HelpFormatter(width, "", "", subOptions, leftPad * 3, "", false);
+				sb.append(moduleFormater.printHelp());
+			}
+
 			sb.append(newLine);
 		}
 	}
-
 
 
 	/**
@@ -325,7 +328,6 @@ public class HelpFormatter
 
 		return new String(padding);
 	}
-
 
 
 }

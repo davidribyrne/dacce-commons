@@ -1,5 +1,2 @@
-commons-dns-client/target/**
-commons-general/target/**
-commons-gnu-cli/target/**
-commons-netaddr/target/**
-commons-validation/target/**
+**/target/**
+*.bak

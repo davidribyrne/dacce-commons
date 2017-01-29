@@ -25,13 +25,7 @@ public class MapOfLists<Key, Value>
 	}
 
 
-	public List<Value> get(Object key)
-	{
-		return map.get(key);
-	}
-
-
-	public void put(Key key, Value value)
+	public List<Value> get(Key key)
 	{
 		List<Value> list;
 		if (map.containsKey(key))
@@ -43,7 +37,13 @@ public class MapOfLists<Key, Value>
 			list = new ArrayList<Value>();
 			map.put(key, list);
 		}
-		list.add(value);
+		return map.get(key);
+	}
+
+
+	public void put(Key key, Value value)
+	{
+		get(key).add(value);
 	}
 
 

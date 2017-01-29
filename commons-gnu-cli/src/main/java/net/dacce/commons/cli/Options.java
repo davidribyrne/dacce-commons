@@ -38,7 +38,7 @@ import net.dacce.commons.cli.exceptions.UnrecognizedOptionException;
  * It may flexibly parse long and short options, with or without values. Additionally, it may parse only a portion of a
  * commandline, allowing for flexible multi-stage parsing.
  *
- * @see org.apache.commons.cli.CommandLine
+ * @see org.apache.commons.CommandLine.CommandLine
  *
  * @version $Id: Options.java 1685376 2015-06-14 09:51:59Z britter $
  */

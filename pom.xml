@@ -11,9 +11,7 @@
 		<module>commons-netaddr</module>
 		<module>commons-gnu-cli</module>
 		<module>commons-validation</module>
-		<module>apacheds-protocol-dns</module>
 		<module>commons-dns-client</module>
-		<module>commons-persistence</module>
 		<module>job-queue</module>
 	</modules>
 	<build>

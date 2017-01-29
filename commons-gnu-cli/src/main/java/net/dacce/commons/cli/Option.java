@@ -41,7 +41,7 @@ import net.dacce.commons.validators.Validator;
  * changed anymore.
  *
  * @see net.dacce.commons.cli.Options
- * @see org.apache.commons.cli.CommandLine
+ * @see org.apache.commons.CommandLine.CommandLine
  *
  * @version $Id: Option.java 1677406 2015-05-03 14:27:31Z britter $
  */
@@ -121,7 +121,7 @@ public class Option implements Cloneable, Serializable, OptionContainer
 	
 	private void validateOption(String s)
 	{
-		if (!s.isEmpty() && !s.matches("^(?:[?@a-zA-Z0-9]|[a-zA-Z0-9]+)$"))
+		if (!s.isEmpty() && !s.matches("^(?:[?@a-zA-Z0-9]|[_a-zA-Z0-9]+)$"))
 		{
 			throw new IllegalArgumentException("The '" + s + "' option contains an illegal character.");
 		}
