@@ -329,5 +329,4 @@ public class HelpFormatter
 		return new String(padding);
 	}
 
-
 }

@@ -1,6 +1,7 @@
 package net.dacce.commons.netaddr;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import net.dacce.commons.general.CollectionUtils;
@@ -15,8 +16,8 @@ public class Addresses
 
 	public Addresses()
 	{
-		blocks = new UniqueList<String>();
-		addresses = new UniqueList<SimpleInetAddress>();
+		blocks = new UniqueList<String>(false);
+		addresses = new UniqueList<SimpleInetAddress>(false);
 	}
 
 	public boolean isEmpty()
@@ -62,7 +63,7 @@ public class Addresses
 
 	public List<SimpleInetAddress> getAddresses()
 	{
-		return addresses;
+		return Collections.unmodifiableList(addresses);
 	}
 
 

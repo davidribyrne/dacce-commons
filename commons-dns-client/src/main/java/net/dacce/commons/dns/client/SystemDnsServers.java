@@ -24,7 +24,7 @@ public class SystemDnsServers
 
 	static public List<String> getSystemDnsServers()
 	{
-		List<String> servers = new UniqueList<String>();
+		List<String> servers = new UniqueList<String>(false);
 
 		// Disabled because it is returning DNS servers from inactive VPN connections
 //		getJvmDnsServers(servers);

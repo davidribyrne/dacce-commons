@@ -111,7 +111,7 @@ public class IPUtils
 
 	private static void handleRangeOctets(byte base[], List<String> octets, List<SimpleInetAddress> addresses) throws InvalidIPAddressFormatException
 	{
-		String parts[] = octets.remove(0).split("-");
+		String parts[] = octets.get(0).split("-");
 		int start;
 		int end;
 		start = Integer.parseInt(parts[0]);
@@ -129,12 +129,12 @@ public class IPUtils
 			throw new IllegalArgumentException("Invalid range format");
 		}
 
-		for (byte i = (byte) start; i <= end; i++)
+		for (int i = start; i <= end; i++)
 		{
-			byte newBase[] = ArrayUtils.append(base, i);
-			if (octets.size() > 0)
+			byte newBase[] = ArrayUtils.append(base, (byte) i);
+			if (octets.size() > 1)
 			{
-				handleRangeOctets(newBase, octets, addresses);
+				handleRangeOctets(newBase, octets.subList(1, octets.size()), addresses);
 			}
 			else
 			{

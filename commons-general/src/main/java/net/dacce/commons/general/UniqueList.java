@@ -9,10 +9,11 @@ public class UniqueList<T> extends ArrayList<T>
 {
 
 	private static final long serialVersionUID = 1L;
+	private boolean allowNulls;
 
-
-	public UniqueList()
+	public UniqueList(boolean allowNulls)
 	{
+		this.allowNulls = allowNulls;
 	}
 
 
@@ -31,6 +32,8 @@ public class UniqueList<T> extends ArrayList<T>
 	@Override
 	public T set(int paramInt, T paramE)
 	{
+		if (paramE == null && !allowNulls)
+			return null;
 		return super.set(paramInt, paramE);
 	}
 
@@ -38,6 +41,9 @@ public class UniqueList<T> extends ArrayList<T>
 	@Override
 	public boolean add(T paramE)
 	{
+		if (paramE == null && !allowNulls)
+			return false;
+		
 		if (contains(paramE))
 		{
 			return false;
@@ -55,6 +61,9 @@ public class UniqueList<T> extends ArrayList<T>
 	@Override
 	public void add(int paramInt, T paramE)
 	{
+		if (paramE == null && !allowNulls)
+			return;
+		
 		if (!contains(paramE))
 		{
 			super.add(paramInt, paramE);
@@ -68,10 +77,7 @@ public class UniqueList<T> extends ArrayList<T>
 		boolean changed = false;
 		for (T item : paramCollection)
 		{
-			if (!contains(item))
-			{
-				changed = changed || add(item);
-			}
+			changed = add(item) || changed;
 		}
 		return changed;
 	}
@@ -90,16 +96,17 @@ public class UniqueList<T> extends ArrayList<T>
 		{
 			throw new IndexOutOfBoundsException("Index: " + paramInt + ", Size: " + size());
 		}
-
+		boolean changed = false;
 		for (T item : paramCollection)
 		{
 			if (!contains(item))
 			{
 				add(paramInt++, item);
+				changed = true;
 			}
 		}
 
-		return super.addAll(paramInt, paramCollection);
+		return changed;
 	}
 
 

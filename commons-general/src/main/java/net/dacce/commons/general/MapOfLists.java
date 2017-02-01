@@ -1,6 +1,7 @@
 package net.dacce.commons.general;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,13 @@ public class MapOfLists<Key, Value>
 		map = new HashMap<Key, List<Value>>(initialMapSize);
 	}
 
+	public void seedKeys(Key[] keys)
+	{
+		for (Key key: keys)
+		{
+			get(key);
+		}
+	}
 
 	public List<Value> get(Key key)
 	{
@@ -65,5 +73,14 @@ public class MapOfLists<Key, Value>
 		}
 	}
 
+	public Map<Key, List<Value>> unmodifiableMapOfLists()
+	{
+		Map<Key, List<Value>> tmpMap = new HashMap<Key, List<Value>>(map.size());
+		for (Key key: map.keySet())
+		{
+			tmpMap.put(key, Collections.unmodifiableList(map.get(key)));
+		}
+		return Collections.unmodifiableMap(tmpMap);
+	}
 
 }

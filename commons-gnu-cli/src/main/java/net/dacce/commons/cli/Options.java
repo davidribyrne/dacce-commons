@@ -58,14 +58,17 @@ public class Options implements Serializable
 
 	public void addOptionContainer(OptionContainer option)
 	{
-		options.add(option);
-		if (option instanceof Option)
+		if (option != null)
 		{
-			processOption((Option) option);
-		}
-		else if (option instanceof OptionGroup)
-		{
-			processGroup((AbstractGroup) option);
+			options.add(option);
+			if (option instanceof Option)
+			{
+				processOption((Option) option);
+			}
+			else if (option instanceof OptionGroup)
+			{
+				processGroup((AbstractGroup) option);
+			}
 		}
 	}
 

@@ -18,7 +18,7 @@ public class ArrayUtils
 		int aLen = a.length;
 		byte[] c = new byte[aLen + 1];
 		System.arraycopy(a, 0, c, 0, aLen);
-		c[c.length] = b;
+		c[c.length - 1] = b;
 		return c;
 	}
 

@@ -122,7 +122,10 @@ public class ExclusiveOptions extends AbstractGroup implements Serializable
 
 	public void addMember(Option option)
 	{
-		members.add(option);
+		if (option != null)
+		{
+			members.add(option);
+		}
 	}
 	
 	@Override

@@ -24,7 +24,7 @@ public class IndexedCache<ValueType> implements Iterable<ValueType>
 	{
 		singleValueIndexes = new ConcurrentHashMap<Field, SingleValueIndex>(1);
 		multiValueIndexes = new ConcurrentHashMap<Field, MultiValueIndex>(1);
-		indexedObjects = new UniqueList<ValueType>();
+		indexedObjects = new UniqueList<ValueType>(false);
 	}
 
 	private class SingleValueIndex extends ConcurrentHashMap<Object, ValueType>
@@ -143,7 +143,7 @@ public class IndexedCache<ValueType> implements Iterable<ValueType>
 				List<ValueType> objects = index.get(key); // objects = List<Hostname> for address
 				if (objects == null) // There isn't a list for this address yet
 				{
-					objects = new UniqueList<ValueType>();
+					objects = new UniqueList<ValueType>(false);
 					index.put(key, objects); // Put address list in index
 				}
 				objects.add(object); // put hostname in address list
