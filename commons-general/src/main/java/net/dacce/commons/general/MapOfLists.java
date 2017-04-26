@@ -1,10 +1,13 @@
 package net.dacce.commons.general;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,6 +84,16 @@ public class MapOfLists<Key, Value>
 			tmpMap.put(key, Collections.unmodifiableList(map.get(key)));
 		}
 		return Collections.unmodifiableMap(tmpMap);
+	}
+
+	public Set<Key> keySet()
+	{
+		return Collections.unmodifiableSet(map.keySet());
+	}
+
+	public Collection<List<Value>> values()
+	{
+		return Collections.unmodifiableCollection(map.values());
 	}
 
 }

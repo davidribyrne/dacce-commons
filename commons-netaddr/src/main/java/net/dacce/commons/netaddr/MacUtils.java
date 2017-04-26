@@ -15,6 +15,9 @@ public class MacUtils
 	
 	public static String getHexString(byte[] address)
 	{
+		if (address == null)
+			return "";
+		
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
 		for (byte b: address)

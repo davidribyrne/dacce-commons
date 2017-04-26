@@ -80,7 +80,7 @@ public class GnuParser
 				handleToken(argument);
 			}
 		}
-
+		handleToken("");
 		checkRequiredOptions();
 
 		return remainingArguments;
@@ -127,6 +127,21 @@ public class GnuParser
 
 
 	/**
+	 * Signal call to an option with an optional parameter when we detect
+	 * that we're moving on to a different option
+	 * 
+	 * @throws ParseException
+	 */
+	private void closeoutCurrentOption() throws ParseException
+	{
+		if (currentOption == null)
+			return;
+		currentOption.addValue("");
+		currentOption = null;
+	}
+
+
+	/**
 	 * Handle any command line token.
 	 *
 	 * @param token
@@ -143,18 +158,22 @@ public class GnuParser
 		}
 		else if ("--".equals(token))
 		{
+			closeoutCurrentOption();
 			skipParsing = true;
 		}
 		else if ((currentOption != null) && currentOption.isArgAccepted() && isArgument(token))
 		{
 			currentOption.addValue(stripLeadingAndTrailingQuotes(token));
+			currentOption = null;
 		}
 		else if (token.startsWith("--"))
 		{
+			closeoutCurrentOption();
 			handleLongOption(token.substring(2));
 		}
 		else if (token.startsWith("-") && !"-".equals(token))
 		{
+			closeoutCurrentOption();
 			handleShortOptionCluster(token.substring(1));
 		}
 		else
@@ -218,7 +237,9 @@ public class GnuParser
 	private boolean isShortOptionCluster(String token)
 	{
 		// short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
-		return token.startsWith("-") && (token.length() >= 2) && options.hasShortOption(token.substring(1, 2));
+		boolean a = token.startsWith("-");
+		boolean b = token.length() >= 2 && options.hasShortOption(token.substring(1, 2));
+		return a && b;
 	}
 
 
@@ -394,6 +415,7 @@ public class GnuParser
 			group.setSelected(option);
 		}
 	}
+
 
 	/**
 	 * Remove the leading and trailing quotes from <code>str</code>.

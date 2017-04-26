@@ -1,23 +1,29 @@
 package net.dacce.commons.general;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class MultiClassIndexedCache
 {
 	
 
-	private final Map<Class<Object>, IndexedCache<Object>> caches;
+	private final Map<Class<?>, IndexedCache<Object>> caches;
 	private final boolean unique;
 	
 	public MultiClassIndexedCache(boolean unique)
 	{
 		this.unique = unique;
-		caches = new HashMap<Class<Object>, IndexedCache<Object>>();
+		caches = new HashMap<Class<?>, IndexedCache<Object>>();
 	}
 	
+	public Set<Class<?>> getClasses()
+	{
+		return Collections.unmodifiableSet(caches.keySet());
+	}
 	private IndexedCache<Object> getCache(Class<Object> clazz)
 	{
 		if (caches.containsKey(clazz))

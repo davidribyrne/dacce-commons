@@ -13,6 +13,7 @@
 		<module>commons-validation</module>
 		<module>commons-dns-client</module>
 		<module>job-queue</module>
+		<module>commons-persistence</module>
 	</modules>
 	<build>
 		<plugins>
@@ -48,6 +49,17 @@
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.xerial</groupId>
+				<artifactId>sqlite-jdbc</artifactId>
+				<version>3.16.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis</artifactId>
+				<version>3.4.2</version>
+			</dependency>
+
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
