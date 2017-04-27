@@ -19,19 +19,10 @@
 
 package net.dacce.commons.cli;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import net.dacce.commons.cli.exceptions.ParseException;
-
-import java.util.*;
-import java.io.File;
-import java.util.StringTokenizer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.LinkedList;
-import java.util.Iterator;
 
 
 /**

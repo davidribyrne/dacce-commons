@@ -4,8 +4,6 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import javax.sql.DataSource;
-
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.SQLiteDataSource;

@@ -1,7 +1,5 @@
 package net.dacce.commons.cli;
 
-import java.awt.datatransfer.StringSelection;
-
 import net.dacce.commons.cli.exceptions.ParseException;
 import net.dacce.commons.general.StringUtils;
 

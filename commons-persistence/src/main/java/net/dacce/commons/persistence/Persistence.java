@@ -1,5 +1,7 @@
 package net.dacce.commons.persistence;
 
+import javax.sql.DataSource;
+
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
@@ -9,11 +11,6 @@ import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sqlite.SQLiteDataSource;
-
-import java.util.*;
-
-import javax.sql.DataSource;
 
 public class Persistence
 {

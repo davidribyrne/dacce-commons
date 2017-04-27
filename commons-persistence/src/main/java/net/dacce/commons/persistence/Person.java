@@ -2,7 +2,6 @@ package net.dacce.commons.persistence;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.*;
 
 public class Person
 {

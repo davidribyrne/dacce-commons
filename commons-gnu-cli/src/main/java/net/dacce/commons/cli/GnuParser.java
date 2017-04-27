@@ -19,6 +19,7 @@ package net.dacce.commons.cli;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import net.dacce.commons.cli.exceptions.AlreadySelectedException;
 import net.dacce.commons.cli.exceptions.MissingArgumentException;
 import net.dacce.commons.cli.exceptions.MissingOptionException;

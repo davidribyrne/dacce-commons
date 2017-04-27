@@ -3,7 +3,6 @@ package net.dacce.commons.general;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.*;
 
 
 public class CustomToStringStyle extends ToStringStyle

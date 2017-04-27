@@ -2,7 +2,9 @@ package net.dacce.commons.dns.client;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import net.dacce.commons.dns.client.cache.DnsCache;
 import net.dacce.commons.dns.messages.QuestionRecord;
 import net.dacce.commons.dns.records.ResourceRecord;

@@ -1,6 +1,7 @@
 package net.dacce.commons.dns.client;
 
 import java.net.InetSocketAddress;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;
@@ -12,6 +13,7 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import net.dacce.commons.dns.exceptions.DnsClientConnectException;
 import net.dacce.commons.dns.messages.DnsMessage;
 import net.dacce.commons.dns.protocol.DnsProtocolTcpCodecFactory;
