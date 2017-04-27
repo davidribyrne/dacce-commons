@@ -121,7 +121,7 @@ public class Option implements Cloneable, Serializable, OptionContainer
 	
 	private void validateOption(String s)
 	{
-		if (!s.isEmpty() && !s.matches("^(?:[?@a-zA-Z0-9]|[_a-zA-Z0-9]+)$"))
+		if (!s.isEmpty() && !s.matches("^(?:[?@a-zA-Z0-9]|[\\-_a-zA-Z0-9]+)$"))
 		{
 			throw new IllegalArgumentException("The '" + s + "' option contains an illegal character.");
 		}
