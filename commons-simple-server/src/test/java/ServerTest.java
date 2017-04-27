@@ -25,7 +25,7 @@ public class ServerTest extends Server
 
 	public static void main(String[] args) throws UnknownHostException, IOException
 	{
-		new ServerTest(InetAddress.getLocalHost(), 2063);
+		new ServerTest(InetAddress.getLoopbackAddress(), 2063);
 	}
 
 
@@ -38,21 +38,23 @@ public class ServerTest extends Server
 			@Override
 			public void run()
 			{
-				try
+				while(true)
 				{
-					ObjectInputStream is = new ObjectInputStream(clientSocket.getInputStream());
-					Object o = is.readObject();
-					System.out.println(o.toString());
+					try
+					{
+						ObjectInputStream is = new ObjectInputStream(clientSocket.getInputStream());
+						Object o = is.readObject();
+						System.out.println(o.toString());
+					}
+					catch (IOException e)
+					{
+						logger.error("Problem with simple socket server worker: " + e.getLocalizedMessage(), e);
+					}
+					catch (ClassNotFoundException e)
+					{
+						logger.error("Unknown class: " + e.getLocalizedMessage(), e);
+					}
 				}
-				catch (IOException e)
-				{
-					logger.error("Problem with simple socket server worker: " + e.getLocalizedMessage(), e);
-				}
-				catch (ClassNotFoundException e)
-				{
-					logger.error("Unknown class: " + e.getLocalizedMessage(), e);
-				}
-
 			}
 		};
 	}
