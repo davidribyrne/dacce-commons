@@ -10,21 +10,20 @@ import java.util.concurrent.ConcurrentMap;
 
 
 // TODO: Make this thread safe
-public class IndexedCache<ValueType> implements Iterable<ValueType>
+public class IndexedCache<ValueType> extends UniqueList<ValueType>
 {
 	/** Each key has only one value */
 	transient private final ConcurrentMap<Field, SingleValueIndex> singleValueIndexes;
 	
 	/** Each key can have multiple values */
 	transient private final ConcurrentMap<Field, MultiValueIndex> multiValueIndexes;
-	private final UniqueList<ValueType> indexedObjects;
 
 
 	public IndexedCache()
 	{
+		super(false);
 		singleValueIndexes = new ConcurrentHashMap<Field, SingleValueIndex>(1);
 		multiValueIndexes = new ConcurrentHashMap<Field, MultiValueIndex>(1);
-		indexedObjects = new UniqueList<ValueType>(false);
 	}
 
 	private class SingleValueIndex extends ConcurrentHashMap<Object, ValueType>
@@ -57,9 +56,10 @@ public class IndexedCache<ValueType> implements Iterable<ValueType>
 		}
 	}
 
-	public void add(ValueType object)
+	@Override
+	public boolean add(ValueType object)
 	{
-		if (indexedObjects.add(object))
+		if (super.add(object))
 		{
 			for (Field field : multiValueIndexes.keySet())
 			{
@@ -84,7 +84,9 @@ public class IndexedCache<ValueType> implements Iterable<ValueType>
 					throw new UnexpectedException("This shouldn't have happened: " + e.getLocalizedMessage(), e);
 				}
 			}
+			return true;
 		}
+		return false;
 	}
 
 
@@ -96,12 +98,12 @@ public class IndexedCache<ValueType> implements Iterable<ValueType>
 
 	public boolean containsValue(Object value)
 	{
-		return indexedObjects.contains(value);
+		return super.contains(value);
 	}
 
 	private void generateSingleValueIndex(SingleValueIndex index, Field field) throws IllegalArgumentException, IllegalAccessException
 	{
-		for (ValueType object : getAllMembers())
+		for (ValueType object : this)
 		{
 			Object key = field.get(object);
 			if (key instanceof Collection)
@@ -125,7 +127,7 @@ public class IndexedCache<ValueType> implements Iterable<ValueType>
 			IllegalAccessException
 	{
 		// index = <address, List<Hostname>>
-		for (ValueType object : getAllMembers()) // object = hostname
+		for (ValueType object : this) // object = hostname
 		{
 			Object k = field.get(object); // key = address
 			Collection<Object> keys;
@@ -180,7 +182,7 @@ public class IndexedCache<ValueType> implements Iterable<ValueType>
 
 	public ValueType getMember(Field field, Object key)
 	{
-		return (ValueType) getSingleValueIndex(field).get(key);
+		return getSingleValueIndex(field).get(key);
 	}
 
 
@@ -205,17 +207,8 @@ public class IndexedCache<ValueType> implements Iterable<ValueType>
 	}
 	
 	
-	public List<ValueType> getAllMembers()
-	{
-		return indexedObjects;
-	}
 
 
-	@Override
-	public Iterator<ValueType> iterator()
-	{
-		return indexedObjects.iterator();
-	}
 
 	@Override
 	public String toString()
