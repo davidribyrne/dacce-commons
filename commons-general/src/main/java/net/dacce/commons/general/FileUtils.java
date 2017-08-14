@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +18,10 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 public class FileUtils extends org.apache.commons.io.FileUtils
 {
 	final static Logger logger = LoggerFactory.getLogger(FileUtils.class);
-
-
 
 
 	/**
@@ -38,27 +39,31 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 		return file;
 	}
 
+
 	public static List<String> readConfigFileLines(URL url) throws IOException
 	{
 		InputStream is = url.openStream();
 		return readConfigFileLines(is);
 	}
-	
-	
+
+
 	public static List<String> readConfigFileLines(String file) throws FileNotFoundException, IOException
 	{
 		File f = new File(file);
 		return readConfigFileLines(f);
 	}
-	
+
+
 	public static List<String> readConfigFileLines(File file) throws FileNotFoundException, IOException
 	{
 		InputStream is = new FileInputStream(file);
 		return readConfigFileLines(is);
 	}
-	
+
+
 	/**
 	 * Ignores empty lines and lines that start with octothorpe (#) or semicolon (;)
+	 * 
 	 * @param is
 	 * @return
 	 * @throws IOException
@@ -66,7 +71,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 	public static List<String> readConfigFileLines(InputStream is) throws IOException
 	{
 		List<String> lines = new ArrayList<String>();
-		for(String l: IOUtils.readLines(is))
+		for (String l : IOUtils.readLines(is))
 		{
 			String line = l.trim();
 			if (l.isEmpty() || l.startsWith("#") || l.startsWith(";"))
@@ -76,6 +81,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 		is.close();
 		return lines;
 	}
+
 
 	/**
 	 * Searches the PATH environment variable for the specified executable name. In Windows,
@@ -179,15 +185,27 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 	{
 		return !filename.matches(BAD_FILENAME_CHARACTERS);
 	}
-	
+
+
 	public static String readFileToString(String path) throws IOException
 	{
 		return readFileToString(new File(path));
 	}
-	
-	
+
+
 	public static List<String> readLines(String path) throws IOException
 	{
 		return readLines(new File(path));
 	}
+
+
+	static public File ExportResource(ClassLoader classLoader, String resourceName) throws IOException
+	{
+		File sourceFile = new File(classLoader.getResource(resourceName).getFile());
+		File tmpFile = File.createTempFile(resourceName, ".tmp");
+		tmpFile.deleteOnExit();
+		Files.copy(sourceFile.toPath(), tmpFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		return tmpFile;
+	}
+
 }
