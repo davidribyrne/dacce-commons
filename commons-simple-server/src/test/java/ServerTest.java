@@ -7,9 +7,9 @@ import java.net.UnknownHostException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.dacce.commons.simpleServer.Server;
-import net.dacce.commons.simpleServer.ThreadedWorker;
-import net.dacce.commons.simpleServer.Worker;
+import space.dcce.commons.simpleServer.Server;
+import space.dcce.commons.simpleServer.ThreadedWorker;
+import space.dcce.commons.simpleServer.Worker;
 
 
 public class ServerTest extends Server
