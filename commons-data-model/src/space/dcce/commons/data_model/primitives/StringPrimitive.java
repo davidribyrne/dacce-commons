@@ -1,17 +1,22 @@
 package space.dcce.commons.data_model.primitives;
 
-public class StringPrimitive extends PrimitiveNode
+import space.dcce.commons.data_model.NodeType;
+import space.dcce.commons.data_model.PrintableNode;
+
+public class StringPrimitive extends PrimitiveNode implements PrintableNode
 {
 	private String value;
 
 
 	public StringPrimitive()
 	{
+		super(NodeType.STRING);
 	}
 
 
 	public StringPrimitive(String value)
 	{
+		this();
 		this.value = value;
 	}
 
@@ -29,4 +34,9 @@ public class StringPrimitive extends PrimitiveNode
 	}
 
 
+	public String getString()
+	{
+		return value;
+	}
+	
 }

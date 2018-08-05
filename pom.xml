@@ -15,7 +15,7 @@
 		<module>job-queue</module>
 		<module>commons-simple-server</module>
 		<module>commons-data-model</module>
-		<module>commons-persistence</module>
+		
 	</modules>
 	<build>
 		<plugins>
@@ -123,6 +123,7 @@
 				<artifactId>commons-io</artifactId>
 				<version>2.4</version>
 			</dependency>
+			
 		</dependencies>
 	</dependencyManagement>
 </project>

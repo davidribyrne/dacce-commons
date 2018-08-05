@@ -1,12 +1,20 @@
 package space.dcce.commons.data_model.primitives;
 
-public class BytePrimitive extends PrimitiveNode
+import space.dcce.commons.data_model.NodeType;
+import space.dcce.commons.data_model.PrintableNode;
+
+public class BytePrimitive extends PrimitiveNode implements PrintableNode
 {
 	private Byte value;
 
+	public BytePrimitive()
+	{
+		super(NodeType.BYTE);
+	}
 
 	public BytePrimitive(Byte value)
 	{
+		this();
 		this.value = value;
 	}
 

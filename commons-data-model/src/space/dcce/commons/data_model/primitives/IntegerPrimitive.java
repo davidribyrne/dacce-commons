@@ -1,17 +1,22 @@
 package space.dcce.commons.data_model.primitives;
 
-public class IntegerPrimitive extends PrimitiveNode
+import space.dcce.commons.data_model.NodeType;
+import space.dcce.commons.data_model.PrintableNode;
+
+public class IntegerPrimitive extends PrimitiveNode implements PrintableNode
 {
 	private Long value;
 
 
 	public IntegerPrimitive()
 	{
+		super(NodeType.INTEGER);
 	}
 
 
 	public IntegerPrimitive(long value)
 	{
+		this();
 		this.value = value;
 	}
 

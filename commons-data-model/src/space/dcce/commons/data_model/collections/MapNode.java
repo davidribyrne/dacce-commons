@@ -1,15 +1,21 @@
 package space.dcce.commons.data_model.collections;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 import space.dcce.commons.data_model.Node;
+import space.dcce.commons.data_model.NodeType;
 
 
 public class MapNode<K extends Node, V extends Node> extends ContainerNode implements Map<K, V>
@@ -23,9 +29,15 @@ public class MapNode<K extends Node, V extends Node> extends ContainerNode imple
 	}
 
 
+	protected MapNode(NodeType nodeType, int initialCapacity)
+	{
+		super(nodeType);
+		map = new HashMap<>(initialCapacity);
+	}
+
 	public MapNode(int initialCapacity)
 	{
-		map = new HashMap<>(initialCapacity);
+		this(NodeType.MAP, initialCapacity);
 	}
 
 
@@ -305,5 +317,34 @@ public class MapNode<K extends Node, V extends Node> extends ContainerNode imple
 	public V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction)
 	{
 		return map.merge(key, value, remappingFunction);
+	}
+
+
+	@Override
+	public void addValue(Node value)
+	{
+		if (value instanceof KeyValuePair)
+		{
+			addPair((KeyValuePair<K,V>) value);
+		}
+		else
+			throw new NotImplementedException("Can only add a pair object");
+	}
+	
+	public void addPair(KeyValuePair<K,V> pair)
+	{
+		this.put(pair.getKey(), pair.getValue());
+	}
+	
+	
+	public List<KeyValuePair<K,V>> getPairs()
+	{
+		List<KeyValuePair<K,V>> pairs = Collections.unmodifiableList(new ArrayList<KeyValuePair<K,V>>(size()));
+		for (K key: keySet())
+		{
+			pairs.add(new KeyValuePair<K, V>(key, get(key)));
+		}
+		
+		return pairs;
 	}
 }

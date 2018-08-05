@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import space.dcce.commons.data_model.Node;
+import space.dcce.commons.data_model.NodeType;
 
 
 public class ArrayNode<E extends Node> extends ContainerNode implements List<E>
@@ -18,6 +19,7 @@ public class ArrayNode<E extends Node> extends ContainerNode implements List<E>
 
 	public ArrayNode(int initialCapacity)
 	{
+		super(NodeType.ARRAY);
 		array = new ArrayList<>(initialCapacity);
 	}
 
@@ -187,4 +189,12 @@ public class ArrayNode<E extends Node> extends ContainerNode implements List<E>
 	{
 		return array.subList(fromIndex, toIndex);
 	}
+
+
+	@Override
+	public void addValue(Node value)
+	{
+		add((E) value);
+	}
+
 }
