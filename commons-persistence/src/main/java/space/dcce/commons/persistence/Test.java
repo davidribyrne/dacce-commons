@@ -29,7 +29,6 @@ public class Test
 		sr.setEscapeProcessing(false);
 		sr.runScript(new FileReader(Test.class.getClassLoader().getResource("schema.sql").getFile()));
 		Persistence p = new Persistence(dataSource);
-
 		
 	}
 }
