@@ -1,6 +1,7 @@
 **/target/**
 *.bak
 .DS_Store
+**/bin/**
 
 # Compiled class file
 *.class
