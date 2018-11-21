@@ -288,9 +288,15 @@ public class HelpFormatter
 			sb.append(newLine);
 			// sb.append(newChain);
 			// sb.append(" -- ");
-			sb.append(group.getDescription());
+			sb.append(group.getName());
 			sb.append(":");
 			sb.append(newLine);
+			if (! "".equals(group.getDescription()))
+			{
+				sb.append(group.getDescription());
+				sb.append(newLine);
+			}
+					
 			for (OptionContainer child : group.getChildren())
 			{
 				printOptionContainer(child, newChain, sb);

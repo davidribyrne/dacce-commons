@@ -1,7 +1,6 @@
 package space.dcce.commons.data_model;
 
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,12 +9,14 @@ import com.fasterxml.jackson.core.JsonParseException;
 
 import space.dcce.commons.data_model.encoding.Base64Encoder;
 import space.dcce.commons.data_model.encoding.JSONUtils;
+import space.dcce.commons.data_model.encoding.URLEncodingUtils;
+import space.dcce.commons.data_model.encoding.UrlEncoding;
 import space.dcce.commons.data_model.primitives.*;
 
 
 public class Decoder
 {
-	static public PrintableNode decode(byte[] data) throws JsonParseException, IOException
+	static public Node decode(byte[] data) throws JsonParseException, IOException
 	{
 		if (isJson(data))
 		{
@@ -23,16 +24,36 @@ public class Decoder
 		}
 		if (isURLQuery(data))
 		{
-			byte[] decoded = decodeURL(data);
-			return new UrlQueryEncoding(decode(decoded));
+			byte[] decoded = URLEncodingUtils.decodeURL(data);
+			Node child = decode(decoded);
+			if (child instanceof PrintableNode)
+			{
+				return new UrlEncoding((PrintableNode) child);
+			}
+			else
+			{
+				throw new IllegalStateException("Somehow, an unprintable got identified as URL data");
+			}
+			
 		}
 		if (isURLString(data))
 		{
+			
 		}
 		if (isBase64(data))
 		{
 			byte[] decoded = decodeBase64(data);
-			return new Base64Encoder(decode(decoded));
+			Node child = decode(decoded);
+			if (child instanceof PrintableNode)
+			{
+				return new Base64Encoder((PrintableNode) child);
+			}
+			else
+			{
+				throw new IllegalStateException("Somehow, an unprintable got identified as base64 data");
+			}
+
+			
 		}
 
 		return decodePrimitive(data);
@@ -70,12 +91,6 @@ public class Decoder
 	{
 		String s = new String(data).replaceAll("\\s+", "");
 		return Base64.getDecoder().decode(s);
-	}
-
-
-	static public byte[] decodeURL(byte[] data)
-	{
-		return URLDecoder.decode(new String(data)).getBytes();
 	}
 
 

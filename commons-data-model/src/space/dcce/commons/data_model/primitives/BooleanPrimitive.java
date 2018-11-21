@@ -1,22 +1,29 @@
 package space.dcce.commons.data_model.primitives;
 
-public class BooleanPrimitive extends PrimitiveNode
+import space.dcce.commons.data_model.NodeType;
+import space.dcce.commons.data_model.PrintableNode;
+
+public class BooleanPrimitive extends PrimitiveNode implements PrintableNode
 {
 	private Boolean value;
+
 	private Mode mode = Mode.TRUE_FALSE;
 
 	public BooleanPrimitive()
 	{
+		super(NodeType.BOOLEAN);
 	}
 
 
 	public BooleanPrimitive(boolean value)
 	{
+		this();
 		this.value = value;
 	}
 
 	public BooleanPrimitive(String value)
 	{
+		this();
 		value = value.toLowerCase();
 		if (value.equals("true"))
 		{
@@ -91,4 +98,17 @@ public class BooleanPrimitive extends PrimitiveNode
 	{
 		this.mode = mode;
 	}
+	
+	public Boolean getValue()
+	{
+		return value;
+	}
+
+
+	public void setValue(Boolean value)
+	{
+		this.value = value;
+	}
+
+
 }

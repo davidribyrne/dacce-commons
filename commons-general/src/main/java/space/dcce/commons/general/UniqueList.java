@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.function.UnaryOperator;
 
 
+
 public class UniqueList<T> extends ArrayList<T>
 {
 
@@ -68,6 +69,17 @@ public class UniqueList<T> extends ArrayList<T>
 		{
 			super.add(paramInt, paramE);
 		}
+	}
+
+
+	public boolean addAll(T[] items)
+	{
+		boolean changed = false;
+		for (T item : items)
+		{
+			changed = add(item) || changed;
+		}
+		return changed;
 	}
 
 

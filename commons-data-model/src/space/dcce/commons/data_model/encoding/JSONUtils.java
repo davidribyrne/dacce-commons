@@ -1,6 +1,7 @@
 package space.dcce.commons.data_model.encoding;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Stack;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -10,7 +11,20 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.util.ByteArrayBuilder;
 
+import space.dcce.commons.data_model.Decoder;
 import space.dcce.commons.data_model.Node;
+import space.dcce.commons.data_model.AbstractNode;
+import space.dcce.commons.data_model.PrintableNode;
+import space.dcce.commons.data_model.collections.ArrayNode;
+import space.dcce.commons.data_model.collections.ContainerNode;
+import space.dcce.commons.data_model.collections.KeyValuePair;
+import space.dcce.commons.data_model.collections.ObjectNode;
+import space.dcce.commons.data_model.primitives.BooleanPrimitive;
+import space.dcce.commons.data_model.primitives.FloatPrimitive;
+import space.dcce.commons.data_model.primitives.IntegerPrimitive;
+import space.dcce.commons.data_model.primitives.NullPrimitive;
+import space.dcce.commons.data_model.primitives.StringPrimitive;
+import space.dcce.commons.general.UnexpectedException;
 
 
 public class JSONUtils
@@ -19,7 +33,8 @@ public class JSONUtils
 	private JSONUtils()
 	{
 	}
-	
+
+
 	public static boolean isValidJSON(byte[] data)
 	{
 		JsonFactory factory = new JsonFactory();
@@ -31,31 +46,40 @@ public class JSONUtils
 				JsonToken token = parser.nextToken();
 			}
 		}
-		catch(IOException e)
+		catch (IOException e)
 		{
 			return false;
 		}
 		return true;
 	}
 
-	public static byte[] encode(JSONEncoding data) throws IOException
+
+	public static byte[] encode(JSONEncoding data)
 	{
 		ByteArrayBuilder output = new ByteArrayBuilder();
 		JsonFactory factory = new JsonFactory();
-		JsonGenerator generator = factory.createGenerator(output);
-		_encode(data.getChildNode(), generator);
-		generator.close();
+		try
+		{
+			JsonGenerator generator = factory.createGenerator(output);
+			_encode(data.getChildNode(), generator);
+			generator.close();
+		}
+		catch (IOException e)
+		{
+			throw new UnexpectedException(e);
+		}
 		return output.toByteArray();
 	}
-	
+
+
 	private static void _encode(Node node, JsonGenerator generator) throws IOException
 	{
-		switch(node.getNodeType())
+		switch (node.getNodeType())
 		{
-			case LIST:
+			case ARRAY:
 				generator.writeStartArray();
-				ListNode list = (ListNode) node;
-				for(Node value: list.getValues())
+				ArrayNode<Node> list = (ArrayNode<Node>) node;
+				for (Node value : list)
 				{
 					_encode(value, generator);
 				}
@@ -65,55 +89,56 @@ public class JSONUtils
 			case OBJECT:
 				generator.writeStartObject();
 				ObjectNode object = (ObjectNode) node;
-				for(MessageNameValuePair property: object.getProperties())
+				for (KeyValuePair<?, ?> property : object.getPairs())
 				{
 					_encode(property, generator);
 				}
 				generator.writeEndObject();
 				return;
-				
-			case PAIR:
-				MessageNameValuePair pair = (MessageNameValuePair) node;
 
-				generator.writeFieldName(pair.getName());
+			case NAME_VALUE_PAIR:
+				KeyValuePair<StringPrimitive, AbstractNode> pair = (KeyValuePair<StringPrimitive, AbstractNode>) node;
+
+				generator.writeFieldName(pair.getKey().getString());
 				_encode(pair.getValue(), generator);
 				return;
-			
+
 			case STRING:
 				StringPrimitive string = (StringPrimitive) node;
 				generator.writeString(string.getString());
 				return;
-				
+
 			case ENCODING:
-				EncodingNode en = (EncodingNode) node;
-				generator.writeString(new String(en.getPackagedBytes()));
+				PrintableNode pn = (PrintableNode) node;
+				generator.writeString(new String(pn.getBytes()));
 				return;
-			
+
 			case BOOLEAN:
 				BooleanPrimitive bp = (BooleanPrimitive) node;
 				generator.writeBoolean(bp.getValue());
 				return;
-			
+
 			case FLOAT:
 				FloatPrimitive fp = (FloatPrimitive) node;
 				generator.writeNumber(fp.getValue());
 				return;
-				
+
 			case INTEGER:
 				IntegerPrimitive ip = (IntegerPrimitive) node;
 				generator.writeNumber(ip.getValue());
 				return;
-				
+
 			case NULL:
 				generator.writeNull();
 				return;
-				
+
 			default:
 				System.err.println("oops");
-				
+
 		}
 	}
-	
+
+
 	public static JSONEncoding decode(byte[] data) throws JsonParseException, IOException
 	{
 		JSONEncoding parentNode = null;
@@ -138,18 +163,17 @@ public class JSONUtils
 				case NOT_AVAILABLE:
 					System.err.println("NOT_AVAILABLE");
 					break;
-					
+
 				case FIELD_NAME:
 				{
-					MessageNameValuePair pair = new MessageNameValuePair();
-					pair.setName(parser.getCurrentName());
+					KeyValuePair<StringPrimitive, Node> pair = new KeyValuePair<StringPrimitive, Node>(new StringPrimitive(parser.getCurrentName()));
 					ObjectNode o = (ObjectNode) stack.lastElement();
-					o.addProperty(pair);
+					o.addPair(pair);
 					stack.push(pair);
 					addedData = true;
 				}
 					break;
-					
+
 				case END_ARRAY:
 				{
 					stack.pop();
@@ -164,7 +188,7 @@ public class JSONUtils
 
 				case START_ARRAY:
 				{
-					ListNode list = new ListNode();
+					ArrayNode<AbstractNode> list = new ArrayNode<AbstractNode>();
 
 					ContainerNode container = (ContainerNode) stack.lastElement();
 					container.addValue(list);
@@ -176,7 +200,7 @@ public class JSONUtils
 				case START_OBJECT:
 				{
 					ObjectNode object = new ObjectNode();
-					if(stack.isEmpty())
+					if (stack.isEmpty())
 					{
 						if (parentNode == null)
 						{
@@ -241,13 +265,19 @@ public class JSONUtils
 				case VALUE_STRING:
 				{
 					System.err.println("VALUE_STRING");
-//					StringValue value = new StringValue(parser.getText());
 					String s = parser.getText();
-					PrintableNode pn = Decoder.decode(s.getBytes());
-					ContainerNode container = (ContainerNode) stack.lastElement();
-					container.addValue(pn);
-					
-					addedData = true;
+					Node n = Decoder.decode(s.getBytes());
+					if (n instanceof PrintableNode)
+					{
+						PrintableNode pn = (PrintableNode) n;
+						ContainerNode container = (ContainerNode) stack.lastElement();
+						container.addValue((Node) pn);
+						addedData = true;
+					}
+					else
+					{
+						throw new IllegalStateException("Somehow a string got parsed into a nonprintable node");
+					}
 				}
 					break;
 
@@ -260,10 +290,10 @@ public class JSONUtils
 				}
 					break;
 			}
-			
+
 			if (addedData && lastContainer != null)
 			{
-				if(lastContainer instanceof MessageNameValuePair)
+				if (lastContainer instanceof KeyValuePair)
 				{
 					stack.remove(lastContainer);
 				}

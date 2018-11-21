@@ -2,11 +2,13 @@ package space.dcce.commons.data_model.encoding;
 
 import java.util.Base64;
 
+import space.dcce.commons.data_model.AbstractNode;
 import space.dcce.commons.data_model.Node;
 import space.dcce.commons.data_model.PrintableNode;
+import space.dcce.commons.data_model.SingleChildNode;
 
 
-public class Base64Encoder extends EncodingNode 
+public class Base64Encoder extends SingleChildNode implements PrintableNode
 {
 	private Mode base64Mode = Mode.BASIC;
 
@@ -15,6 +17,7 @@ public class Base64Encoder extends EncodingNode
 	{
 		super(childNode);
 	}
+
 
 
 	@Override
