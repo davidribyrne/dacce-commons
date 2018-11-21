@@ -23,6 +23,20 @@ public class CryptoUtils
 		}
 	}
 
+
+	public static byte[] md5(byte[] data)
+	{
+		try
+		{
+			return MessageDigest.getInstance("MD5").digest(data);
+		}
+		catch (NoSuchAlgorithmException e)
+		{
+			logger.error("This never should have happened: " + e.toString());
+			throw new UnexpectedException(e); 
+		}
+	}
+
 	private CryptoUtils()
 	{
 	}
