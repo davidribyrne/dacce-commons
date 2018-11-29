@@ -47,23 +47,30 @@ public abstract class Server implements Runnable
 	@Override
 	public void run()
 	{
-		while (isRunning())
+		try
 		{
-			try
+			while (isRunning())
 			{
-				Socket clientSocket;
-
-				synchronized (serverSocket)
+				try
 				{
-					clientSocket = serverSocket.accept();
+					Socket clientSocket;
+
+					synchronized (serverSocket)
+					{
+						clientSocket = serverSocket.accept();
+					}
+					Worker worker = createWorker();
+					worker.handleSocket(clientSocket);
 				}
-				Worker worker = createWorker();
-				worker.handleSocket(clientSocket);
+				catch (IOException e)
+				{
+					logger.error("Problem with simple socket server: " + e.getLocalizedMessage(), e);
+				}
 			}
-			catch (IOException e)
-			{
-				logger.error("Problem with simple socket server: " + e.getLocalizedMessage(), e);
-			}
+		}
+		catch (Throwable t)
+		{
+			logger.error("Uncaught exception in Server.run: " + t.getLocalizedMessage(), t);
 		}
 	}
 

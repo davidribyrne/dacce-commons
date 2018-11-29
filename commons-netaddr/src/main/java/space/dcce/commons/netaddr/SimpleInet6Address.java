@@ -1,6 +1,6 @@
 package space.dcce.commons.netaddr;
 
-
+import space.dcce.commons.general.NotImplementedException;
 
 public class SimpleInet6Address extends SimpleInetAddress
 {
@@ -12,6 +12,12 @@ public class SimpleInet6Address extends SimpleInetAddress
 		{
 			throw new InvalidIPAddressFormatException("IPv6 address can't be " + address.length + " bytes long.");
 		}
+	}
+
+	@Override
+	public SimpleInetAddress getNetworkAddress(int mask)
+	{
+		throw new NotImplementedException();
 	}
 
 }

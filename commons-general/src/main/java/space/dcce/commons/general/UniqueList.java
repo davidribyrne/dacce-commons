@@ -10,24 +10,31 @@ public class UniqueList<T> extends ArrayList<T>
 {
 
 	private static final long serialVersionUID = 1L;
-	private boolean allowNulls;
+	private boolean allowNulls = false;
 
-	public UniqueList(boolean allowNulls)
+	public UniqueList(boolean allowNulls, int initialCapacity)
 	{
+		super(initialCapacity);
 		this.allowNulls = allowNulls;
 	}
 
-
-	public UniqueList(Collection<? extends T> paramCollection)
+	public UniqueList(boolean allowNulls)
 	{
-		super(paramCollection);
+		super();
+		this.allowNulls = allowNulls;
+	}
+
+	public UniqueList(int initialCapacity)
+	{
+		super(initialCapacity);
 	}
 
 
-	public UniqueList(int paramInt)
-	{
-		super(paramInt);
-	}
+//	public UniqueList(Collection<? extends T> paramCollection)
+//	{
+//		super(paramCollection);
+//	}
+
 
 
 	@Override

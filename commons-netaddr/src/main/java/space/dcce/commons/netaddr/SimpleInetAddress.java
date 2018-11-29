@@ -34,7 +34,22 @@ public abstract class SimpleInetAddress
 	}
 
 
+	/**
+	 * 
+	 * @param mask The number of bits in the subnet mask
+	 * @return Network address based on mask
+	 */
+	public abstract SimpleInetAddress getNetworkAddress(int mask);
 
+	
+	/**
+	 * 
+	 * @param mask The number of bits in the subnet mask
+	 * @return Host address based on mask
+	 */
+	public abstract SimpleInetAddress getHostAddress(int mask);
+
+	
 	@Override
 	public int hashCode()
 	{
