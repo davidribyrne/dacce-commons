@@ -21,7 +21,7 @@ public class SimpleInet4Address extends SimpleInetAddress
 	 * @return Network address based on mask
 	 */
 	@Override
-	public SimpleInetAddress getNetworkAddress(int mask)
+	public SimpleInet4Address getNetworkAddress(int mask)
 	{
 		if (mask < 0 || mask > 32)
 		{
@@ -43,7 +43,7 @@ public class SimpleInet4Address extends SimpleInetAddress
 
 
 	@Override
-	public SimpleInetAddress getHostAddress(int mask)
+	public SimpleInet4Address getHostAddress(int mask)
 	{
 		if (mask < 0 || mask > 32)
 		{
@@ -61,6 +61,13 @@ public class SimpleInet4Address extends SimpleInetAddress
 		{
 			throw new UnexpectedException(e);
 		}
+	}
+
+
+	@Override
+	public SimpleInet4Address addressAddition(int increment) throws InvalidIPAddressFormatException
+	{
+		return IP4Utils.decimalToAddress(IP4Utils.octetsToInt(getAddress()) + increment);
 	}
 
 

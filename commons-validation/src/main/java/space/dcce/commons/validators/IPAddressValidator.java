@@ -23,13 +23,9 @@ public class IPAddressValidator implements Validator
 	{
 		if (allowBlocks)
 		{
-			try
+			if (!IPUtils.validateAddressBlock(value))
 			{
-				IPUtils.parseAddressBlock(value);
-			}
-			catch (InvalidIPAddressFormatException e)
-			{
-				throw new ValidationException("'" + value + "' is not a valid IP address or address block.", e);
+				throw new ValidationException("'" + value + "' is not a valid IP address or address block.");
 			}
 		}
 		else

@@ -49,6 +49,13 @@ public abstract class SimpleInetAddress
 	 */
 	public abstract SimpleInetAddress getHostAddress(int mask);
 
+	/**
+	 * 
+	 * @param increment Positive or negative number to add to IP address
+	 * @return Result of increment
+	 * @throws InvalidIPAddressFormatException If increment makes address beyond range
+	 */
+	public abstract SimpleInetAddress addressAddition(int increment) throws InvalidIPAddressFormatException;
 	
 	@Override
 	public int hashCode()
@@ -67,6 +74,7 @@ public abstract class SimpleInetAddress
 		return Arrays.equals(address, ((SimpleInetAddress) obj).address);
 	}
 
+	
 	@Override
 	public String toString()
 	{

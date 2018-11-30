@@ -20,4 +20,16 @@ public class SimpleInet6Address extends SimpleInetAddress
 		throw new NotImplementedException();
 	}
 
+	@Override
+	public SimpleInetAddress getHostAddress(int mask)
+	{
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public SimpleInetAddress addressAddition(int increment)
+	{
+		throw new NotImplementedException();
+	}
+
 }

@@ -21,9 +21,9 @@ public class IP4Utils
 	}
 
 
-	public static long stringToDecimal(String address) throws InvalidIPAddressFormatException
+	public static int stringToDecimal(String address) throws InvalidIPAddressFormatException
 	{
-		return intToDecimal(octetsToInt(stringToBytes(address)));
+		return octetsToInt(stringToBytes(address));
 	}
 
 
@@ -55,13 +55,15 @@ public class IP4Utils
 			throw new InvalidIPAddressFormatException("Invalid IPv4 address");
 		}
 
-		int i = 0;
+		long i = 0;
 		int pos = 3;
 		for (byte octet : address)
 		{
-			i += Math.pow(256, pos--) * (octet & 0xFF);
+			long offset = 256 << (8 * --pos);
+			long value = octet & 0xFF;
+			i += value * offset;
 		}
-		return i;
+		return  (int) i;
 	}
 
 
@@ -82,15 +84,15 @@ public class IP4Utils
 	}
 
 
-	public static long intToDecimal(int address)
-	{
-		return 0x00000000ffffffffL & address;
-	}
+//	public static int intToDecimal(int address)
+//	{
+//		return 0x00000000ffffffffL & address;
+//	}
 
 
-	public static SimpleInetAddress decimalToAddress(long address) throws InvalidIPAddressFormatException
+	public static SimpleInet4Address decimalToAddress(int address) throws InvalidIPAddressFormatException
 	{
-		return SimpleInetAddress.getByAddress(decimalToOctets(address));
+		return new SimpleInet4Address(intToOctets(address));
 	}
 
 

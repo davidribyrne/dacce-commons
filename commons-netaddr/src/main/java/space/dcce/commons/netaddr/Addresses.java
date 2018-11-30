@@ -1,5 +1,6 @@
 package space.dcce.commons.netaddr;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -13,13 +14,23 @@ import space.dcce.commons.general.UniqueList;
 public class Addresses
 {
 	private final List<String> blocks;
-	private final List<SimpleInetAddress> addresses;
+	private final ArrayList<SimpleInetAddress> addresses;
 
 
-	public Addresses()
+	public Addresses(int size)
 	{
 		blocks = new UniqueList<String>(false);
-		addresses = new UniqueList<SimpleInetAddress>(false);
+		addresses = new UniqueList<SimpleInetAddress>(false, size);
+	}
+	
+	public int size()
+	{
+		return addresses.size();
+	}
+	
+	public void trimToSize()
+	{
+		addresses.trimToSize();
 	}
 
 	public boolean isEmpty()
