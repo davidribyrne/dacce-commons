@@ -2,6 +2,7 @@ package space.dcce.commons.validators;
 
 
 import space.dcce.commons.general.NotImplementedException;
+import space.dcce.commons.netaddr.IP4Utils;
 import space.dcce.commons.netaddr.IPUtils;
 import space.dcce.commons.netaddr.InvalidIPAddressFormatException;
 
@@ -23,7 +24,7 @@ public class IPAddressValidator implements Validator
 	{
 		if (allowBlocks)
 		{
-			if (!IPUtils.validateAddressBlock(value))
+			if (!IP4Utils.validateAddressBlock(value))
 			{
 				throw new ValidationException("'" + value + "' is not a valid IP address or address block.");
 			}

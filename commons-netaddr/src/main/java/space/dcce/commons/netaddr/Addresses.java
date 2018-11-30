@@ -3,93 +3,144 @@ package space.dcce.commons.netaddr;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import space.dcce.commons.general.CollectionUtils;
+import space.dcce.commons.general.UnexpectedException;
 import space.dcce.commons.general.UniqueList;
 
 
 public class Addresses
 {
-	private final List<String> blocks;
-	private final ArrayList<SimpleInetAddress> addresses;
+	private final List<IP4Range> blocks;
+	private boolean changed;
+	private int[] allAddresses;
 
 
-	public Addresses(int size)
+	public Addresses()
 	{
-		blocks = new UniqueList<String>(false);
-		addresses = new UniqueList<SimpleInetAddress>(false, size);
+		blocks = new UniqueList<IP4Range>(false);
 	}
-	
-	public int size()
+
+
+	// TODO Improve size function
+	/**
+	 * Simple counting. Doesn't identify duplicate addresses.
+	 * 
+	 * @return
+	 */
+	public int roughSize()
 	{
-		return addresses.size();
+		int size = 0;
+		for (IP4Range block : blocks)
+		{
+			size += block.size();
+		}
+		return size;
 	}
-	
-	public void trimToSize()
+
+
+	public int[] getAllAddresses()
 	{
-		addresses.trimToSize();
+		synchronized (this)
+		{
+
+			if (changed || allAddresses == null)
+			{
+				Set<Integer> addresses = new HashSet<Integer>();
+
+				for (IP4Range range : blocks)
+				{
+					for (int i = range.getStart(); i <= range.getEnd(); i++)
+					{
+						addresses.add(i);
+					}
+				}
+
+				allAddresses = new int[addresses.size()];
+				int pos = 0;
+				for(Integer i: addresses)
+				{
+					allAddresses[pos++] = i;
+				}
+			}
+		}
+		return allAddresses;
+
 	}
+
 
 	public boolean isEmpty()
 	{
 		return blocks.isEmpty();
 	}
 
-	public List<String> getBlocks()
+
+	public List<IP4Range> getBlocks()
 	{
-		return blocks;
+		return Collections.unmodifiableList(blocks);
 	}
 
 
 	public void add(String block) throws InvalidIPAddressFormatException
 	{
+		add(IP4Utils.parseAddressBlock(block));
+	}
+
+
+	public void add(Collection<IP4Range> block)
+	{
+		changed = true;
+		blocks.addAll(block);
+	}
+
+
+	public void add(IP4Range block)
+	{
 		blocks.add(block);
-		addresses.addAll(IPUtils.parseAddressBlock(block));
+		changed = true;
 	}
 
 
-	public void add(Collection<SimpleInetAddress> block)
+	public void add(SimpleInet4Address address)
 	{
-		for (SimpleInetAddress address : block)
+		blocks.add(new IP4Range(address));
+		changed = true;
+	}
+
+
+	public boolean contains(SimpleInet4Address address)
+	{
+		for (IP4Range range : blocks)
 		{
-			blocks.add(address.toString());
+			if (range.contains(address))
+				return true;
 		}
-		addresses.addAll(block);
+		return false;
 	}
 
 
-	public void add(SimpleInetAddress address)
-	{
-		blocks.add(address.toString());
-		addresses.add(address);
-	}
-
-
-	public boolean contains(SimpleInetAddress address)
-	{
-		return addresses.contains(address);
-	}
-
-
-	public List<SimpleInetAddress> getAddresses()
-	{
-		return Collections.unmodifiableList(addresses);
-	}
+	// public List<SimpleInetAddress> getAddresses()
+	// {
+	// return Collections.unmodifiableList(addresses);
+	// }
 
 
 	public String getNmapList()
 	{
-		return CollectionUtils.joinObjects("\n", addresses);
+		return CollectionUtils.joinObjects("\n", blocks);
 	}
-	
+
+
 	@Override
 	public String toString()
 	{
 		return new ToStringBuilder(this).append(CollectionUtils.joinObjects(",", blocks))
-				.append("Expanded addresses", CollectionUtils.joinObjects(",", addresses))
 				.build();
 	}
 }
