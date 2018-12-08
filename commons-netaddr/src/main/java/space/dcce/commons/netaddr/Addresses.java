@@ -1,6 +1,8 @@
 package space.dcce.commons.netaddr;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -9,6 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import space.dcce.commons.general.CollectionUtils;
 import space.dcce.commons.general.UnexpectedException;
@@ -17,6 +21,8 @@ import space.dcce.commons.general.UniqueList;
 
 public class Addresses
 {
+	private final static Logger logger = LoggerFactory.getLogger(Addresses.class);
+
 	private final List<IP4Range> blocks;
 	private boolean changed;
 	private int[] allAddresses;
@@ -52,6 +58,11 @@ public class Addresses
 
 			if (changed || allAddresses == null)
 			{
+				boolean debug = roughSize() > 1000000;
+				long start = Instant.now().getEpochSecond();
+
+				if (debug)
+					logger.info("Starting compilation of addresses. This may take a while for large ranges.");
 				Set<Integer> addresses = new HashSet<Integer>();
 
 				for (IP4Range range : blocks)
@@ -68,6 +79,12 @@ public class Addresses
 				{
 					allAddresses[pos++] = i;
 				}
+				long duration = Instant.now().getEpochSecond() - start;
+				
+				Arrays.sort(allAddresses);
+				
+				if (debug)
+					logger.info("Compilation of addresses complete in " + duration + " seconds.");
 			}
 		}
 		return allAddresses;

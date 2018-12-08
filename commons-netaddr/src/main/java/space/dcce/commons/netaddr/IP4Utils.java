@@ -407,6 +407,6 @@ public class IP4Utils
 			throw new InvalidIPAddressFormatException("Base address is not valid for netmask");
 		}
 
-		return Collections.singleton(new IP4Range(base, base + count));
+		return Collections.singleton(new IP4Range(base, base + count - 1));
 	}
 }

@@ -63,6 +63,8 @@ public class IP4Range
 	@Override
 	public String toString()
 	{
+		if (end == start)
+			return IP4Utils.decimalToString(start);
 		return IP4Utils.decimalToString(start) + "-" + IP4Utils.decimalToString(end); 
 	}
 
