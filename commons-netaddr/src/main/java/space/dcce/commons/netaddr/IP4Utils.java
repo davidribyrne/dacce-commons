@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import space.dcce.commons.general.ArrayUtils;
+import space.dcce.commons.general.Range;
 import space.dcce.commons.general.UnexpectedException;
 
 public class IP4Utils
@@ -31,9 +32,9 @@ public class IP4Utils
 	}
 
 
-	public static int stringToDecimal(String address) throws InvalidIPAddressFormatException
+	public static int stringToInt(String address) throws InvalidIPAddressFormatException
 	{
-		return octetsToInt(stringToBytes(address));
+		return bytesToInt(stringToBytes(address));
 	}
 
 
@@ -57,27 +58,32 @@ public class IP4Utils
 		return bytes;
 	}
 
+	public static int getNetMask(int maskBits)
+	{
+		return (1<< (maskBits + 1)) - 1;
+	}
 
-	public static int octetsToInt(byte address[]) throws InvalidIPAddressFormatException
+	public static int bytesToInt(byte address[]) throws InvalidIPAddressFormatException
 	{
 		if (address.length != 4)
 		{
 			throw new InvalidIPAddressFormatException("Invalid IPv4 address");
 		}
 
-		long i = 0;
-		int pos = 3;
-		for (byte octet : address)
-		{
-			long offset = 256 << (8 * --pos);
-			long value = octet & 0xFF;
-			i += value * offset;
-		}
-		return  (int) i;
+//		long i = 0;
+//		int pos = 3;
+//		for (byte octet : address)
+//		{
+//			long offset = 256 << (8 * --pos);
+//			long value = octet & 0xFF;
+//			i += value * offset;
+//		}
+//		return  (int) i;
+		return (address[3] & 0xFF) | ((address[2] & 0xFF) << 8)  | ((address[1] & 0xFF) << 16)  | address[0] << 24 ; 
 	}
 
 
-	public static byte[] intToOctets(int address)
+	public static byte[] intToBytes(int address)
 	{
 		byte[] arrayOfByte = new byte[4];
 		arrayOfByte[0] = ((byte) ((address >>> 24) & 0xFF));
@@ -88,11 +94,11 @@ public class IP4Utils
 	}
 
 
-	public static String decimalToString(long address)
+	public static String intToString(int address)
 	{
 		try
 		{
-			return bytesToString(intToOctets((int) (address)));
+			return bytesToString(intToBytes(address));
 		}
 		catch (InvalidIPAddressFormatException e)
 		{
@@ -101,21 +107,15 @@ public class IP4Utils
 	}
 
 
-	public static byte[] decimalToOctets(long address)
+	public static byte[] intToBytes(long address)
 	{
-		return intToOctets((int) (address));
+		return intToBytes((int) (address));
 	}
 
 
-//	public static int intToDecimal(int address)
-//	{
-//		return 0x00000000ffffffffL & address;
-//	}
-
-
-	public static SimpleInet4Address decimalToAddress(int address) throws InvalidIPAddressFormatException
+	public static SimpleInet4Address intToAddress(int address) throws InvalidIPAddressFormatException
 	{
-		return new SimpleInet4Address(intToOctets(address));
+		return new SimpleInet4Address(intToBytes(address));
 	}
 
 
@@ -125,7 +125,7 @@ public class IP4Utils
 		{
 			stringToBytes(inet4Address);
 		}
-		catch (InvalidIPAddressFormatException e)
+		catch (@SuppressWarnings("unused") InvalidIPAddressFormatException e)
 		{
 			return false;
 		}
@@ -152,10 +152,7 @@ public class IP4Utils
 		return false;
 	}
 
-
-
-
-	public static Collection<IP4Range> parseAddressBlock(String addressBlock) throws InvalidIPAddressFormatException
+	public static Collection<Range> parseAddressRange(String addressBlock) throws InvalidIPAddressFormatException
 	{
 		if (matchesRangeInOctets(addressBlock))
 		{
@@ -171,8 +168,8 @@ public class IP4Utils
 		}
 		if (matchesSingleAddress(addressBlock))
 		{
-			int a = IP4Utils.stringToDecimal(addressBlock);
-			return Collections.singletonList(new IP4Range(a, a));
+			int a = IP4Utils.stringToInt(addressBlock);
+			return Collections.singletonList(new Range(a, a));
 		}
 		throw new InvalidIPAddressFormatException("Invalid IP address format: " + addressBlock);
 	}
@@ -228,8 +225,8 @@ public class IP4Utils
 		long end;
 		try
 		{
-			start = IP4Utils.stringToDecimal(ends[0]);
-			end = IP4Utils.stringToDecimal(ends[1]);
+			start = IP4Utils.stringToInt(ends[0]);
+			end = IP4Utils.stringToInt(ends[1]);
 		}
 		catch (InvalidIPAddressFormatException e)
 		{
@@ -243,19 +240,18 @@ public class IP4Utils
 	}
 
 
-	private static Collection<IP4Range> parseStartEndRange(String range) throws InvalidIPAddressFormatException
+	private static Collection<Range> parseStartEndRange(String range) throws InvalidIPAddressFormatException
 	{
 
 		String ends[] = range.split("-");
-		int start = IP4Utils.stringToDecimal(ends[0]);
-		int end = IP4Utils.stringToDecimal(ends[1]);
+		int start = IP4Utils.stringToInt(ends[0]);
+		int end = IP4Utils.stringToInt(ends[1]);
 		if (start > end)
 		{
 			throw new InvalidIPAddressFormatException("Start must be less than end in IP address range");
 		}
 
-		return Collections.singleton(new IP4Range(start, end));
-
+		return Collections.singleton(new Range(start, end));
 	}
 
 
@@ -296,10 +292,10 @@ public class IP4Utils
 	}
 
 
-	private static Collection<IP4Range> handleRangeOctets(String range) throws InvalidIPAddressFormatException
+	private static Collection<Range> handleRangeOctets(String range) throws InvalidIPAddressFormatException
 	{
 		List<String> octets = new ArrayList<String>(Arrays.asList(range.split("\\.")));
-		List<IP4Range> addresses = new ArrayList<IP4Range>();
+		List<Range> addresses = new ArrayList<Range>();
 
 		handleOctet(range, new byte[0], octets, addresses);
 
@@ -307,7 +303,7 @@ public class IP4Utils
 	}
 
 
-	private static void handleOctet(String range, byte base[], List<String> octets, List<IP4Range> addresses) throws InvalidIPAddressFormatException
+	private static void handleOctet(String range, byte base[], List<String> octets, List<Range> addresses) throws InvalidIPAddressFormatException
 	{
 
 		String parts[] = octets.get(0).split("-");
@@ -343,10 +339,10 @@ public class IP4Utils
 		}
 		else
 		{
-			int startAddress = IP4Utils.octetsToInt(ArrayUtils.append(base, (byte) start));
-			int endAddress = IP4Utils.octetsToInt(ArrayUtils.append(base, (byte) end));
+			int startAddress = IP4Utils.bytesToInt(ArrayUtils.append(base, (byte) start));
+			int endAddress = IP4Utils.bytesToInt(ArrayUtils.append(base, (byte) end));
 			
-			addresses.add(new IP4Range(startAddress, endAddress));
+			addresses.add(new Range(startAddress, endAddress));
 		}
 	}
 
@@ -357,7 +353,7 @@ public class IP4Utils
 	}
 
 
-	private static boolean validateCidr(String cidrText)
+	public static boolean validateCidr(String cidrText)
 	{
 		if (!matchesCidr(cidrText))
 		{
@@ -366,7 +362,7 @@ public class IP4Utils
 
 		String parts[] = cidrText.split("/");
 		int mask = Integer.parseInt(parts[1]);
-		if ((mask > 32) || (mask < 1))
+		if ((mask > 32) || (mask < 0))
 		{
 			return false;
 		}
@@ -375,7 +371,7 @@ public class IP4Utils
 		long base;
 		try
 		{
-			base = IP4Utils.stringToDecimal(parts[0]);
+			base = IP4Utils.stringToInt(parts[0]);
 		}
 		catch (InvalidIPAddressFormatException e)
 		{
@@ -390,7 +386,7 @@ public class IP4Utils
 	}
 
 
-	private static Collection<IP4Range> parseCidr(String cidrText) throws InvalidIPAddressFormatException
+	private static Collection<Range> parseCidr(String cidrText) throws InvalidIPAddressFormatException
 	{
 		if (!validateCidr(cidrText))
 		{
@@ -401,12 +397,12 @@ public class IP4Utils
 		int mask = Integer.parseInt(parts[1]);
 
 		int count = (int) Math.pow(2, (32 - mask));
-		int base = IP4Utils.stringToDecimal(parts[0]);
+		int base = IP4Utils.stringToInt(parts[0]);
 		if ((base % count) != 0)
 		{
 			throw new InvalidIPAddressFormatException("Base address is not valid for netmask");
 		}
 
-		return Collections.singleton(new IP4Range(base, base + count - 1));
+		return Collections.singleton(new Range(base, base + count - 1));
 	}
 }

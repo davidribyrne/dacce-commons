@@ -1,19 +1,23 @@
 package space.dcce.commons.general;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -196,6 +200,30 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 	public static List<String> readLines(String path) throws IOException
 	{
 		return readLines(new File(path));
+	}
+
+
+	public static List<String> readLines(String path, int bufferSize) throws IOException
+	{
+		InputStream in = null;
+		try
+		{
+			in = openInputStream(new File(path));
+			BufferedReader bReader = new BufferedReader(new InputStreamReader(in, Charset.defaultCharset()), bufferSize);
+			List<String> list = new ArrayList<String>();
+			String line = bReader.readLine();
+			while (line != null)
+			{
+				list.add(line);
+				line = bReader.readLine();
+			}
+			return list;
+
+		}
+		finally
+		{
+			IOUtils.closeQuietly(in);
+		}
 	}
 
 

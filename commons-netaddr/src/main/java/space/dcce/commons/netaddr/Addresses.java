@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,149 +16,145 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import space.dcce.commons.general.CollectionUtils;
+import space.dcce.commons.general.Range;
+import space.dcce.commons.general.RangeSet;
 import space.dcce.commons.general.UnexpectedException;
 import space.dcce.commons.general.UniqueList;
 
 
 public class Addresses
 {
-	private final static Logger logger = LoggerFactory.getLogger(Addresses.class);
-
-	private final List<IP4Range> blocks;
+	private RangeSet ranges;
+	private int[] allAddresses = null;
 	private boolean changed;
-	private int[] allAddresses;
 
 
 	public Addresses()
 	{
-		blocks = new UniqueList<IP4Range>(false);
+		this(new RangeSet());
 	}
 
 
-	// TODO Improve size function
-	/**
-	 * Simple counting. Doesn't identify duplicate addresses.
-	 * 
-	 * @return
-	 */
-	public int roughSize()
+	private Addresses(RangeSet ranges)
 	{
-		int size = 0;
-		for (IP4Range block : blocks)
-		{
-			size += block.size();
-		}
-		return size;
-	}
-
-
-	public int[] getAllAddresses()
-	{
-		synchronized (this)
-		{
-
-			if (changed || allAddresses == null)
-			{
-				boolean debug = roughSize() > 1000000;
-				long start = Instant.now().getEpochSecond();
-
-				if (debug)
-					logger.info("Starting compilation of addresses. This may take a while for large ranges.");
-				Set<Integer> addresses = new HashSet<Integer>();
-
-				for (IP4Range range : blocks)
-				{
-					for (int i = range.getStart(); i <= range.getEnd(); i++)
-					{
-						addresses.add(i);
-					}
-				}
-
-				allAddresses = new int[addresses.size()];
-				int pos = 0;
-				for(Integer i: addresses)
-				{
-					allAddresses[pos++] = i;
-				}
-				long duration = Instant.now().getEpochSecond() - start;
-				
-				Arrays.sort(allAddresses);
-				
-				if (debug)
-					logger.info("Compilation of addresses complete in " + duration + " seconds.");
-			}
-		}
-		return allAddresses;
-
-	}
-
-
-	public boolean isEmpty()
-	{
-		return blocks.isEmpty();
-	}
-
-
-	public List<IP4Range> getBlocks()
-	{
-		return Collections.unmodifiableList(blocks);
-	}
-
-
-	public void add(String block) throws InvalidIPAddressFormatException
-	{
-		add(IP4Utils.parseAddressBlock(block));
-	}
-
-
-	public void add(Collection<IP4Range> block)
-	{
-		changed = true;
-		blocks.addAll(block);
-	}
-
-
-	public void add(IP4Range block)
-	{
-		blocks.add(block);
-		changed = true;
+		this.ranges = ranges;
 	}
 
 
 	public void add(SimpleInet4Address address)
 	{
-		blocks.add(new IP4Range(address));
 		changed = true;
+		ranges.add(new Range(address.toInt()));
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public void add(String range) throws InvalidIPAddressFormatException
+	{
+		changed = true;
+		ranges.addAll((Collection<Range>) (Collection<?>) IP4Utils.parseAddressRange(range));
 	}
 
 
 	public boolean contains(SimpleInet4Address address)
 	{
-		for (IP4Range range : blocks)
-		{
-			if (range.contains(address))
-				return true;
-		}
-		return false;
+		return ranges.contains(address.toInt());
 	}
-
-
-	// public List<SimpleInetAddress> getAddresses()
-	// {
-	// return Collections.unmodifiableList(addresses);
-	// }
 
 
 	public String getNmapList()
 	{
-		return CollectionUtils.joinObjects("\n", blocks);
+		return CollectionUtils.joinObjects("\n", ranges.getFlattendRanges());
+	}
+
+
+	public synchronized int[] getAllAddresses()
+	{
+		if (changed)
+		{
+			allAddresses = new int[ranges.size()];
+			int index = 0;
+			for (Range range : ranges.getFlattendRanges())
+			{
+				for (long value = range.getStart(); value <= range.getEnd(); value++)
+				{
+					allAddresses[index++] = (int) (value & 0xFFFFFFFF);
+				}
+			}
+			changed = false;
+		}
+		return allAddresses;
+	}
+
+
+	public Addresses complement()
+	{
+		return new Addresses(ranges.complement());
+	}
+
+
+	public Addresses difference(Addresses target)
+	{
+		return new Addresses(ranges.difference(target.ranges));
+	}
+
+
+	public Addresses intersection(Addresses target)
+	{
+		return new Addresses(ranges.intersection(target.ranges));
+	}
+
+
+	public void add(Range range)
+	{
+		ranges.add(range);
+	}
+
+
+	public boolean isEmpty()
+	{
+		return ranges.isEmpty();
+	}
+
+
+	private static String rangesToIPs(List<Range> ranges)
+	{
+		StringBuilder sb = new StringBuilder();
+
+		boolean first = true;
+		for (Range range : ranges)
+		{
+			if (!first)
+			{
+				sb.append(", ");
+			}
+			else
+			{
+				first = false;
+			}
+			sb.append(IP4Utils.intToString((int) range.getStart())).append("-");
+			sb.append(IP4Utils.intToString((int) range.getEnd()));
+		}
+		return sb.toString();
+	}
+
+
+	public String toString(boolean includeCombined)
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("provided (" + ranges.size() + "): ").append(rangesToIPs(ranges.getOriginalRanges()));
+		if (includeCombined)
+		{
+			sb.append("\ncombined: ").append(rangesToIPs(ranges.getFlattendRanges()));
+		}
+		return sb.toString();
+
 	}
 
 
 	@Override
 	public String toString()
 	{
-		return new ToStringBuilder(this).append(CollectionUtils.joinObjects(",", blocks))
-				.build();
+		return toString(true);
 	}
 }
