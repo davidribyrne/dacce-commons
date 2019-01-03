@@ -10,12 +10,13 @@ import space.dcce.commons.general.ArrayUtils;
 import space.dcce.commons.general.Range;
 import space.dcce.commons.general.UnexpectedException;
 
+
 public class IP4Utils
 {
 	private IP4Utils()
 	{
 	}
-	
+
 	private final static String RANGE_IN_OCTETS_IPV4_REGEX = "^(\\d{1,3}(-\\d{1,3})?\\.){3}\\d{1,3}(-\\d{1,3})?$";
 	private final static String START_END_RANGE_IPV4_REGEX = "^(\\d{1,3}\\.){3}\\d{1,3}-(\\d{1,3}\\.){3}\\d{1,3}$";
 
@@ -58,10 +59,12 @@ public class IP4Utils
 		return bytes;
 	}
 
+
 	public static int getNetMask(int maskBits)
 	{
-		return (1<< (maskBits + 1)) - 1;
+		return (1 << (maskBits + 1)) - 1;
 	}
+
 
 	public static int bytesToInt(byte address[]) throws InvalidIPAddressFormatException
 	{
@@ -70,16 +73,7 @@ public class IP4Utils
 			throw new InvalidIPAddressFormatException("Invalid IPv4 address");
 		}
 
-//		long i = 0;
-//		int pos = 3;
-//		for (byte octet : address)
-//		{
-//			long offset = 256 << (8 * --pos);
-//			long value = octet & 0xFF;
-//			i += value * offset;
-//		}
-//		return  (int) i;
-		return (address[3] & 0xFF) | ((address[2] & 0xFF) << 8)  | ((address[1] & 0xFF) << 16)  | address[0] << 24 ; 
+		return (address[3] & 0xFF) | ((address[2] & 0xFF) << 8) | ((address[1] & 0xFF) << 16) | address[0] << 24;
 	}
 
 
@@ -151,6 +145,7 @@ public class IP4Utils
 		}
 		return false;
 	}
+
 
 	public static Collection<Range> parseAddressRange(String addressBlock) throws InvalidIPAddressFormatException
 	{
@@ -341,7 +336,7 @@ public class IP4Utils
 		{
 			int startAddress = IP4Utils.bytesToInt(ArrayUtils.append(base, (byte) start));
 			int endAddress = IP4Utils.bytesToInt(ArrayUtils.append(base, (byte) end));
-			
+
 			addresses.add(new Range(startAddress, endAddress));
 		}
 	}
@@ -405,4 +400,47 @@ public class IP4Utils
 
 		return Collections.singleton(new Range(base, base + count - 1));
 	}
+
+
+	public static List<String> rangeToCIDRs(int start, int end)
+	{
+		if (end < start)
+		{
+			throw new IllegalArgumentException("Start must be less than or equal to end");
+		}
+
+		List<String> pairs = new ArrayList<String>();
+		while (end >= start)
+		{
+			byte maxsize = 32;
+			while (maxsize > 0)
+			{
+				int mask = bitsToMask(maxsize - 1);
+				int maskedBase = start & mask;
+
+				if (maskedBase != start)
+				{
+					break;
+				}
+
+				maxsize--;
+			}
+			double x = Math.log(end - start + 1) / Math.log(2);
+			byte maxdiff = (byte) (32 - Math.floor(x));
+			if (maxsize < maxdiff)
+			{
+				maxsize = maxdiff;
+			}
+			pairs.add(intToString(start) + "/" + maxsize);
+			start += Math.pow(2, (32 - maxsize));
+		}
+		return pairs;
+	}
+
+
+	public static int bitsToMask(int bits)
+	{
+		return 0xFFFFFFFF << (32 - bits);
+	}
+
 }

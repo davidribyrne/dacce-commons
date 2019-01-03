@@ -17,10 +17,12 @@ public class RangeSet
 	private List<Range> flattenedRanges;
 	private boolean changed;
 	protected int size;
+	private final String name;
 
 
-	public RangeSet()
+	public RangeSet(String name)
 	{
+		this.name = name;
 		originalRanges = new ArrayList<Range>();
 		flattenedRanges = Collections.EMPTY_LIST;
 	}
@@ -31,9 +33,9 @@ public class RangeSet
 	 * @param ranges
 	 * @param flattenFirst if true, combine overlapping or adjacent ranges; don't track original ranges
 	 */
-	public RangeSet(List<Range> ranges, boolean flattenFirst)
+	public RangeSet(String name, List<Range> ranges, boolean flattenFirst)
 	{
-		this();
+		this(name);
 		if (flattenFirst)
 		{
 			ranges = flattenRanges(ranges);
@@ -71,7 +73,7 @@ public class RangeSet
 		union.addAll(originalRanges);
 		union.addAll(target.originalRanges);
 		List<Range> flatUnion = flattenRanges(union);
-		return new RangeSet(flatUnion, true);
+		return new RangeSet("Union of " + name + " and " + target.name, flatUnion, true);
 	}
 
 
@@ -93,7 +95,7 @@ public class RangeSet
 			lastEnd = r.getEnd();
 		}
 		complement.add(new Range(lastEnd + 1, Long.MAX_VALUE));
-		return new RangeSet(complement, true);
+		return new RangeSet("complement of " + name, complement, true);
 	}
 
 
@@ -115,7 +117,7 @@ public class RangeSet
 		
 		if (isEmpty() || target.isEmpty())
 		{
-			return new RangeSet();
+			return new RangeSet("Intersection of " + name + " and " + target.name);
 		}
 		
 		List<Range> intersection = new ArrayList<Range>();
@@ -180,7 +182,7 @@ public class RangeSet
 
 		}
 
-		return new RangeSet(intersection, true);
+		return new RangeSet("Intersection of " + name + " and " + target.name, intersection, true);
 	}
 
 
@@ -309,6 +311,12 @@ public class RangeSet
 	{
 		checkRebuild();
 		return Collections.unmodifiableList(originalRanges);
+	}
+
+
+	public String getName()
+	{
+		return name;
 	}
 
 }

@@ -27,17 +27,18 @@ public class Addresses
 	private RangeSet ranges;
 	private int[] allAddresses = null;
 	private boolean changed;
+	private final String name;
 
-
-	public Addresses()
+	public Addresses(String name)
 	{
-		this(new RangeSet());
+		this(name, new RangeSet(name));
 	}
 
 
-	private Addresses(RangeSet ranges)
+	private Addresses(String name, RangeSet ranges)
 	{
 		this.ranges = ranges;
+		this.name = name;
 	}
 
 
@@ -62,9 +63,19 @@ public class Addresses
 	}
 
 
-	public String getNmapList()
+	public List<String> getCIDRList()
 	{
-		return CollectionUtils.joinObjects("\n", ranges.getFlattendRanges());
+		List<String> cidrs = new ArrayList<String>();
+		for (Range range: ranges.getFlattendRanges())
+		{
+			cidrs.addAll(IP4Utils.rangeToCIDRs((int) (range.getStart() & 0xFFFFFFFF), (int) (range.getEnd() & 0xFFFFFFFF)));
+		}
+		return cidrs;
+	}
+
+	public String getCIDRList(String delimiter)
+	{
+		return CollectionUtils.joinObjects(delimiter, getCIDRList());
 	}
 
 
@@ -89,19 +100,19 @@ public class Addresses
 
 	public Addresses complement()
 	{
-		return new Addresses(ranges.complement());
+		return new Addresses("Complement of " + name, ranges.complement());
 	}
 
 
 	public Addresses difference(Addresses target)
 	{
-		return new Addresses(ranges.difference(target.ranges));
+		return new Addresses("Difference of " + name + " and " + target.name, ranges.difference(target.ranges));
 	}
 
 
 	public Addresses intersection(Addresses target)
 	{
-		return new Addresses(ranges.intersection(target.ranges));
+		return new Addresses("Intersection of " + name + " and " + target.name, ranges.intersection(target.ranges));
 	}
 
 
