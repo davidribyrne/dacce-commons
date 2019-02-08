@@ -25,7 +25,7 @@ import space.dcce.commons.general.UniqueList;
 public class Addresses
 {
 	private RangeSet ranges;
-	private int[] allAddresses = null;
+	private long[] allAddresses = null;
 	private boolean changed;
 	private final String name;
 
@@ -45,7 +45,7 @@ public class Addresses
 	public void add(SimpleInet4Address address)
 	{
 		changed = true;
-		ranges.add(new Range(address.toInt()));
+		ranges.add(new Range(address.toLong()));
 	}
 
 
@@ -59,7 +59,7 @@ public class Addresses
 
 	public boolean contains(SimpleInet4Address address)
 	{
-		return ranges.contains(address.toInt());
+		return ranges.contains(address.toLong());
 	}
 
 
@@ -68,7 +68,7 @@ public class Addresses
 		List<String> cidrs = new ArrayList<String>();
 		for (Range range: ranges.getFlattendRanges())
 		{
-			cidrs.addAll(IP4Utils.rangeToCIDRs((int) (range.getStart() & 0xFFFFFFFF), (int) (range.getEnd() & 0xFFFFFFFF)));
+			cidrs.addAll(IP4Utils.rangeToCIDRs((range.getStart() & 0xFFFFFFFF), (range.getEnd() & 0xFFFFFFFF)));
 		}
 		return cidrs;
 	}
@@ -79,17 +79,17 @@ public class Addresses
 	}
 
 
-	public synchronized int[] getAllAddresses()
+	public synchronized long[] getAllAddresses()
 	{
 		if (changed)
 		{
-			allAddresses = new int[ranges.size()];
+			allAddresses = new long[ranges.size()];
 			int index = 0;
 			for (Range range : ranges.getFlattendRanges())
 			{
 				for (long value = range.getStart(); value <= range.getEnd(); value++)
 				{
-					allAddresses[index++] = (int) (value & 0xFFFFFFFF);
+					allAddresses[index++] = (value & 0xFFFFFFFF);
 				}
 			}
 			changed = false;
@@ -143,8 +143,8 @@ public class Addresses
 			{
 				first = false;
 			}
-			sb.append(IP4Utils.intToString((int) range.getStart())).append("-");
-			sb.append(IP4Utils.intToString((int) range.getEnd()));
+			sb.append(IP4Utils.longToString(range.getStart())).append("-");
+			sb.append(IP4Utils.longToString(range.getEnd()));
 		}
 		return sb.toString();
 	}

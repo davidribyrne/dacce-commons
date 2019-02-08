@@ -14,11 +14,11 @@ public class SimpleInet4Address extends SimpleInetAddress
 		}
 	}
 
-	public int toInt()
+	public long toLong()
 	{
 		try
 		{
-			return IP4Utils.bytesToInt(address);
+			return IP4Utils.bytesToLong(address);
 		}
 		catch (InvalidIPAddressFormatException e)
 		{
@@ -41,10 +41,10 @@ public class SimpleInet4Address extends SimpleInetAddress
 		
 		try
 		{
-			int i = IP4Utils.bytesToInt(address);
-			int subnet = 0xFFFFFFFF << (32-mask);
-			int ii = i & subnet;
-			return IP4Utils.intToAddress(ii);
+			long i = IP4Utils.bytesToLong(address);
+			long subnet = 0xFFFFFFFF << (32-mask);
+			long ii = i & subnet;
+			return IP4Utils.longToAddress(ii);
 		}
 		catch (InvalidIPAddressFormatException e)
 		{
@@ -63,10 +63,10 @@ public class SimpleInet4Address extends SimpleInetAddress
 		
 		try
 		{
-			int i = IP4Utils.bytesToInt(address);
-			int subnet = 0xFFFFFFFF >>> mask;
-			int ii = i & subnet;
-			return IP4Utils.intToAddress(ii);
+			long i = IP4Utils.bytesToLong(address);
+			long subnet = 0xFFFFFFFF >>> mask;
+			long ii = i & subnet;
+			return IP4Utils.longToAddress(ii);
 		}
 		catch (InvalidIPAddressFormatException e)
 		{
@@ -76,9 +76,9 @@ public class SimpleInet4Address extends SimpleInetAddress
 
 
 	@Override
-	public SimpleInet4Address addressAddition(int increment) throws InvalidIPAddressFormatException
+	public SimpleInet4Address addressAddition(long increment) throws InvalidIPAddressFormatException
 	{
-		return IP4Utils.intToAddress(toInt() + increment);
+		return IP4Utils.longToAddress(toLong() + increment);
 	}
 
 

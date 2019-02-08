@@ -33,9 +33,9 @@ public class IP4Utils
 	}
 
 
-	public static int stringToInt(String address) throws InvalidIPAddressFormatException
+	public static long stringToLong(String address) throws InvalidIPAddressFormatException
 	{
-		return bytesToInt(stringToBytes(address));
+		return bytesToLong(stringToBytes(address));
 	}
 
 
@@ -66,7 +66,7 @@ public class IP4Utils
 	}
 
 
-	public static int bytesToInt(byte address[]) throws InvalidIPAddressFormatException
+	public static long bytesToLong(byte address[]) throws InvalidIPAddressFormatException
 	{
 		if (address.length != 4)
 		{
@@ -77,7 +77,7 @@ public class IP4Utils
 	}
 
 
-	public static byte[] intToBytes(int address)
+	public static byte[] longToBytes(long address)
 	{
 		byte[] arrayOfByte = new byte[4];
 		arrayOfByte[0] = ((byte) ((address >>> 24) & 0xFF));
@@ -88,11 +88,11 @@ public class IP4Utils
 	}
 
 
-	public static String intToString(int address)
+	public static String longToString(long address)
 	{
 		try
 		{
-			return bytesToString(intToBytes(address));
+			return bytesToString(longToBytes(address));
 		}
 		catch (InvalidIPAddressFormatException e)
 		{
@@ -101,15 +101,11 @@ public class IP4Utils
 	}
 
 
-	public static byte[] intToBytes(long address)
-	{
-		return intToBytes((int) (address));
-	}
 
 
-	public static SimpleInet4Address intToAddress(int address) throws InvalidIPAddressFormatException
+	public static SimpleInet4Address longToAddress(long address) throws InvalidIPAddressFormatException
 	{
-		return new SimpleInet4Address(intToBytes(address));
+		return new SimpleInet4Address(longToBytes(address));
 	}
 
 
@@ -163,7 +159,7 @@ public class IP4Utils
 		}
 		if (matchesSingleAddress(addressBlock))
 		{
-			int a = IP4Utils.stringToInt(addressBlock);
+			long a = IP4Utils.stringToLong(addressBlock);
 			return Collections.singletonList(new Range(a, a));
 		}
 		throw new InvalidIPAddressFormatException("Invalid IP address format: " + addressBlock);
@@ -220,8 +216,8 @@ public class IP4Utils
 		long end;
 		try
 		{
-			start = IP4Utils.stringToInt(ends[0]);
-			end = IP4Utils.stringToInt(ends[1]);
+			start = IP4Utils.stringToLong(ends[0]);
+			end = IP4Utils.stringToLong(ends[1]);
 		}
 		catch (InvalidIPAddressFormatException e)
 		{
@@ -239,8 +235,8 @@ public class IP4Utils
 	{
 
 		String ends[] = range.split("-");
-		int start = IP4Utils.stringToInt(ends[0]);
-		int end = IP4Utils.stringToInt(ends[1]);
+		long start = IP4Utils.stringToLong(ends[0]);
+		long end = IP4Utils.stringToLong(ends[1]);
 		if (start > end)
 		{
 			throw new InvalidIPAddressFormatException("Start must be less than end in IP address range");
@@ -261,12 +257,12 @@ public class IP4Utils
 		for (String octet : octets)
 		{
 			String parts[] = octet.split("-");
-			int start;
-			int end;
-			start = Integer.parseInt(parts[0]);
+			long start;
+			long end;
+			start = Long.parseUnsignedLong(parts[0]);
 			if (parts.length == 2)
 			{
-				end = Integer.parseInt(parts[1]);
+				end = Long.parseUnsignedLong(parts[1]);
 			}
 			else if (parts.length == 1)
 			{
@@ -302,12 +298,12 @@ public class IP4Utils
 	{
 
 		String parts[] = octets.get(0).split("-");
-		int start;
-		int end;
-		start = Integer.parseInt(parts[0]);
+		long start;
+		long end;
+		start = Long.parseUnsignedLong(parts[0]);
 		if (parts.length == 2)
 		{
-			end = Integer.parseInt(parts[1]);
+			end = Long.parseUnsignedLong(parts[1]);
 		}
 		else if (parts.length == 1)
 		{
@@ -326,7 +322,7 @@ public class IP4Utils
 
 		if (octets.size() > 1)
 		{
-			for (int i = start; i <= end; i++)
+			for (long i = start; i <= end; i++)
 			{
 				byte newBase[] = ArrayUtils.append(base, (byte) i);
 				handleOctet(range, newBase, octets.subList(1, octets.size()), addresses);
@@ -334,8 +330,8 @@ public class IP4Utils
 		}
 		else
 		{
-			int startAddress = IP4Utils.bytesToInt(ArrayUtils.append(base, (byte) start));
-			int endAddress = IP4Utils.bytesToInt(ArrayUtils.append(base, (byte) end));
+			long startAddress = IP4Utils.bytesToLong(ArrayUtils.append(base, (byte) start));
+			long endAddress = IP4Utils.bytesToLong(ArrayUtils.append(base, (byte) end));
 
 			addresses.add(new Range(startAddress, endAddress));
 		}
@@ -362,11 +358,11 @@ public class IP4Utils
 			return false;
 		}
 
-		int count = (int) Math.pow(2, (32 - mask));
+		long count = (long) Math.pow(2, (32 - mask));
 		long base;
 		try
 		{
-			base = IP4Utils.stringToInt(parts[0]);
+			base = IP4Utils.stringToLong(parts[0]);
 		}
 		catch (InvalidIPAddressFormatException e)
 		{
@@ -391,8 +387,8 @@ public class IP4Utils
 		String parts[] = cidrText.split("/");
 		int mask = Integer.parseInt(parts[1]);
 
-		int count = (int) Math.pow(2, (32 - mask));
-		int base = IP4Utils.stringToInt(parts[0]);
+		long count = (long) Math.pow(2, (32 - mask));
+		long base = IP4Utils.stringToLong(parts[0]);
 		if ((base % count) != 0)
 		{
 			throw new InvalidIPAddressFormatException("Base address is not valid for netmask");
@@ -402,7 +398,7 @@ public class IP4Utils
 	}
 
 
-	public static List<String> rangeToCIDRs(int start, int end)
+	public static List<String> rangeToCIDRs(long start, long end)
 	{
 		if (end < start)
 		{
@@ -416,7 +412,7 @@ public class IP4Utils
 			while (maxsize > 0)
 			{
 				int mask = bitsToMask(maxsize - 1);
-				int maskedBase = start & mask;
+				long maskedBase = start & mask;
 
 				if (maskedBase != start)
 				{
@@ -431,7 +427,7 @@ public class IP4Utils
 			{
 				maxsize = maxdiff;
 			}
-			pairs.add(intToString(start) + "/" + maxsize);
+			pairs.add(longToString(start) + "/" + maxsize);
 			start += Math.pow(2, (32 - maxsize));
 		}
 		return pairs;

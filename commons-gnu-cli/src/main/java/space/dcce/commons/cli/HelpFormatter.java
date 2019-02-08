@@ -308,13 +308,13 @@ public class HelpFormatter
 			sb.append(printOption((Option) container));
 			
 			// Module sub-options
-			if (container instanceof ModuleOptions) 
-			{
-				ModuleOptions moduleOptions = (ModuleOptions) container;
-				Options subOptions = moduleOptions.getSubOptions();
-				HelpFormatter moduleFormater = new HelpFormatter(width, "", "", subOptions, leftPad * 3, "", false);
-				sb.append(moduleFormater.printHelp());
-			}
+//			if (container instanceof ModuleOptions) 
+//			{
+//				ModuleOptions moduleOptions = (ModuleOptions) container;
+//				Options subOptions = moduleOptions.getSubOptions();
+//				HelpFormatter moduleFormater = new HelpFormatter(width, "", "", subOptions, leftPad * 3, "", false);
+//				sb.append(moduleFormater.printHelp());
+//			}
 
 			sb.append(newLine);
 		}

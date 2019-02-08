@@ -27,7 +27,7 @@ public class SimpleInet6Address extends SimpleInetAddress
 	}
 
 	@Override
-	public SimpleInetAddress addressAddition(int increment)
+	public SimpleInetAddress addressAddition(long increment)
 	{
 		throw new NotImplementedException();
 	}

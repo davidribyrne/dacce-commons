@@ -15,18 +15,12 @@ public class Range
 	private final long start;
 	private final long end;
 
-	public Range(int start, int end)
+	public Range(long start, long end)
 	{
 		this.start = start & 0xFFFFFFFFL;
 		this.end = end & 0xFFFFFFFFL;
 	}
 
-	
-	public Range(long start, long end)
-	{
-		this.start = start;
-		this.end = end;
-	}
 	
 	public Range(long value)
 	{
@@ -84,7 +78,7 @@ public class Range
 		return start;
 	}
 
-//	public void setStart(int start)
+//	public void setStart(long start)
 //	{
 //		this.start = start;
 //	}
@@ -94,7 +88,7 @@ public class Range
 		return end;
 	}
 
-//	public void setEnd(int end)
+//	public void setEnd(long end)
 //	{
 //		this.end = end;
 //	}

@@ -55,7 +55,7 @@ public abstract class SimpleInetAddress
 	 * @return Result of increment
 	 * @throws InvalidIPAddressFormatException If increment makes address beyond range
 	 */
-	public abstract SimpleInetAddress addressAddition(int increment) throws InvalidIPAddressFormatException;
+	public abstract SimpleInetAddress addressAddition(long increment) throws InvalidIPAddressFormatException;
 	
 	@Override
 	public int hashCode()
