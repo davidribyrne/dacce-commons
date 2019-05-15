@@ -16,7 +16,7 @@
 		<module>job-queue</module>
 		<module>commons-simple-server</module>
 		<module>commons-data-model</module>
-
+		<module>commons-node-database</module>
 	</modules>
 	<build>
 		<plugins>
@@ -57,7 +57,11 @@
 				<artifactId>mybatis</artifactId>
 				<version>3.4.6</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.apache.derby</groupId>
+				<artifactId>derby</artifactId>
+				<version>10.14.2.0</version>
+			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
