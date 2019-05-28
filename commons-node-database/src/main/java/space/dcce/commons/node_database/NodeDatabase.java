@@ -35,17 +35,20 @@ public class NodeDatabase
 	}
 
 
-//	public boolean createNodeIfPossible(NodeType nodeType, String value)
-//	{
-//		synchronized (this)
-//		{
-//			if (nodeExists(nodeType, value))
-//				return false;
-//			new Node(this, nodeType, value);
-//
-//		}
-//		return true;
-//	}
+	public boolean createNodeIfPossible(NodeType nodeType, String value)
+	{
+		synchronized (this)
+		{
+			if (nodeExists(nodeType, value))
+				return false;
+			Node node = new Node(this, nodeType, value);
+			if (nodeCreationListener != null)
+			{
+				nodeCreationListener.nodeCreated(node);
+			}
+		}
+		return true;
+	}
 
 
 	/**
@@ -203,11 +206,11 @@ public class NodeDatabase
 	}
 
 
-//	private boolean nodeExists(NodeType nodeType, String value)
-//	{
-//		UUID id = Node.constructUUID(nodeType, value);
-//		return (nodeCache.containsKey(id) || storage.nodeExists(id));
-//	}
+	private boolean nodeExists(NodeType nodeType, String value)
+	{
+		UUID id = Node.constructUUID(nodeType, value);
+		return (nodeCache.containsKey(id) || storage.nodeExists(id));
+	}
 
 
 
