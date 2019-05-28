@@ -36,18 +36,18 @@ import space.dcce.commons.validators.Validator;
  * if any exists, a flag indicating if an argument is required for
  * this option, and a self-documenting description of the option.
  * <p>
- * An Option is not created independently, but is created through an instance of {@link Options}. An Option is required
+ * An Option is not created independently, but is created through an instance of {@link RootOptions}. An Option is required
  * to have at least a short or a long-name.
  * <p>
- * <b>Note:</b> once an {@link Option} has been added to an instance of {@link Options}, it's required flag may not be
+ * <b>Note:</b> once an {@link Option} has been added to an instance of {@link RootOptions}, it's required flag may not be
  * changed anymore.
  *
- * @see space.dcce.commons.cli.Options
+ * @see space.dcce.commons.cli.RootOptions
  * @see org.apache.commons.CommandLine.CommandLine
  *
  * @version $Id: Option.java 1677406 2015-05-03 14:27:31Z britter $
  */
-public class Option implements Cloneable, Serializable, OptionContainer
+public class Option extends OptionContainer implements Cloneable, Serializable 
 {
 
 	/** The serial version UID. */
@@ -81,24 +81,27 @@ public class Option implements Cloneable, Serializable, OptionContainer
 
 	private final List<Validator> validators = new ArrayList<Validator>(1);
 
-	public Option(String shortOption, String longOption, String description)
+	protected Option(RootOptions root, String shortOption, String longOption, String description)
 			throws IllegalArgumentException
 	{
-		this(shortOption, longOption, description, false, false, "", "");
+		this(root, shortOption, longOption, description, false, false, "", "");
 	}
 
 
-	public Option(String shortOption, String longOption, String description, boolean argAccepted, boolean argRequired, String defaultValue, String argDescription)
+	protected Option(RootOptions root, String shortOption, String longOption, String description, boolean argAccepted, boolean argRequired, String defaultValue, String argDescription)
 			throws IllegalArgumentException
 	{
-		if (longOption == null)
-			longOption = "";
+		super(longOption, root);
+		if (longOption == null || longOption.isEmpty())
+		{
+			throw new IllegalArgumentException("Long option must be defined");
+		}
 		
 		if (shortOption == null)
 			shortOption = "";
 
-		if (longOption.isEmpty() && shortOption.isEmpty())
-			throw new IllegalArgumentException("The long or short option must be set");
+//		if (longOption.isEmpty() && shortOption.isEmpty())
+//			throw new IllegalArgumentException("The long or short option must be set");
 
 		if (shortOption.length() > 1)
 			throw new IllegalArgumentException("The short option can only be one character in length.");
@@ -244,16 +247,6 @@ public class Option implements Cloneable, Serializable, OptionContainer
 	}
 
 
-	public String getName()
-	{
-		if (longOpt.isEmpty())
-		{
-			return shortOpt.toString();
-		}
-		return longOpt;
-	}
-
-
 	public void addValue(String value) throws ParseException
 	{
 		if (!argAccepted)
@@ -332,7 +325,7 @@ public class Option implements Cloneable, Serializable, OptionContainer
 	@Override
 	public String toString()
 	{
-		return new ToStringBuilder(this).append("longOpt", longOpt).append("shortOpt", shortOpt)
+		return new ToStringBuilder(this).appendSuper(super.toString()).append("longOpt", longOpt).append("shortOpt", shortOpt)
 				.append("argTypeDescriptor", argTypeDescriptor).append("description", description)
 				.append("required", required).append("argRequired", argRequired)
 				.append("forceEnabled", forceEnabled).append("values", CollectionUtils.joinObjects(",", values))

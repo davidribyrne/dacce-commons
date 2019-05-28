@@ -20,7 +20,6 @@ package space.dcce.commons.cli;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import space.dcce.commons.cli.exceptions.AlreadySelectedException;
 import space.dcce.commons.cli.exceptions.MissingArgumentException;
 import space.dcce.commons.cli.exceptions.MissingOptionException;
 import space.dcce.commons.cli.exceptions.ParseException;
@@ -39,7 +38,7 @@ public class GnuParser
 	private final Collection<String> remainingArguments = new ArrayList<String>();
 
 	/** The current options. */
-	protected Options options;
+	protected RootOptions options;
 
 	/**
 	 * Flag indicating how unrecognized tokens are handled. <tt>true</tt> to stop
@@ -60,7 +59,7 @@ public class GnuParser
 	protected Collection<OptionContainer> expectedOpts;
 
 
-	private GnuParser(Options options, boolean stopAtNonOption)
+	private GnuParser(RootOptions options, boolean stopAtNonOption)
 	{
 		this.options = options;
 		this.stopAtNonOption = stopAtNonOption;
@@ -88,7 +87,7 @@ public class GnuParser
 	}
 
 
-	public static Collection<String> parse(Options options, String[] args, boolean stopAtNonOption)
+	public static Collection<String> parse(RootOptions options, String[] args, boolean stopAtNonOption)
 			throws ParseException
 	{
 		GnuParser parser = new GnuParser(options, stopAtNonOption);
@@ -396,25 +395,13 @@ public class GnuParser
 	 *
 	 * @param option
 	 */
-	private void updateRequiredOptions(Option option) throws AlreadySelectedException
+	private void updateRequiredOptions(Option option)
 	{
 		if (option.isRequired())
 		{
 			expectedOpts.remove(option);
 		}
 
-		// if the option is in an OptionGroup make that option the selected option of the group
-		if (options.getExclusiveOptionGroup(option) != null)
-		{
-			ExclusiveOptions group = options.getExclusiveOptionGroup(option);
-
-			if (group.isRequired())
-			{
-				expectedOpts.remove(group);
-			}
-
-			group.setSelected(option);
-		}
 	}
 
 

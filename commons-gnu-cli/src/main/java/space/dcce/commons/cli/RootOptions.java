@@ -28,7 +28,6 @@ import java.util.Set;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import space.dcce.commons.cli.exceptions.AlreadySelectedException;
 import space.dcce.commons.cli.exceptions.UnrecognizedOptionException;
 
 
@@ -44,75 +43,42 @@ import space.dcce.commons.cli.exceptions.UnrecognizedOptionException;
  *
  * @version $Id: Options.java 1685376 2015-06-14 09:51:59Z britter $
  */
-public class Options implements Serializable
+public class RootOptions extends OptionGroup implements Serializable
 {
+	public RootOptions()
+	{
+		super(null, "root", "root options");
+		root = this;
+	}
+
+
 	/** The serial version UID. */
 	private static final long serialVersionUID = 1L;
 
 
-	private final List<OptionContainer> options = new ArrayList<OptionContainer>();
 	private final Set<OptionContainer> requiredOptions = new HashSet<OptionContainer>();
 	private final Map<String, Option> longOpts = new HashMap<String, Option>();
 	private final Map<String, Option> shortOpts = new HashMap<String, Option>();
-	private final Map<Option, ExclusiveOptions> exclusives = new HashMap<Option, ExclusiveOptions>();
 	private final List<Option> allOptions = new ArrayList<Option>();
 
-
-	public void addOptionContainer(OptionContainer option)
-	{
-		if (option != null)
-		{
-			options.add(option);
-			if (option instanceof Option)
-			{
-				processOption((Option) option);
-			}
-			else if (option instanceof OptionGroup)
-			{
-				processGroup((AbstractGroup) option);
-			}
-		}
-	}
-
-
+	
 	public void clearValues() throws RuntimeException
 	{
 		for (Option option : allOptions)
 		{
 			option.clearValues();
 		}
-		for (ExclusiveOptions ex : exclusives.values())
-		{
-			try
-			{
-				ex.setSelected(null);
-			}
-			catch (AlreadySelectedException e)
-			{
-				throw new RuntimeException("Weird problem reseting exclusive group value: " + e.toString(), e);
-			}
-		}
 	}
-
-
-
-	public ExclusiveOptions getExclusiveOptionGroup(Option option)
-	{
-		return exclusives.get(option);
-	}
-
 
 	public boolean hasShortOption(String option)
 	{
 		return shortOpts.containsKey(option);
 	}
 
-
 	public boolean hasLongOption(String option)
 	{
 		return shortOpts.keySet().contains(option);
 	}
-
 
 	Option getOption(String s) throws UnrecognizedOptionException
 	{
@@ -130,7 +96,7 @@ public class Options implements Serializable
 	}
 
 
-	private void processOption(Option option)
+	protected void processOption(Option option)
 	{
 		if (option.hasLongOpt())
 		{
@@ -156,33 +122,18 @@ public class Options implements Serializable
 	}
 
 
-	private void processGroup(AbstractGroup group)
+	protected void processGroup(OptionGroup group)
 	{
-		if (group instanceof ExclusiveOptions)
+		
+		for (OptionContainer container : group.getChildren())
 		{
-			ExclusiveOptions ex = (ExclusiveOptions) group;
-			if (ex.isRequired())
+			if (container instanceof Option)
 			{
-				requiredOptions.add(ex);
+				processOption((Option) container);
 			}
-			for (Option option : ex.getMembers())
+			else
 			{
-				processOption(option);
-			}
-		}
-		else
-		{
-			OptionGroup g = (OptionGroup) group;
-			for (OptionContainer container : g.getChildren())
-			{
-				if (container instanceof Option)
-				{
-					processOption((Option) container);
-				}
-				else
-				{
-					processGroup((OptionGroup) container);
-				}
+				processGroup((OptionGroup) container);
 			}
 		}
 	}
@@ -199,7 +150,7 @@ public class Options implements Serializable
 	public String toString()
 	{
 		ToStringBuilder tsb = new ToStringBuilder(this);
-		for (OptionContainer option: options)
+		for (OptionContainer option: getChildren())
 		{
 			tsb.append("option", option.getName());
 		}
@@ -213,15 +164,11 @@ public class Options implements Serializable
 	}
 
 
-	public List<OptionContainer> getOptionContainers()
-	{
-		return options;
-	}
-
-
 	public List<Option> getAllOptions()
 	{
 		return allOptions;
 	}
+
+
 
 }

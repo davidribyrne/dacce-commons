@@ -1,13 +1,10 @@
 package space.dcce.commons.general;
 
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class CustomToStringStyle extends ToStringStyle
 {
-	private final static Logger logger = LoggerFactory.getLogger(CustomToStringStyle.class);
 
 
 	public CustomToStringStyle()

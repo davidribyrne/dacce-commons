@@ -17,12 +17,7 @@
 
 package space.dcce.commons.cli;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang3.text.WordUtils;
 
 import space.dcce.commons.general.StringUtils;
@@ -37,7 +32,7 @@ public class HelpFormatter
 
 	private String cmdLineSyntax;
 	private String header;
-	private Options options;
+	private RootOptions rootOptions;
 	private String footer;
 	private int width = 90;
 	private int leftPad = 1;
@@ -45,12 +40,12 @@ public class HelpFormatter
 
 
 	public HelpFormatter(int width, String cmdLineSyntax,
-			String header, Options options, int leftPad,
+			String header, RootOptions rootOptions, int leftPad,
 			String footer, boolean usage)
 	{
 		this.cmdLineSyntax = cleanString(cmdLineSyntax);
 		this.header = cleanString(header);
-		this.options = options;
+		this.rootOptions = rootOptions;
 		this.footer = cleanString(footer);
 		this.width = width;
 		this.leftPad = leftPad;
@@ -59,7 +54,7 @@ public class HelpFormatter
 
 
 	public static String makeHelp(int width, String cmdLineSyntax,
-			String header, Options options, int leftPad,
+			String header, RootOptions options, int leftPad,
 			String footer)
 	{
 		HelpFormatter hf = new HelpFormatter(width, cmdLineSyntax, header, options, leftPad, footer, true);
@@ -73,7 +68,7 @@ public class HelpFormatter
 
 		if (usage)
 		{
-			sb.append(generateUsage());
+			sb.append(generateUsageLine());
 		}
 
 		if ((header != null) && (header.trim().length() > 0))
@@ -105,33 +100,24 @@ public class HelpFormatter
 	}
 
 
-	private String generateUsage()
+	private String generateUsageLine()
 	{
 		StringBuffer buff = new StringBuffer("Usage: ").append(cmdLineSyntax).append(" ");
 
-		Collection<ExclusiveOptions> processedGroups = new ArrayList<ExclusiveOptions>();
 		boolean first = true;
-		for (Option option : options.getAllOptions())
+		for (OptionContainer oc : rootOptions.getChildren())
 		{
-			if (first)
+			if (oc instanceof Option)
 			{
-				first = false;
-			}
-			else
-			{
-				buff.append(" ");
-			}
-			ExclusiveOptions group = options.getExclusiveOptionGroup(option);
-			if (group != null)
-			{
-				if (!processedGroups.contains(group))
+				Option option = (Option) oc;
+				if (first)
 				{
-					processedGroups.add(group);
-					appendOptionGroupUsage(buff, group);
+					first = false;
 				}
-			}
-			else
-			{
+				else
+				{
+					buff.append(" ");
+				}
 				appendOptionUsage(buff, option, option.isRequired());
 			}
 		}
@@ -139,42 +125,6 @@ public class HelpFormatter
 	}
 
 
-	/**
-	 * Appends the usage clause for an OptionGroup to a StringBuffer.
-	 * The clause is wrapped in square brackets if the group is required.
-	 * The display of the options is handled by appendOption
-	 *
-	 * @param buff
-	 *            the StringBuffer to append to
-	 * @param group
-	 *            the group to append
-	 * @see #appendOptionUsage(StringBuffer,Option,boolean)
-	 */
-	private void appendOptionGroupUsage(StringBuffer buff, ExclusiveOptions group)
-	{
-		if (!group.isRequired())
-		{
-			buff.append("[");
-		}
-
-		List<Option> optList = new ArrayList<Option>(group.getMembers());
-		// for each option in the OptionGroup
-		for (Iterator<Option> it = optList.iterator(); it.hasNext();)
-		{
-			// whether the option is required or not is handled at group level
-			appendOptionUsage(buff, it.next(), true);
-
-			if (it.hasNext())
-			{
-				buff.append(" | ");
-			}
-		}
-
-		if (!group.isRequired())
-		{
-			buff.append("]");
-		}
-	}
 
 
 	/**
@@ -232,7 +182,7 @@ public class HelpFormatter
 	private String printOptions()
 	{
 		StringBuffer sb = new StringBuffer();
-		for (OptionContainer child : options.getOptionContainers())
+		for (OptionContainer child : rootOptions.getChildren())
 		{
 			printOptionContainer(child, "", sb);
 		}

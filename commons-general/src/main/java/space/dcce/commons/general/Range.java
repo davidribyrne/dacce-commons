@@ -1,15 +1,9 @@
 package space.dcce.commons.general;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
-import java.util.*;
 
 public class Range 
 {
-	private final static Logger logger = LoggerFactory.getLogger(Range.class);
 
 
 	private final long start;

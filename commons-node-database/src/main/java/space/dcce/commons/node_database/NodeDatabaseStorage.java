@@ -30,7 +30,6 @@ public class NodeDatabaseStorage
 
 	private final static String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
 	private java.sql.Connection dbConnection;
-	private String filename;
 	private final static int MAX_VALUE_LENGTH = 65536;
 	private final NodeDatabase database;
 

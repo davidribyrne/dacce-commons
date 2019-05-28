@@ -1,16 +1,11 @@
 package space.dcce.commons.general;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import java.util.*;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 
 public class OSUtils
 {
-	private final static Logger logger = LoggerFactory.getLogger(OSUtils.class);
-
 
 	private OSUtils()
 	{
