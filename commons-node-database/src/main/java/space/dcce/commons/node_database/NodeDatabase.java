@@ -20,6 +20,8 @@ public class NodeDatabase
 	public final UniqueDatumCache<Node> nodeCache = new UniqueDatumCache<Node>();
 	private final Map<UUID, NodeType> nodeTypes = new HashMap<UUID, NodeType>(5);
 
+	private NodeCreationListener nodeCreationListener;
+	private ConnectionCreationListener connectionCreationListener;
 
 	public NodeDatabase()
 	{
@@ -33,17 +35,17 @@ public class NodeDatabase
 	}
 
 
-	public boolean createNodeIfPossible(NodeType nodeType, String value)
-	{
-		synchronized (this)
-		{
-			if (nodeExists(nodeType, value))
-				return false;
-			new Node(this, nodeType, value);
-
-		}
-		return true;
-	}
+//	public boolean createNodeIfPossible(NodeType nodeType, String value)
+//	{
+//		synchronized (this)
+//		{
+//			if (nodeExists(nodeType, value))
+//				return false;
+//			new Node(this, nodeType, value);
+//
+//		}
+//		return true;
+//	}
 
 
 	/**
@@ -145,6 +147,10 @@ public class NodeDatabase
 			{
 				node.addConnection(c);
 			}
+			if (connectionCreationListener != null)
+			{
+				connectionCreationListener.connectionCreated(c);
+			}
 			return c;
 		}
 	}
@@ -158,7 +164,12 @@ public class NodeDatabase
 			if (node != null)
 				return node;
 
-			return new Node(this, nodeType, value);
+			node = new Node(this, nodeType, value);
+			if (nodeCreationListener != null)
+			{
+				nodeCreationListener.nodeCreated(node);
+			}
+			return node;
 		}
 	}
 
@@ -192,17 +203,13 @@ public class NodeDatabase
 	}
 
 
-	private boolean nodeExists(NodeType nodeType, String value)
-	{
-		UUID id = Node.constructUUID(nodeType, value);
-		return (nodeCache.containsKey(id) || storage.nodeExists(id));
-	}
+//	private boolean nodeExists(NodeType nodeType, String value)
+//	{
+//		UUID id = Node.constructUUID(nodeType, value);
+//		return (nodeCache.containsKey(id) || storage.nodeExists(id));
+//	}
 
 
-	public Iterable<Node> getAllNodesByType(NodeType type)
-	{
-		throw new NotImplementedException();
-	}
 
 	public synchronized NodeType getByName(String name, String description)
 	{
@@ -223,6 +230,30 @@ public class NodeDatabase
 	public Map<UUID, NodeType> getNodeTypes()
 	{
 		return nodeTypes;
+	}
+
+
+	public NodeCreationListener getNodeCreationListener()
+	{
+		return nodeCreationListener;
+	}
+
+
+	public void setNodeCreationListener(NodeCreationListener nodeCreationListener)
+	{
+		this.nodeCreationListener = nodeCreationListener;
+	}
+
+
+	public ConnectionCreationListener getConnectionCreationListener()
+	{
+		return connectionCreationListener;
+	}
+
+
+	public void setConnectionCreationListener(ConnectionCreationListener connectionCreationListener)
+	{
+		this.connectionCreationListener = connectionCreationListener;
 	}
 
 
