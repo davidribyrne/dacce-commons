@@ -4,26 +4,27 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>space.dcce</groupId>
 	<artifactId>commons</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.1</version>
 	<name>Commons parent</name>
 	<packaging>pom</packaging>
 	<modules>
-		<module>commons-general</module>
-		<module>commons-netaddr</module>
-		<module>commons-gnu-cli</module>
-		<module>commons-validation</module>
-		<module>commons-dns-client</module>
-		<module>job-queue</module>
-		<module>commons-simple-server</module>
 		<module>commons-data-model</module>
+		<module>commons-dns-client</module>
+		<module>commons-general</module>
+		<module>commons-gnu-cli</module>
+		<module>commons-job-queue</module>
+		<module>commons-netaddr</module>
         <module>commons-node-database</module>
+        <module>commons-persistence</module>
+		<module>commons-simple-server</module>
+		<module>commons-validation</module>
 	</modules>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
+				<version>3.8.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -41,6 +42,19 @@
 					</execution>
 				</executions>
 			</plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>attach-javadocs</id>
+                  <goals>
+                    <goal>jar</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+
 		</plugins>
 	</build>
 	<dependencies>
@@ -52,6 +66,46 @@
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
+            <dependency>
+				<groupId>commons-gnu-cli</groupId>
+				<artifactId>commons-gnu-cli</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>space.dcce</groupId>
+				<artifactId>commons-netaddr</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>space.dcce</groupId>
+				<artifactId>commons-general</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>space.dcce</groupId>
+				<artifactId>commons-gnu-cli</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>space.dcce</groupId>
+				<artifactId>commons-validation</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>space.dcce</groupId>
+				<artifactId>commons-job-queue</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>space.dcce</groupId>
+				<artifactId>commons-apache-dns</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+
+
+
+
 			<dependency>
 				<groupId>org.mybatis</groupId>
 				<artifactId>mybatis</artifactId>
@@ -87,41 +141,6 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>1.7.12</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-gnu-cli</groupId>
-				<artifactId>commons-gnu-cli</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>space.dcce</groupId>
-				<artifactId>commons-netaddr</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>space.dcce</groupId>
-				<artifactId>commons-general</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>space.dcce</groupId>
-				<artifactId>commons-gnu-cli</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>space.dcce</groupId>
-				<artifactId>commons-validation</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>space.dcce</groupId>
-				<artifactId>commons-job-queue</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>space.dcce</groupId>
-				<artifactId>commons-apache-dns</artifactId>
-				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-io</groupId>

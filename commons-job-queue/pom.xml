@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>space.dcce</groupId>
 		<artifactId>commons</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.1</version>
 	</parent>
 	<artifactId>commons-job-queue</artifactId>
 	<name>commons-job-queue</name>

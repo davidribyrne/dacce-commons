@@ -3,15 +3,10 @@
   <parent>
     <groupId>space.dcce</groupId>
     <artifactId>commons</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.1</version>
   </parent>
   <artifactId>commons-node-database</artifactId>
   	<dependencies>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>space.dcce</groupId>
 			<artifactId>commons-general</artifactId>
@@ -25,5 +20,5 @@
 			<artifactId>derby</artifactId>
 		</dependency>
 	</dependencies>
-  
+
 </project>
