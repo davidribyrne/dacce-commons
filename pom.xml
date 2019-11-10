@@ -17,7 +17,6 @@
 		<module>commons-simple-server</module>
 		<module>commons-data-model</module>
         <module>commons-node-database</module>
-        <module>commons-parsing</module>
 	</modules>
 	<build>
 		<plugins>
