@@ -19,6 +19,7 @@ package space.dcce.commons.cli.exceptions;
 
 import space.dcce.commons.cli.Option;
 
+// TODO: Auto-generated Javadoc
 /**
  * Thrown when an option requiring an argument
  * is not provided with an argument.
@@ -32,7 +33,7 @@ public class MissingArgumentException extends ParseException
 	 */
 	private static final long serialVersionUID = -7098538588704965017L;
 
-	/** The option requiring additional arguments */
+	/**  The option requiring additional arguments. */
 	private Option option;
 
 

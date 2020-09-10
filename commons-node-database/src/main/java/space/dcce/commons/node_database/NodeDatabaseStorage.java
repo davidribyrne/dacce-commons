@@ -23,16 +23,34 @@ import space.dcce.commons.general.FileUtils;
 import space.dcce.commons.general.UnexpectedException;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NodeDatabaseStorage.
+ */
 public class NodeDatabaseStorage
 {
+	
+	/** The Constant logger. */
 	private final static Logger logger = LoggerFactory.getLogger(NodeDatabaseStorage.class);
 
 
+	/** The Constant DRIVER. */
 	private final static String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
+	
+	/** The db connection. */
 	private java.sql.Connection dbConnection;
+	
+	/** The Constant MAX_VALUE_LENGTH. */
 	private final static int MAX_VALUE_LENGTH = 65536;
+	
+	/** The database. */
 	private final NodeDatabase database;
 
+	/**
+	 * Instantiates a new node database storage.
+	 *
+	 * @param database the database
+	 */
 	// I know that passing in database is bad. I'll fix it later.
 	public NodeDatabaseStorage(NodeDatabase database)
 	{
@@ -59,6 +77,13 @@ public class NodeDatabaseStorage
 	}
 
 
+	/**
+	 * Load or create.
+	 *
+	 * @param filepath the filepath
+	 * @throws SQLException the SQL exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void loadOrCreate(String filepath) throws SQLException, IOException
 	{
 //		String file = path + File.separator + filename;
@@ -75,6 +100,12 @@ public class NodeDatabaseStorage
 	}
 
 
+	/**
+	 * Load types.
+	 *
+	 * @param database the database
+	 * @throws SQLException the SQL exception
+	 */
 	private void loadTypes(NodeDatabase database) throws SQLException
 	{
 		String query = "SELECT id, name, description FROM types";
@@ -91,6 +122,13 @@ public class NodeDatabaseStorage
 	}
 
 
+	/**
+	 * Creates the db.
+	 *
+	 * @param path the path
+	 * @throws SQLException the SQL exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void createDb(String path) throws SQLException, IOException
 	{
 		if (FileUtils.exists(path))
@@ -116,18 +154,33 @@ public class NodeDatabaseStorage
 	}
 
 
+	/**
+	 * Configure connection.
+	 *
+	 * @throws SQLException the SQL exception
+	 */
 	private void configureConnection() throws SQLException
 	{
 		dbConnection.setAutoCommit(true);
 	}
 
 
+	/**
+	 * Shutdown.
+	 *
+	 * @throws SQLException the SQL exception
+	 */
 	public void shutdown() throws SQLException
 	{
 		DriverManager.getConnection("jdbc:derby:;shutdown=true");
 	}
 
 
+	/**
+	 * Adds the node.
+	 *
+	 * @param node the node
+	 */
 	void addNode(Node node)
 	{
 		try
@@ -156,6 +209,13 @@ public class NodeDatabaseStorage
 	}
 
 
+	/**
+	 * Adds the connection.
+	 *
+	 * @param connectionId the connection id
+	 * @param nodes the nodes
+	 * @throws UnexpectedException the unexpected exception
+	 */
 	void addConnection(UUID connectionId, Node... nodes) throws UnexpectedException
 	{
 		for (Node node : nodes)
@@ -165,6 +225,13 @@ public class NodeDatabaseStorage
 	}
 
 
+	/**
+	 * Update connection.
+	 *
+	 * @param connectionId the connection id
+	 * @param node the node
+	 * @throws UnexpectedException the unexpected exception
+	 */
 	void updateConnection(UUID connectionId, Node node) throws UnexpectedException
 	{
 		try
@@ -186,6 +253,14 @@ public class NodeDatabaseStorage
 	}
 
 
+	/**
+	 * Node exists.
+	 *
+	 * @param id the id
+	 * @return boolean
+	 * @throws UnexpectedException the unexpected exception
+	 * @throws IllegalStateException the illegal state exception
+	 */
 	public boolean nodeExists(UUID id) throws UnexpectedException, IllegalStateException
 	{
 		String query = "SELECT COUNT(id) "
@@ -230,6 +305,14 @@ public class NodeDatabaseStorage
 	}
 
 
+	/**
+	 * Gets the node.
+	 *
+	 * @param id the id
+	 * @return the node
+	 * @throws SQLException the SQL exception
+	 * @throws IllegalStateException the illegal state exception
+	 */
 	public Node getNode(UUID id) throws SQLException, IllegalStateException
 	{
 
@@ -264,6 +347,14 @@ public class NodeDatabaseStorage
 		return node;
 	}
 
+	/**
+	 * Clob to string.
+	 *
+	 * @param clob the clob
+	 * @return the string
+	 * @throws SQLException the SQL exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private static String clobToString(Clob clob) throws SQLException, IOException
 	{
 		InputStream in = clob.getAsciiStream();
@@ -273,6 +364,12 @@ public class NodeDatabaseStorage
 		return w.toString();
 	}
 
+	/**
+	 * Gets the node connections.
+	 *
+	 * @param node the node
+	 * @throws SQLException the SQL exception
+	 */
 	private void getNodeConnections(Node node) throws SQLException
 	{
 		String query = "SELECT id "
@@ -296,6 +393,13 @@ public class NodeDatabaseStorage
 	}
 
 
+	/**
+	 * Gets the connection.
+	 *
+	 * @param uuid the uuid
+	 * @return the connection
+	 * @throws SQLException the SQL exception
+	 */
 	public Connection getConnection(UUID uuid) throws SQLException
 	{
 		String query = "SELECT nodeID "
@@ -317,6 +421,11 @@ public class NodeDatabaseStorage
 	}
 
 
+	/**
+	 * Adds the node type.
+	 *
+	 * @param nodeType the node type
+	 */
 	void addNodeType(NodeType nodeType)
 	{
 		try
@@ -338,12 +447,28 @@ public class NodeDatabaseStorage
 	}
 
 
+	/**
+	 * Adds the UUID.
+	 *
+	 * @param ps the ps
+	 * @param position the position
+	 * @param uuid the uuid
+	 * @throws SQLException the SQL exception
+	 */
 	private static void addUUID(PreparedStatement ps, int position, UUID uuid) throws SQLException
 	{
 		addBinary(ps, position, uuidToBytes(uuid));
 	}
 
 
+	/**
+	 * Adds the binary.
+	 *
+	 * @param ps the ps
+	 * @param position the position
+	 * @param data the data
+	 * @throws SQLException the SQL exception
+	 */
 	private static void addBinary(PreparedStatement ps, int position, byte[] data) throws SQLException
 	{
 		ByteArrayInputStream bais = new ByteArrayInputStream(data);
@@ -351,12 +476,30 @@ public class NodeDatabaseStorage
 	}
 
 
+	/**
+	 * Read UUID.
+	 *
+	 * @param rs the rs
+	 * @param position the position
+	 * @return the uuid
+	 * @throws SQLException the SQL exception
+	 * @throws UnexpectedException the unexpected exception
+	 */
 	private static UUID readUUID(ResultSet rs, int position) throws SQLException, UnexpectedException
 	{
 		return bytesToUUID(readBinary(rs, position));
 	}
 
 
+	/**
+	 * Read binary.
+	 *
+	 * @param rs the rs
+	 * @param position the position
+	 * @return the byte[]
+	 * @throws SQLException the SQL exception
+	 * @throws UnexpectedException the unexpected exception
+	 */
 	private static byte[] readBinary(ResultSet rs, int position) throws SQLException, UnexpectedException
 	{
 		InputStream is = rs.getBinaryStream(position);
@@ -372,6 +515,12 @@ public class NodeDatabaseStorage
 	}
 
 
+	/**
+	 * Uuid to bytes.
+	 *
+	 * @param uuid the uuid
+	 * @return the byte[]
+	 */
 	private static byte[] uuidToBytes(UUID uuid)
 	{
 		ByteBuffer buffer = ByteBuffer.allocate(16);
@@ -381,6 +530,12 @@ public class NodeDatabaseStorage
 	}
 
 
+	/**
+	 * Bytes to UUID.
+	 *
+	 * @param bytes the bytes
+	 * @return the uuid
+	 */
 	private static UUID bytesToUUID(byte[] bytes)
 	{
 		ByteBuffer buffer = ByteBuffer.allocate(16);

@@ -3,18 +3,26 @@ package space.dcce.commons.general;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UrlUtils.
+ */
 public class UrlUtils
 {
 
 
+	/**
+	 * Instantiates a new url utils.
+	 */
 	private UrlUtils()
 	{
 	}
 	
 	/**
-	 * Returns simplified base URL
-	 * @param url
-	 * @return
+	 * Returns simplified base URL.
+	 *
+	 * @param url the url
+	 * @return the base url
 	 */
 	public static URL getBaseUrl(URL url)
 	{

@@ -20,21 +20,53 @@ import space.dcce.commons.dns.protocol.DnsProtocolTcpCodecFactory;
 import space.dcce.commons.dns.protocol.DnsProtocolUdpCodecFactory;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DnsConnection.
+ */
 public abstract class DnsConnection extends IoHandlerAdapter
 {
+	
+	/** The Constant logger. */
 	private final static Logger logger = LoggerFactory.getLogger(DnsConnection.class);
 
+	/** The connector. */
 	private IoConnector connector;
+	
+	/** The connect timeout. */
 	private int connectTimeout = 10000;
+	
+	/** The dns session. */
 	private IoSession dnsSession;
 
 
+	/**
+	 * Make io connector.
+	 *
+	 * @return the io connector
+	 */
 	protected abstract IoConnector makeIoConnector();
+	
+	/**
+	 * Checks if is tcp.
+	 *
+	 * @return true, if is tcp
+	 */
 	public abstract boolean isTcp();
 	
+	/** The server address. */
 	final private InetSocketAddress serverAddress;
+	
+	/** The parent. */
 	final private DnsClient parent;
 
+	/**
+	 * Instantiates a new dns connection.
+	 *
+	 * @param parent the parent
+	 * @param serverAddress the server address
+	 * @throws DnsClientConnectException the dns client connect exception
+	 */
 	public DnsConnection(DnsClient parent, InetSocketAddress serverAddress) throws DnsClientConnectException
 	{
 		this.parent = parent;
@@ -45,6 +77,12 @@ public abstract class DnsConnection extends IoHandlerAdapter
 	}
 
 
+	/**
+	 * Session created.
+	 *
+	 * @param session the session
+	 * @throws Exception the exception
+	 */
 	@Override
 	public void sessionCreated(IoSession session) throws Exception
 	{
@@ -61,6 +99,13 @@ public abstract class DnsConnection extends IoHandlerAdapter
 	}
 
 
+	/**
+	 * Message received.
+	 *
+	 * @param session the session
+	 * @param message the message
+	 * @throws Exception the exception
+	 */
 	@Override
 	public void messageReceived(IoSession session, Object message) throws Exception
 	{
@@ -68,6 +113,11 @@ public abstract class DnsConnection extends IoHandlerAdapter
 	}
 
 
+	/**
+	 * Connect.
+	 *
+	 * @throws DnsClientConnectException the dns client connect exception
+	 */
 	public void connect() throws DnsClientConnectException
 	{
 		ConnectFuture connFuture = connector.connect(serverAddress);
@@ -91,11 +141,22 @@ public abstract class DnsConnection extends IoHandlerAdapter
 		}
 	}
 
+	/**
+	 * Checks if is connected.
+	 *
+	 * @return true, if is connected
+	 */
 	public boolean isConnected()
 	{
 		return dnsSession != null && dnsSession.isConnected();
 	}
 	
+	/**
+	 * Close.
+	 *
+	 * @param immediately the immediately
+	 * @return the close future
+	 */
 	public CloseFuture close(boolean immediately)
 	{
 		if (dnsSession == null)
@@ -115,12 +176,24 @@ public abstract class DnsConnection extends IoHandlerAdapter
 
 	
 	
+	/**
+	 * Send message.
+	 *
+	 * @param message the message
+	 * @return the write future
+	 */
 	public WriteFuture sendMessage(DnsMessage message)
 	{
 		return dnsSession.write(message);
 	}
 
 	
+	/**
+	 * Session closed.
+	 *
+	 * @param session the session
+	 * @throws Exception the exception
+	 */
 	@Override
 	public void sessionClosed(IoSession session) throws Exception
 	{
@@ -128,11 +201,21 @@ public abstract class DnsConnection extends IoHandlerAdapter
 		super.sessionClosed(session);
 	}
 	
+	/**
+	 * Gets the read bytes.
+	 *
+	 * @return the read bytes
+	 */
 	public long getReadBytes()
 	{
 		return dnsSession.getReadBytes();
 	}
 	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{

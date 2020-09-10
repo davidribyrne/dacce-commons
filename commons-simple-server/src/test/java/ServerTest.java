@@ -12,23 +12,48 @@ import space.dcce.commons.simpleServer.ThreadedWorker;
 import space.dcce.commons.simpleServer.Worker;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ServerTest.
+ */
 public class ServerTest extends Server
 {
+	
+	/**
+	 * Instantiates a new server test.
+	 *
+	 * @param hostAddress the host address
+	 * @param port the port
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public ServerTest(InetAddress hostAddress, int port) throws IOException
 	{
 		super(hostAddress, port);
 	}
 
 
+	/** The Constant logger. */
 	private final static Logger logger = LoggerFactory.getLogger(ServerTest.class);
 
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 * @throws UnknownHostException the unknown host exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void main(String[] args) throws UnknownHostException, IOException
 	{
 		new ServerTest(InetAddress.getLoopbackAddress(), 2063);
 	}
 
 
+	/**
+	 * Creates the worker.
+	 *
+	 * @return the worker
+	 */
 	@Override
 	protected Worker createWorker()
 	{

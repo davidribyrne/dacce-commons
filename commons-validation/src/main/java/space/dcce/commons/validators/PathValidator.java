@@ -5,25 +5,44 @@ import java.io.IOException;
 
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PathValidator.
+ */
 public class PathValidator implements Validator
 {
 
+	/** The state. */
 	public PathState state;
 
 
 
+	/**
+	 * Instantiates a new path validator.
+	 *
+	 * @param state the state
+	 */
 	public PathValidator(PathState state)
 	{
 		this.state = state;
 	}
 
 
+	/**
+	 * Instantiates a new path validator.
+	 */
 	public PathValidator()
 	{
 		state = new PathState();
 	}
 
 
+	/**
+	 * Validate.
+	 *
+	 * @param value the value
+	 * @throws ValidationException the validation exception
+	 */
 	@Override
 	public void validate(String value) throws ValidationException
 	{

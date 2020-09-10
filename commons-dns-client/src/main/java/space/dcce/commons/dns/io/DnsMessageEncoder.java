@@ -34,6 +34,7 @@ import space.dcce.commons.dns.messages.ResponseCode;
 import space.dcce.commons.dns.records.ResourceRecord;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * An encoder for DNS messages.  The primary usage of the DnsMessageEncoder is 
  * to call the <code>encode(ByteBuffer, DnsMessage)</code> method which will 
@@ -48,8 +49,8 @@ public class DnsMessageEncoder
     /**
      * Encodes the {@link DnsMessage} into the {@link IoBuffer}.
      *
-     * @param byteBuffer
-     * @param message
+     * @param byteBuffer the byte buffer
+     * @param message the message
      */
     public void encode( IoBuffer byteBuffer, DnsMessage message )
     {
@@ -83,6 +84,12 @@ public class DnsMessageEncoder
     }
 
 
+    /**
+     * Put question records.
+     *
+     * @param byteBuffer the byte buffer
+     * @param questions the questions
+     */
     private void putQuestionRecords( IoBuffer byteBuffer, List<QuestionRecord> questions )
     {
         if ( questions == null )
@@ -102,6 +109,12 @@ public class DnsMessageEncoder
     }
 
 
+    /**
+     * Put resource records.
+     *
+     * @param byteBuffer the byte buffer
+     * @param records the records
+     */
     private void putResourceRecords( IoBuffer byteBuffer, List<ResourceRecord> records )
     {
         if ( records == null )
@@ -119,6 +132,12 @@ public class DnsMessageEncoder
     }
 
 
+    /**
+     * Encode message type.
+     *
+     * @param messageType the message type
+     * @return the byte
+     */
     private byte encodeMessageType( MessageType messageType )
     {
         byte oneBit = ( byte ) ( messageType.convert() & 0x01 );
@@ -126,6 +145,12 @@ public class DnsMessageEncoder
     }
 
 
+    /**
+     * Encode op code.
+     *
+     * @param opCode the op code
+     * @return the byte
+     */
     private byte encodeOpCode( OpCode opCode )
     {
         byte fourBits = ( byte ) ( opCode.convert() & 0x0F );
@@ -133,6 +158,12 @@ public class DnsMessageEncoder
     }
 
 
+    /**
+     * Encode authoritative answer.
+     *
+     * @param authoritative the authoritative
+     * @return the byte
+     */
     private byte encodeAuthoritativeAnswer( boolean authoritative )
     {
         if ( authoritative )
@@ -143,6 +174,12 @@ public class DnsMessageEncoder
     }
 
 
+    /**
+     * Encode truncated.
+     *
+     * @param truncated the truncated
+     * @return the byte
+     */
     private byte encodeTruncated( boolean truncated )
     {
         if ( truncated )
@@ -153,6 +190,12 @@ public class DnsMessageEncoder
     }
 
 
+    /**
+     * Encode recursion desired.
+     *
+     * @param recursionDesired the recursion desired
+     * @return the byte
+     */
     private byte encodeRecursionDesired( boolean recursionDesired )
     {
         if ( recursionDesired )
@@ -163,6 +206,12 @@ public class DnsMessageEncoder
     }
 
 
+    /**
+     * Encode recursion available.
+     *
+     * @param recursionAvailable the recursion available
+     * @return the byte
+     */
     private byte encodeRecursionAvailable( boolean recursionAvailable )
     {
         if ( recursionAvailable )
@@ -173,6 +222,12 @@ public class DnsMessageEncoder
     }
 
 
+    /**
+     * Encode response code.
+     *
+     * @param responseCode the response code
+     * @return the byte
+     */
     private byte encodeResponseCode( ResponseCode responseCode )
     {
         return ( byte ) ( responseCode.convert() & 0x0F );

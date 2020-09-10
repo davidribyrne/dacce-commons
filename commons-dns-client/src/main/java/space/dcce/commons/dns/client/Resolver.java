@@ -27,21 +27,48 @@ import space.dcce.commons.general.UnexpectedException;
 import space.dcce.commons.netaddr.SimpleInetAddress;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Resolver.
+ */
 public class Resolver
 {
+	
+	/** The Constant logger. */
 	private final static Logger logger = LoggerFactory.getLogger(Resolver.class);
+
+/** The total request counter. */
 //	private final DnsClientPool clientPool;
 	private final EventCounter totalRequestCounter;
 
+	/** The cache. */
 	private DnsCache cache = new SimpleDnsCache();
+	
+	/** The response timeout. */
 	private long responseTimeout = 10000;
+	
+	/** The cache negative responses. */
 	private boolean cacheNegativeResponses = true;
+	
+	/** The max total requests per second. */
 	private int maxTotalRequestsPerSecond = 100;
+	
+	/** The max requests per server per second. */
 	private int maxRequestsPerServerPerSecond = 30;
+	
+	/** The Constant PUBLIC_DNS_SERVERS_FILE. */
 	private static final String PUBLIC_DNS_SERVERS_FILE = "/public_dns_servers.txt";
+	
+	/** The upstream servers. */
 	private final List<String> upstreamServers;
+	
+	/** The pad second request. */
 	private boolean padSecondRequest;
+	
+	/** The round robin. */
 	private boolean roundRobin = true;
+	
+	/** The round robin duplicate count. */
 	private int roundRobinDuplicateCount;
 	
 	/**
@@ -54,9 +81,11 @@ public class Resolver
 
 
 	/**
-	 * 
-	 * @param upstreamServers
+	 * Instantiates a new resolver.
+	 *
+	 * @param upstreamServers the upstream servers
 	 * @param padSecondRequest Makes the second request a throw-away to accommodate Google, et al
+	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public Resolver(List<String> upstreamServers, boolean padSecondRequest) throws IllegalArgumentException
 	{
@@ -70,6 +99,11 @@ public class Resolver
 	}
 	
 
+	/**
+	 * Creates the public servers resolver.
+	 *
+	 * @return the resolver
+	 */
 	public static Resolver createPublicServersResolver()
 	{
 		URL url = Resolver.class.getResource(PUBLIC_DNS_SERVERS_FILE);
@@ -88,6 +122,16 @@ public class Resolver
 	}
 
 
+	/**
+	 * Simple resolve.
+	 *
+	 * @param hostname the hostname
+	 * @param useCache the use cache
+	 * @return the list
+	 * @throws DnsResponseTimeoutException the dns response timeout exception
+	 * @throws DnsClientConnectException the dns client connect exception
+	 * @throws DnsNoRecordFoundException the dns no record found exception
+	 */
 	public List<SimpleInetAddress> simpleResolve(String hostname, boolean useCache) throws DnsResponseTimeoutException, DnsClientConnectException,
 			DnsNoRecordFoundException
 	{
@@ -106,6 +150,17 @@ public class Resolver
 	}
 
 
+	/**
+	 * Query.
+	 *
+	 * @param question the question
+	 * @param useCache the use cache
+	 * @param recurse the recurse
+	 * @return the list
+	 * @throws DnsClientConnectException the dns client connect exception
+	 * @throws DnsResponseTimeoutException the dns response timeout exception
+	 * @throws DnsNoRecordFoundException the dns no record found exception
+	 */
 	public List<ResourceRecord> query(QuestionRecord question, boolean useCache, boolean recurse) throws DnsClientConnectException,
 			DnsResponseTimeoutException, DnsNoRecordFoundException
 	{
@@ -123,14 +178,14 @@ public class Resolver
 
 
 	/**
-	 * If blocking, returns number of unanswered queries
-	 * @param transactions
-	 * @param useCache
-	 * @param recurse
-	 * @param block
-	 * @return
-	 * @throws DnsClientConnectException
-	 * @throws DnsResponseTimeoutException
+	 * If blocking, returns number of unanswered queries.
+	 *
+	 * @param transactions the transactions
+	 * @param useCache the use cache
+	 * @param block the block
+	 * @return the int
+	 * @throws DnsClientConnectException the dns client connect exception
+	 * @throws DnsResponseTimeoutException the dns response timeout exception
 	 */
 	public int bulkQuery(List<DnsTransaction> transactions, boolean useCache, boolean block) throws DnsClientConnectException, DnsResponseTimeoutException
 	{
@@ -208,6 +263,11 @@ public class Resolver
 	}
 
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{
@@ -221,9 +281,9 @@ public class Resolver
 
 
 	/**
-	 * In milliseconds
-	 * 
-	 * @return
+	 * In milliseconds.
+	 *
+	 * @return the response timeout
 	 */
 	public long getResponseTimeout()
 	{
@@ -232,7 +292,8 @@ public class Resolver
 
 
 	/**
-	 * 
+	 * Sets the response timeout.
+	 *
 	 * @param responseTimeout in milliseconds
 	 */
 	public void setResponseTimeout(long responseTimeout)
@@ -243,60 +304,110 @@ public class Resolver
 
 
 
+	/**
+	 * Checks if is cache negative responses.
+	 *
+	 * @return true, if is cache negative responses
+	 */
 	public boolean isCacheNegativeResponses()
 	{
 		return cacheNegativeResponses;
 	}
 
 
+	/**
+	 * Sets the cache negative responses.
+	 *
+	 * @param cacheNegativeResponses the new cache negative responses
+	 */
 	public void setCacheNegativeResponses(boolean cacheNegativeResponses)
 	{
 		this.cacheNegativeResponses = cacheNegativeResponses;
 	}
 
 
+	/**
+	 * Gets the max total requests per second.
+	 *
+	 * @return the max total requests per second
+	 */
 	public int getMaxTotalRequestsPerSecond()
 	{
 		return maxTotalRequestsPerSecond;
 	}
 
 
+	/**
+	 * Sets the max total requests per second.
+	 *
+	 * @param maxTotalRequestsPerSecond the new max total requests per second
+	 */
 	public void setMaxTotalRequestsPerSecond(int maxTotalRequestsPerSecond)
 	{
 		this.maxTotalRequestsPerSecond = maxTotalRequestsPerSecond;
 	}
 
 
+	/**
+	 * Gets the max requests per server per second.
+	 *
+	 * @return the max requests per server per second
+	 */
 	public int getMaxRequestsPerServerPerSecond()
 	{
 		return maxRequestsPerServerPerSecond;
 	}
 
 
+	/**
+	 * Sets the max requests per server per second.
+	 *
+	 * @param maxRequestsPerServerPerSecond the new max requests per server per second
+	 */
 	public void setMaxRequestsPerServerPerSecond(int maxRequestsPerServerPerSecond)
 	{
 		this.maxRequestsPerServerPerSecond = maxRequestsPerServerPerSecond;
 	}
 
 
+	/**
+	 * Checks if is round robin.
+	 *
+	 * @return true, if is round robin
+	 */
 	public boolean isRoundRobin()
 	{
 		return roundRobin;
 	}
 
 
+	/**
+	 * Sets the round robin.
+	 *
+	 * @param roundRobin the new round robin
+	 */
 	public void setRoundRobin(boolean roundRobin)
 	{
 		this.roundRobin = roundRobin;
 	}
 
 
+	/**
+	 * Gets the round robin duplicate count.
+	 *
+	 * @return the round robin duplicate count
+	 */
 	public int getRoundRobinDuplicateCount()
 	{
 		return roundRobinDuplicateCount;
 	}
 
 
+	/**
+	 * Sets the round robin duplicate count.
+	 *
+	 * @param roundRobinDuplicateCount the new round robin duplicate count
+	 */
 	public void setRoundRobinDuplicateCount(int roundRobinDuplicateCount)
 	{
 		if (roundRobinDuplicateCount > upstreamServers.size())
@@ -308,12 +419,22 @@ public class Resolver
 	}
 
 
+	/**
+	 * Gets the cache.
+	 *
+	 * @return the cache
+	 */
 	public DnsCache getCache()
 	{
 		return cache;
 	}
 
 
+	/**
+	 * Sets the cache.
+	 *
+	 * @param cache the new cache
+	 */
 	public void setCache(DnsCache cache)
 	{
 		this.cache = cache;

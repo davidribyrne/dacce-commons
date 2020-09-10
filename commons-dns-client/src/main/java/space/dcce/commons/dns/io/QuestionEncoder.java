@@ -29,16 +29,20 @@ import space.dcce.commons.dns.records.RecordType;
 import space.dcce.commons.general.StringUtils;
 
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class QuestionEncoder.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class QuestionEncoder
 {
+    
     /**
      * Encodes the {@link QuestionRecord} into the {@link IoBuffer}.
      *
-     * @param out
-     * @param question
+     * @param out the out
+     * @param question the question
      */
     public void put( IoBuffer out, QuestionRecord question )
     {
@@ -48,6 +52,12 @@ public class QuestionEncoder
     }
 
 
+    /**
+     * Encode domain name.
+     *
+     * @param byteBuffer the byte buffer
+     * @param domainName the domain name
+     */
     private void encodeDomainName( IoBuffer byteBuffer, String domainName )
     {
         if ( !StringUtils.isEmptyOrNull( domainName ) )
@@ -72,12 +82,24 @@ public class QuestionEncoder
     }
 
 
+    /**
+     * Encode record type.
+     *
+     * @param byteBuffer the byte buffer
+     * @param recordType the record type
+     */
     private void encodeRecordType( IoBuffer byteBuffer, RecordType recordType )
     {
         byteBuffer.putShort( recordType.convert() );
     }
 
 
+    /**
+     * Encode record class.
+     *
+     * @param byteBuffer the byte buffer
+     * @param recordClass the record class
+     */
     private void encodeRecordClass( IoBuffer byteBuffer, RecordClass recordClass )
     {
         byteBuffer.putShort( recordClass.convert() );

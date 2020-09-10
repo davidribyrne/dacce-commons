@@ -31,6 +31,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import space.dcce.commons.cli.exceptions.UnrecognizedOptionException;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * Main entry-point into the library.
  * <p>
@@ -39,12 +40,15 @@ import space.dcce.commons.cli.exceptions.UnrecognizedOptionException;
  * It may flexibly parse long and short options, with or without values. Additionally, it may parse only a portion of a
  * commandline, allowing for flexible multi-stage parsing.
  *
- * @see org.apache.commons.CommandLine.CommandLine
- *
  * @version $Id: Options.java 1685376 2015-06-14 09:51:59Z britter $
+ * see org.apache.commons.CommandLine.CommandLine
  */
 public class RootOptions extends OptionGroup implements Serializable
 {
+	
+	/**
+	 * Instantiates a new root options.
+	 */
 	public RootOptions()
 	{
 		super(null, "root", "root options");
@@ -56,12 +60,24 @@ public class RootOptions extends OptionGroup implements Serializable
 	private static final long serialVersionUID = 1L;
 
 
+	/** The required options. */
 	private final Set<OptionContainer> requiredOptions = new HashSet<OptionContainer>();
+	
+	/** The long opts. */
 	private final Map<String, Option> longOpts = new HashMap<String, Option>();
+	
+	/** The short opts. */
 	private final Map<String, Option> shortOpts = new HashMap<String, Option>();
+	
+	/** The all options. */
 	private final List<Option> allOptions = new ArrayList<Option>();
 
 	
+	/**
+	 * Clear values.
+	 *
+	 * @throws RuntimeException the runtime exception
+	 */
 	public void clearValues() throws RuntimeException
 	{
 		for (Option option : allOptions)
@@ -70,16 +86,35 @@ public class RootOptions extends OptionGroup implements Serializable
 		}
 	}
 
+	/**
+	 * Checks for short option.
+	 *
+	 * @param option the option
+	 * @return true, if successful
+	 */
 	public boolean hasShortOption(String option)
 	{
 		return shortOpts.containsKey(option);
 	}
 
+	/**
+	 * Checks for long option.
+	 *
+	 * @param option the option
+	 * @return true, if successful
+	 */
 	public boolean hasLongOption(String option)
 	{
 		return shortOpts.keySet().contains(option);
 	}
 
+	/**
+	 * Gets the option.
+	 *
+	 * @param s the s
+	 * @return the option
+	 * @throws UnrecognizedOptionException the unrecognized option exception
+	 */
 	Option getOption(String s) throws UnrecognizedOptionException
 	{
 		Option option;
@@ -96,6 +131,11 @@ public class RootOptions extends OptionGroup implements Serializable
 	}
 
 
+	/**
+	 * Process option.
+	 *
+	 * @param option the option
+	 */
 	protected void processOption(Option option)
 	{
 		if (option.hasLongOpt())
@@ -122,6 +162,11 @@ public class RootOptions extends OptionGroup implements Serializable
 	}
 
 
+	/**
+	 * Process group.
+	 *
+	 * @param group the group
+	 */
 	protected void processGroup(OptionGroup group)
 	{
 		
@@ -158,12 +203,22 @@ public class RootOptions extends OptionGroup implements Serializable
 	}
 
 
+	/**
+	 * Gets the required options.
+	 *
+	 * @return the required options
+	 */
 	public Collection<OptionContainer> getRequiredOptions()
 	{
 		return requiredOptions;
 	}
 
 
+	/**
+	 * Gets the all options.
+	 *
+	 * @return the all options
+	 */
 	public List<Option> getAllOptions()
 	{
 		return allOptions;

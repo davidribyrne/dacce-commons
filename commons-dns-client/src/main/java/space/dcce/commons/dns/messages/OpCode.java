@@ -25,37 +25,53 @@ import space.dcce.commons.general.EnumConverter;
 import space.dcce.commons.general.ReverseEnumMap;
 
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Enum OpCode.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public enum OpCode implements EnumConverter<Byte>
 {
-    /** Standard query */
+    
+    /**  Standard query. */
     QUERY(0),
 
-    /** Inverse query (obsolete) */
+    /**  Inverse query (obsolete). */
     IQUERY(1),
 
-    /** Server status request */
+    /**  Server status request. */
     STATUS(2),
 
-    /** Zone transfer notification */
+    /**  Zone transfer notification. */
     NOTIFY(4),
 
-    /** Dynamic update message */
+    /**  Dynamic update message. */
     UPDATE(5);
 
+    /** The map. */
     private static ReverseEnumMap<Byte, OpCode> map = new ReverseEnumMap<Byte, OpCode>( OpCode.class );
 
+    /** The value. */
     private final byte value;
 
 
+    /**
+     * Instantiates a new op code.
+     *
+     * @param value the value
+     */
     private OpCode( int value )
     {
         this.value = ( byte ) value;
     }
 
 
+    /**
+     * Convert.
+     *
+     * @return the byte
+     */
     public Byte convert()
     {
         return this.value;
@@ -65,7 +81,7 @@ public enum OpCode implements EnumConverter<Byte>
     /**
      * Converts an ordinal value into an {@link OpCode}.
      *
-     * @param value
+     * @param value the value
      * @return The {@link OpCode}.
      */
     public static OpCode convert( byte value )

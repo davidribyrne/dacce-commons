@@ -31,6 +31,7 @@ import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import space.dcce.commons.dns.io.DnsMessageDecoder;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * A ProtocolDecoder for use in the MINA framework that uses the 
  * DnsMessageDecoder to decode DnsMessages.
@@ -39,9 +40,19 @@ import space.dcce.commons.dns.io.DnsMessageDecoder;
  */
 public class DnsUdpDecoder extends ProtocolDecoderAdapter
 {
+    
+    /** The decoder. */
     private DnsMessageDecoder decoder = new DnsMessageDecoder();
 
 
+    /**
+     * Decode.
+     *
+     * @param session the session
+     * @param in the in
+     * @param out the out
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     public void decode( IoSession session, IoBuffer in, ProtocolDecoderOutput out ) throws IOException
     {
         out.write( decoder.decode( in ) );

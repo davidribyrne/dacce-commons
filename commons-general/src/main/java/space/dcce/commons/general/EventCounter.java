@@ -3,22 +3,32 @@ package space.dcce.commons.general;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+// TODO: Auto-generated Javadoc
 /**
- * Should be thread-safe
- * @author dbyrne
+ * Should be thread-safe.
  *
+ * @author dbyrne
  */
 public class EventCounter
 {
-	/** Length of time to monitor in ms */
+	
+	/**  Length of time to monitor in ms. */
 	private final long masterDuration;
+	
+	/** The events. */
 	private final LinkedList<Long> events;
+	
+	/** The smooth. */
 	private boolean smooth;
+	
+	/** The total count. */
 	private long totalCount;
 	
 	/**
-	 * 
+	 * Instantiates a new event counter.
+	 *
 	 * @param duration Length of time to monitor in ms
+	 * @param smooth the smooth
 	 */
 	public EventCounter(long duration, boolean smooth)
 	{
@@ -28,7 +38,7 @@ public class EventCounter
 	}
 
 	/**
-	 * Add an event that just happened
+	 * Add an event that just happened.
 	 */
 	public void trackEvent()
 	{
@@ -40,6 +50,9 @@ public class EventCounter
 		}
 	}
 	
+	/**
+	 * Purge.
+	 */
 	private void purge()
 	{
 		synchronized(events)
@@ -53,11 +66,24 @@ public class EventCounter
 		}
 	}
 	
+	/**
+	 * Wait for throttle.
+	 *
+	 * @param maxEvents the max events
+	 * @throws InterruptedException the interrupted exception
+	 */
 	public void waitForThrottle(int maxEvents) throws InterruptedException
 	{
 		waitForThrottle(maxEvents, 50);
 	}
 	
+	/**
+	 * Wait for throttle.
+	 *
+	 * @param maxEvents the max events
+	 * @param sleepIncrement the sleep increment
+	 * @throws InterruptedException the interrupted exception
+	 */
 	public void waitForThrottle(int maxEvents, int sleepIncrement) throws InterruptedException
 	{
 		Object o = new Object();
@@ -80,6 +106,12 @@ public class EventCounter
 		}
 	}
 	
+	/**
+	 * Gets the tracked event count.
+	 *
+	 * @param duration the duration
+	 * @return the tracked event count
+	 */
 	public int getTrackedEventCount(long duration)
 	{
 		int count = 0;
@@ -95,6 +127,11 @@ public class EventCounter
 		return count;
 	}
 
+	/**
+	 * Gets the total count.
+	 *
+	 * @return the total count
+	 */
 	public long getTotalCount()
 	{
 		return totalCount;

@@ -3,10 +3,23 @@ package space.dcce.commons.general;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CustomToStringStyle.
+ */
 public class CustomToStringStyle extends ToStringStyle
 {
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
+	/**
+	 * Instantiates a new custom to string style.
+	 */
 	public CustomToStringStyle()
 	{
 	}
@@ -37,13 +50,23 @@ public class CustomToStringStyle extends ToStringStyle
 //	}
 
 
-	@Override
+	/**
+ * Sets the use class name.
+ *
+ * @param useClassName the new use class name
+ */
+@Override
 	public void setUseClassName(boolean useClassName)
 	{
 		super.setUseClassName(useClassName);
 	}
 
 
+	/**
+	 * Sets the use short class name.
+	 *
+	 * @param useShortClassName the new use short class name
+	 */
 	@Override
 	public void setUseShortClassName(boolean useShortClassName)
 	{
@@ -51,6 +74,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the use identity hash code.
+	 *
+	 * @param useIdentityHashCode the new use identity hash code
+	 */
 	@Override
 	public void setUseIdentityHashCode(boolean useIdentityHashCode)
 	{
@@ -58,6 +86,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the use field names.
+	 *
+	 * @param useFieldNames the new use field names
+	 */
 	@Override
 	public void setUseFieldNames(boolean useFieldNames)
 	{
@@ -66,6 +99,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the default full detail.
+	 *
+	 * @param defaultFullDetail the new default full detail
+	 */
 	@Override
 	public void setDefaultFullDetail(boolean defaultFullDetail)
 	{
@@ -73,6 +111,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the array content detail.
+	 *
+	 * @param arrayContentDetail the new array content detail
+	 */
 	@Override
 	public void setArrayContentDetail(boolean arrayContentDetail)
 	{
@@ -80,6 +123,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the array start.
+	 *
+	 * @param arrayStart the new array start
+	 */
 	@Override
 	public void setArrayStart(String arrayStart)
 	{
@@ -87,6 +135,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the array end.
+	 *
+	 * @param arrayEnd the new array end
+	 */
 	@Override
 	public void setArrayEnd(String arrayEnd)
 	{
@@ -94,6 +147,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the array separator.
+	 *
+	 * @param arraySeparator the new array separator
+	 */
 	@Override
 	public void setArraySeparator(String arraySeparator)
 	{
@@ -101,6 +159,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the content start.
+	 *
+	 * @param contentStart the new content start
+	 */
 	@Override
 	public void setContentStart(String contentStart)
 	{
@@ -108,6 +171,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the content end.
+	 *
+	 * @param contentEnd the new content end
+	 */
 	@Override
 	public void setContentEnd(String contentEnd)
 	{
@@ -115,6 +183,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the field name value separator.
+	 *
+	 * @param fieldNameValueSeparator the new field name value separator
+	 */
 	@Override
 	public void setFieldNameValueSeparator(String fieldNameValueSeparator)
 	{
@@ -122,6 +195,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the field separator.
+	 *
+	 * @param fieldSeparator the new field separator
+	 */
 	@Override
 	public void setFieldSeparator(String fieldSeparator)
 	{
@@ -129,6 +207,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the field separator at start.
+	 *
+	 * @param fieldSeparatorAtStart the new field separator at start
+	 */
 	@Override
 	public void setFieldSeparatorAtStart(boolean fieldSeparatorAtStart)
 	{
@@ -136,6 +219,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the field separator at end.
+	 *
+	 * @param fieldSeparatorAtEnd the new field separator at end
+	 */
 	@Override
 	public void setFieldSeparatorAtEnd(boolean fieldSeparatorAtEnd)
 	{
@@ -143,6 +231,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the null text.
+	 *
+	 * @param nullText the new null text
+	 */
 	@Override
 	public void setNullText(String nullText)
 	{
@@ -150,6 +243,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the size start text.
+	 *
+	 * @param sizeStartText the new size start text
+	 */
 	@Override
 	public void setSizeStartText(String sizeStartText)
 	{
@@ -157,6 +255,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the size end text.
+	 *
+	 * @param sizeEndText the new size end text
+	 */
 	@Override
 	public void setSizeEndText(String sizeEndText)
 	{
@@ -164,6 +267,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the summary object start text.
+	 *
+	 * @param summaryObjectStartText the new summary object start text
+	 */
 	@Override
 	public void setSummaryObjectStartText(String summaryObjectStartText)
 	{
@@ -171,6 +279,11 @@ public class CustomToStringStyle extends ToStringStyle
 	}
 
 
+	/**
+	 * Sets the summary object end text.
+	 *
+	 * @param summaryObjectEndText the new summary object end text
+	 */
 	@Override
 	public void setSummaryObjectEndText(String summaryObjectEndText)
 	{

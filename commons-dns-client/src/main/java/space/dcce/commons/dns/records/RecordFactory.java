@@ -3,13 +3,30 @@ package space.dcce.commons.dns.records;
 import space.dcce.commons.dns.messages.RecordClass;
 import space.dcce.commons.general.NotImplementedException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating Record objects.
+ */
 public class RecordFactory
 {
 
+	/**
+	 * Instantiates a new record factory.
+	 */
 	private RecordFactory()
 	{
 	}
 	
+	/**
+	 * Make resource record.
+	 *
+	 * @param recordType the record type
+	 * @param domainName the domain name
+	 * @param recordClass the record class
+	 * @param timeToLive the time to live
+	 * @return the resource record
+	 * @throws NotImplementedException the not implemented exception
+	 */
 	public static ResourceRecord makeResourceRecord(RecordType recordType, String domainName, RecordClass recordClass, int timeToLive) throws NotImplementedException
 	{
 		

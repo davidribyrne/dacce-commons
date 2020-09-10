@@ -1,7 +1,19 @@
 package space.dcce.commons.general;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ArrayUtils.
+ */
 public class ArrayUtils
 {
+	
+	/**
+	 * Join.
+	 *
+	 * @param a the a
+	 * @param b the b
+	 * @return the byte[]
+	 */
 	static public byte[] join(byte[] a, byte[] b)
 	{
 		int aLen = a.length;
@@ -13,6 +25,13 @@ public class ArrayUtils
 	}
 
 
+	/**
+	 * Append.
+	 *
+	 * @param a the a
+	 * @param b the b
+	 * @return the byte[]
+	 */
 	static public byte[] append(byte[] a, byte b)
 	{
 		int aLen = a.length;

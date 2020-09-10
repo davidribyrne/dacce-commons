@@ -6,26 +6,31 @@ import java.util.Collections;
 import java.util.Comparator;
 
 
+// TODO: Auto-generated Javadoc
 /**
- * 
- * @author david
+ * The Class SortedList.
  *
- * @param <E>
- * 
- *            Comparator defaults to a case-insensitive sort on toString
+ * @author david
+ * @param <E>            Comparator defaults to a case-insensitive sort on toString
  */
 public class SortedList<E> extends ArrayList<E>
 {
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The comparator. */
 	private Comparator<E> comparator;
+	
+	/** The lock. */
 	private Object lock = new Object();
 
 
+	/**
+	 * Sets the comparator.
+	 *
+	 * @param comparator the new comparator
+	 */
 	public void setComparator(Comparator<E> comparator)
 	{
 		synchronized (lock)
@@ -35,24 +40,42 @@ public class SortedList<E> extends ArrayList<E>
 	}
 
 
+	/**
+	 * Instantiates a new sorted list.
+	 */
 	public SortedList()
 	{
 		this((Comparator<E>) null);
 	}
 
 
+	/**
+	 * Instantiates a new sorted list.
+	 *
+	 * @param c the c
+	 */
 	public SortedList(Collection<? extends E> c)
 	{
 		this(c, null);
 	}
 
 
+	/**
+	 * Instantiates a new sorted list.
+	 *
+	 * @param initialCapacity the initial capacity
+	 */
 	public SortedList(int initialCapacity)
 	{
 		this(initialCapacity, null);
 	}
 
 
+	/**
+	 * Instantiates a new sorted list.
+	 *
+	 * @param comparator the comparator
+	 */
 	public SortedList(Comparator<E> comparator)
 	{
 		super();
@@ -60,6 +83,12 @@ public class SortedList<E> extends ArrayList<E>
 	}
 
 
+	/**
+	 * Instantiates a new sorted list.
+	 *
+	 * @param c the c
+	 * @param comparator the comparator
+	 */
 	public SortedList(Collection<? extends E> c, Comparator<E> comparator)
 	{
 		super(c);
@@ -67,6 +96,12 @@ public class SortedList<E> extends ArrayList<E>
 	}
 
 
+	/**
+	 * Instantiates a new sorted list.
+	 *
+	 * @param initialCapacity the initial capacity
+	 * @param comparator the comparator
+	 */
 	public SortedList(int initialCapacity, Comparator<E> comparator)
 	{
 		super(initialCapacity);
@@ -74,6 +109,11 @@ public class SortedList<E> extends ArrayList<E>
 	}
 
 
+	/**
+	 * Inits the.
+	 *
+	 * @param comparator the comparator
+	 */
 	private void init(@SuppressWarnings("hiding") Comparator<E> comparator)
 	{
 		if (comparator != null)
@@ -119,6 +159,12 @@ public class SortedList<E> extends ArrayList<E>
 	}
 
 
+	/**
+	 * Adds the.
+	 *
+	 * @param e the e
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean add(E e)
 	{
@@ -132,7 +178,10 @@ public class SortedList<E> extends ArrayList<E>
 
 
 	/**
-	 * Index is effectively ignored since the list will be re-sorted
+	 * Index is effectively ignored since the list will be re-sorted.
+	 *
+	 * @param index the index
+	 * @param element the element
 	 */
 	@Override
 	public void add(int index, E element)
@@ -145,6 +194,12 @@ public class SortedList<E> extends ArrayList<E>
 	}
 
 
+	/**
+	 * Adds the all.
+	 *
+	 * @param c the c
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean addAll(Collection<? extends E> c)
 	{
@@ -158,7 +213,11 @@ public class SortedList<E> extends ArrayList<E>
 
 
 	/**
-	 * Index is effectively ignored since the list will be re-sorted
+	 * Index is effectively ignored since the list will be re-sorted.
+	 *
+	 * @param index the index
+	 * @param c the c
+	 * @return true, if successful
 	 */
 	@Override
 	public boolean addAll(int index, Collection<? extends E> c)

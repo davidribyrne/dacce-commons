@@ -28,6 +28,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import space.dcce.commons.dns.records.RecordType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * The question section is used to carry the "question" in most queries,
  * i.e., the parameters that define what is being asked.  The section
@@ -75,9 +76,9 @@ public class QuestionRecord
      * Creates a new instance of QuestionRecord. You probably don't want to use this since recordClass
      * should always be IN
      *
-     * @param domainName
-     * @param recordType
-     * @param recordClass
+     * @param domainName the domain name
+     * @param recordType the record type
+     * @param recordClass the record class
      */
     public QuestionRecord( String domainName, RecordType recordType, RecordClass recordClass )
     {
@@ -89,8 +90,8 @@ public class QuestionRecord
     /**
      * Creates a new instance of QuestionRecord with IN class.
      *
-     * @param domainName
-     * @param recordType
+     * @param domainName the domain name
+     * @param recordType the record type
      */
     public QuestionRecord( String domainName, RecordType recordType )
     {
@@ -134,6 +135,10 @@ public class QuestionRecord
 
 
     /**
+     * Equals.
+     *
+     * @param object the object
+     * @return true, if successful
      * @see java.lang.Object#equals(Object)
      */
     public boolean equals( Object object )
@@ -153,8 +158,10 @@ public class QuestionRecord
 
 
     /**
+     * Hash code.
+     *
+     * @return the instance's hash code
      * @see java.lang.Object#hashCode()
-     * @return the instance's hash code 
      */
     public int hashCode()
     {
@@ -164,6 +171,9 @@ public class QuestionRecord
 
 
     /**
+     * To string.
+     *
+     * @return the string
      * @see java.lang.Object#toString()
      */
     public String toString()

@@ -14,6 +14,7 @@ import org.apache.commons.io.IOUtils;
 import space.dcce.commons.general.FileUtils;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * Based on regdom4j
  * https://github.com/hamano/regdom4j/
@@ -23,13 +24,26 @@ import space.dcce.commons.general.FileUtils;
  */
 public class PublicSuffixList
 {
+	
+	/** The Constant DEFAULT_PATH. */
 	private final static String DEFAULT_PATH = "/public_suffix_list.dat";
+	
+	/** The Constant instance. */
 	private final static PublicSuffixList instance = new PublicSuffixList();
 
+	/** The loaded. */
 	private boolean loaded;
+	
+	/** The tree. */
 	private Map<String, Map<String, ?>> tree;
 
 
+	/**
+	 * Instantiates a new public suffix list.
+	 *
+	 * @param path the path
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public PublicSuffixList(String path) throws IOException
 	{
 		loadList(path, false);
@@ -37,12 +51,21 @@ public class PublicSuffixList
 	}
 
 
+	/**
+	 * Instantiates a new public suffix list.
+	 */
 	private PublicSuffixList()
 	{
 
 	}
 
 
+	/**
+	 * Gets the default list.
+	 *
+	 * @return the default list
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static PublicSuffixList getDefaultList() throws IOException
 	{
 		synchronized (instance)
@@ -57,6 +80,13 @@ public class PublicSuffixList
 	}
 
 
+	/**
+	 * Load list.
+	 *
+	 * @param path the path
+	 * @param resource the resource
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void loadList(String path, boolean resource) throws IOException
 	{
 		List<String> lines;
@@ -89,6 +119,12 @@ public class PublicSuffixList
 	}
 
 
+	/**
+	 * Gets the registered domain.
+	 *
+	 * @param fqdn the fqdn
+	 * @return the registered domain
+	 */
 	public String getRegisteredDomain(String fqdn)
 	{
 		List<String> list = Arrays.asList(fqdn.split("\\."));
@@ -98,6 +134,13 @@ public class PublicSuffixList
 	}
 
 
+	/**
+	 * Find registered domain.
+	 *
+	 * @param parts the parts
+	 * @param node the node
+	 * @return the string
+	 */
 	@SuppressWarnings("unchecked")
 	private String findRegisteredDomain(LinkedList<String> parts,
 			Map<String, Map<String, ?>> node)
@@ -139,6 +182,12 @@ public class PublicSuffixList
 	}
 
 
+	/**
+	 * Builds the subdomain.
+	 *
+	 * @param node the node
+	 * @param parts the parts
+	 */
 	private void buildSubdomain(Map<String, Map<String, ?>> node,
 			LinkedList<String> parts)
 	{

@@ -26,6 +26,7 @@ import space.dcce.commons.cli.exceptions.ParseException;
 import space.dcce.commons.cli.exceptions.UnrecognizedOptionException;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * Default parser.
  *
@@ -35,14 +36,15 @@ import space.dcce.commons.cli.exceptions.UnrecognizedOptionException;
 public class GnuParser
 {
 
+	/** The remaining arguments. */
 	private final Collection<String> remainingArguments = new ArrayList<String>();
 
 	/** The current options. */
 	protected RootOptions options;
 
 	/**
-	 * Flag indicating how unrecognized tokens are handled. <tt>true</tt> to stop
-	 * the parsing and add the remaining tokens to the args list. <tt>false</tt> to throw an exception.
+	 * Flag indicating how unrecognized tokens are handled. <code>true</code> to stop
+	 * the parsing and add the remaining tokens to the args list. <code>false</code> to throw an exception.
 	 */
 	protected boolean stopAtNonOption;
 
@@ -59,6 +61,12 @@ public class GnuParser
 	protected Collection<OptionContainer> expectedOpts;
 
 
+	/**
+	 * Instantiates a new gnu parser.
+	 *
+	 * @param options the options
+	 * @param stopAtNonOption the stop at non option
+	 */
 	private GnuParser(RootOptions options, boolean stopAtNonOption)
 	{
 		this.options = options;
@@ -69,6 +77,13 @@ public class GnuParser
 	}
 
 
+	/**
+	 * Parses the.
+	 *
+	 * @param args the args
+	 * @return the collection
+	 * @throws ParseException the parse exception
+	 */
 	private Collection<String> parse(String[] args) throws ParseException
 	{
 		options.clearValues();
@@ -87,6 +102,15 @@ public class GnuParser
 	}
 
 
+	/**
+	 * Parses the.
+	 *
+	 * @param options the options
+	 * @param args the args
+	 * @param stopAtNonOption the stop at non option
+	 * @return the collection
+	 * @throws ParseException the parse exception
+	 */
 	public static Collection<String> parse(RootOptions options, String[] args, boolean stopAtNonOption)
 			throws ParseException
 	{
@@ -116,6 +140,8 @@ public class GnuParser
 	/**
 	 * Throw a {@link MissingArgumentException} if the current option
 	 * didn't receive the number of arguments expected.
+	 *
+	 * @throws ParseException the parse exception
 	 */
 	private void checkRequiredArgs() throws ParseException
 	{
@@ -128,9 +154,9 @@ public class GnuParser
 
 	/**
 	 * Signal call to an option with an optional parameter when we detect
-	 * that we're moving on to a different option
-	 * 
-	 * @throws ParseException
+	 * that we're moving on to a different option.
+	 *
+	 * @throws ParseException the parse exception
 	 */
 	private void closeoutCurrentOption() throws ParseException
 	{
@@ -144,9 +170,8 @@ public class GnuParser
 	/**
 	 * Handle any command line token.
 	 *
-	 * @param token
-	 *            the command line token to handle
-	 * @throws ParseException
+	 * @param token            the command line token to handle
+	 * @throws ParseException the parse exception
 	 */
 	private void handleToken(String token) throws ParseException
 	{
@@ -191,7 +216,8 @@ public class GnuParser
 	/**
 	 * Returns true is the token is a valid argument.
 	 *
-	 * @param token
+	 * @param token the token
+	 * @return true, if is argument
 	 */
 	private boolean isArgument(String token)
 	{
@@ -202,7 +228,8 @@ public class GnuParser
 	/**
 	 * Check if the token is a negative number.
 	 *
-	 * @param token
+	 * @param token the token
+	 * @return true, if is negative number
 	 */
 	private boolean isNegativeNumber(String token)
 	{
@@ -221,7 +248,8 @@ public class GnuParser
 	/**
 	 * Tells if the token looks like an option.
 	 *
-	 * @param token
+	 * @param token the token
+	 * @return true, if is option
 	 */
 	private boolean isOption(String token)
 	{
@@ -232,7 +260,8 @@ public class GnuParser
 	/**
 	 * Tells if the token looks like a short option.
 	 *
-	 * @param token
+	 * @param token the token
+	 * @return true, if is short option cluster
 	 */
 	private boolean isShortOptionCluster(String token)
 	{
@@ -246,7 +275,8 @@ public class GnuParser
 	/**
 	 * Tells if the token looks like a long option.
 	 *
-	 * @param token
+	 * @param token the token
+	 * @return true, if is long option
 	 */
 	private boolean isLongOption(String token)
 	{
@@ -275,8 +305,8 @@ public class GnuParser
 	 * is set, this stops the parsing and the remaining tokens are added
 	 * as-is in the arguments of the command line.
 	 *
-	 * @param token
-	 *            the command line token to handle
+	 * @param token            the command line token to handle
+	 * @throws ParseException the parse exception
 	 */
 	private void handleUnknownToken(String token) throws ParseException
 	{
@@ -295,14 +325,14 @@ public class GnuParser
 
 	/**
 	 * Handles the following tokens:
-	 *
+	 * 
 	 * --L
 	 * --L=V
 	 * --L V
-	 * --l
+	 * --l.
 	 *
-	 * @param token
-	 *            the command line token to handle
+	 * @param token            the command line token to handle
+	 * @throws ParseException the parse exception
 	 */
 	private void handleLongOption(String token) throws ParseException
 	{
@@ -319,14 +349,14 @@ public class GnuParser
 
 	/**
 	 * Handles the following tokens:
-	 *
+	 * 
 	 * --L=V
 	 * -L=V
 	 * --l=V
-	 * -l=V
+	 * -l=V.
 	 *
-	 * @param token
-	 *            the command line token to handle
+	 * @param token            the command line token to handle
+	 * @throws ParseException the parse exception
 	 */
 	private void handleLongOptionWithEqual(String token) throws ParseException
 	{
@@ -349,6 +379,13 @@ public class GnuParser
 	}
 
 
+	/**
+	 * Handle short option cluster.
+	 *
+	 * @param token the token
+	 * @throws UnrecognizedOptionException the unrecognized option exception
+	 * @throws ParseException the parse exception
+	 */
 	private void handleShortOptionCluster(String token) throws UnrecognizedOptionException, ParseException
 	{
 		for (int i = 0; i < token.length(); i++)
@@ -359,7 +396,10 @@ public class GnuParser
 			{
 				if (i < token.length())
 				{
-					shortOption.addValue(token.substring(i + 1));
+					String value = null;
+					if (token.length() > 1)
+						value = token.substring(i + 1);
+					shortOption.addValue(value);
 				}
 				else
 				{
@@ -371,6 +411,12 @@ public class GnuParser
 	}
 
 
+	/**
+	 * Handle option.
+	 *
+	 * @param option the option
+	 * @throws ParseException the parse exception
+	 */
 	private void handleOption(Option option) throws ParseException
 	{
 		// check the previous option before handling the next one
@@ -393,7 +439,7 @@ public class GnuParser
 	/**
 	 * Removes the option or its group from the list of expected elements.
 	 *
-	 * @param option
+	 * @param option the option
 	 */
 	private void updateRequiredOptions(Option option)
 	{

@@ -1,13 +1,28 @@
 package space.dcce.commons.validators;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NumericValidator.
+ */
 public class NumericValidator implements Validator
 {
 
+	/** The floating. */
 	private boolean floating;
+	
+	/** The max. */
 	private double max;
+	
+	/** The min. */
 	private double min;
 
+	/**
+	 * Validate.
+	 *
+	 * @param value the value
+	 * @throws ValidationException the validation exception
+	 */
 	public void validate(String value) throws ValidationException
 	{
 		double d;
@@ -34,6 +49,13 @@ public class NumericValidator implements Validator
 	}
 
 
+	/**
+	 * Instantiates a new numeric validator.
+	 *
+	 * @param floating the floating
+	 * @param min the min
+	 * @param max the max
+	 */
 	public NumericValidator(boolean floating, double min, double max)
 	{
 		this.floating = floating;

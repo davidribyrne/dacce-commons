@@ -12,22 +12,46 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MapOfLists.
+ *
+ * @param <Key> the generic type
+ * @param <Value> the generic type
+ */
 public class MapOfLists<Key, Value>
 {
+	
+	/** The Constant logger. */
 	final static Logger logger = LoggerFactory.getLogger(MapOfLists.class);
+	
+	/** The map. */
 	private final Map<Key, List<Value>> map;
 
 
+	/**
+	 * Instantiates a new map of lists.
+	 */
 	public MapOfLists()
 	{
 		map = new HashMap<Key, List<Value>>();
 	}
 
+	/**
+	 * Instantiates a new map of lists.
+	 *
+	 * @param initialMapSize the initial map size
+	 */
 	public MapOfLists(int initialMapSize)
 	{
 		map = new HashMap<Key, List<Value>>(initialMapSize);
 	}
 
+	/**
+	 * Seed keys.
+	 *
+	 * @param keys the keys
+	 */
 	public void seedKeys(Key[] keys)
 	{
 		for (Key key: keys)
@@ -36,6 +60,12 @@ public class MapOfLists<Key, Value>
 		}
 	}
 
+	/**
+	 * Gets the.
+	 *
+	 * @param key the key
+	 * @return the list
+	 */
 	public List<Value> get(Key key)
 	{
 		List<Value> list;
@@ -52,12 +82,24 @@ public class MapOfLists<Key, Value>
 	}
 
 
+	/**
+	 * Put.
+	 *
+	 * @param key the key
+	 * @param value the value
+	 */
 	public void put(Key key, Value value)
 	{
 		get(key).add(value);
 	}
 
 
+	/**
+	 * Put all.
+	 *
+	 * @param key the key
+	 * @param values the values
+	 */
 	public void putAll(Key key, Iterable<Value> values)
 	{
 		List<Value> list;
@@ -76,6 +118,11 @@ public class MapOfLists<Key, Value>
 		}
 	}
 
+	/**
+	 * Unmodifiable map of lists.
+	 *
+	 * @return the map
+	 */
 	public Map<Key, List<Value>> unmodifiableMapOfLists()
 	{
 		Map<Key, List<Value>> tmpMap = new HashMap<Key, List<Value>>(map.size());
@@ -86,11 +133,21 @@ public class MapOfLists<Key, Value>
 		return Collections.unmodifiableMap(tmpMap);
 	}
 
+	/**
+	 * Key set.
+	 *
+	 * @return the sets the
+	 */
 	public Set<Key> keySet()
 	{
 		return Collections.unmodifiableSet(map.keySet());
 	}
 
+	/**
+	 * Values.
+	 *
+	 * @return the collection
+	 */
 	public Collection<List<Value>> values()
 	{
 		return Collections.unmodifiableCollection(map.values());

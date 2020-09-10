@@ -8,19 +8,42 @@ import space.dcce.commons.general.Range;
 import space.dcce.commons.general.RangeSet;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Addresses.
+ */
 public class Addresses
 {
+	
+	/** The ranges. */
 	private RangeSet ranges;
+	
+	/** The all addresses. */
 	private long[] allAddresses = null;
+	
+	/** The changed. */
 	private boolean changed;
+	
+	/** The name. */
 	private final String name;
 
+	/**
+	 * Instantiates a new addresses.
+	 *
+	 * @param name the name
+	 */
 	public Addresses(String name)
 	{
 		this(name, new RangeSet(name));
 	}
 
 
+	/**
+	 * Instantiates a new addresses.
+	 *
+	 * @param name the name
+	 * @param ranges the ranges
+	 */
 	private Addresses(String name, RangeSet ranges)
 	{
 		this.ranges = ranges;
@@ -28,6 +51,11 @@ public class Addresses
 	}
 
 
+	/**
+	 * Adds the.
+	 *
+	 * @param address the address
+	 */
 	public void add(SimpleInet4Address address)
 	{
 		changed = true;
@@ -35,6 +63,12 @@ public class Addresses
 	}
 
 
+	/**
+	 * Adds the.
+	 *
+	 * @param range the range
+	 * @throws InvalidIPAddressFormatException the invalid IP address format exception
+	 */
 	@SuppressWarnings("unchecked")
 	public void add(String range) throws InvalidIPAddressFormatException
 	{
@@ -43,12 +77,23 @@ public class Addresses
 	}
 
 
+	/**
+	 * Contains.
+	 *
+	 * @param address the address
+	 * @return true, if successful
+	 */
 	public boolean contains(SimpleInet4Address address)
 	{
 		return ranges.contains(address.toLong());
 	}
 
 
+	/**
+	 * Gets the CIDR list.
+	 *
+	 * @return the CIDR list
+	 */
 	public List<String> getCIDRList()
 	{
 		List<String> cidrs = new ArrayList<String>();
@@ -59,12 +104,23 @@ public class Addresses
 		return cidrs;
 	}
 
+	/**
+	 * Gets the CIDR list.
+	 *
+	 * @param delimiter the delimiter
+	 * @return the CIDR list
+	 */
 	public String getCIDRList(String delimiter)
 	{
 		return CollectionUtils.joinObjects(delimiter, getCIDRList());
 	}
 
 
+	/**
+	 * Gets the all addresses.
+	 *
+	 * @return the all addresses
+	 */
 	public synchronized long[] getAllAddresses()
 	{
 		if (changed)
@@ -84,36 +140,69 @@ public class Addresses
 	}
 
 
+	/**
+	 * Complement.
+	 *
+	 * @return the addresses
+	 */
 	public Addresses complement()
 	{
 		return new Addresses("Complement of " + name, ranges.complement());
 	}
 
 
+	/**
+	 * Difference.
+	 *
+	 * @param target the target
+	 * @return the addresses
+	 */
 	public Addresses difference(Addresses target)
 	{
 		return new Addresses("Difference of " + name + " and " + target.name, ranges.difference(target.ranges));
 	}
 
 
+	/**
+	 * Intersection.
+	 *
+	 * @param target the target
+	 * @return the addresses
+	 */
 	public Addresses intersection(Addresses target)
 	{
 		return new Addresses("Intersection of " + name + " and " + target.name, ranges.intersection(target.ranges));
 	}
 
 
+	/**
+	 * Adds the.
+	 *
+	 * @param range the range
+	 */
 	public void add(Range range)
 	{
 		ranges.add(range);
 	}
 
 
+	/**
+	 * Checks if is empty.
+	 *
+	 * @return true, if is empty
+	 */
 	public boolean isEmpty()
 	{
 		return ranges.isEmpty();
 	}
 
 
+	/**
+	 * Ranges to I ps.
+	 *
+	 * @param ranges the ranges
+	 * @return the string
+	 */
 	private static String rangesToIPs(List<Range> ranges)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -136,6 +225,12 @@ public class Addresses
 	}
 
 
+	/**
+	 * To string.
+	 *
+	 * @param includeCombined the include combined
+	 * @return the string
+	 */
 	public String toString(boolean includeCombined)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -149,6 +244,11 @@ public class Addresses
 	}
 
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{

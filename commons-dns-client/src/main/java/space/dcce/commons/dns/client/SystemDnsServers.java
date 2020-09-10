@@ -19,11 +19,22 @@ import org.slf4j.LoggerFactory;
 import space.dcce.commons.general.UniqueList;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SystemDnsServers.
+ */
 public class SystemDnsServers
 {
+	
+	/** The Constant logger. */
 	private final static Logger logger = LoggerFactory.getLogger(SystemDnsServers.class);
 
 
+	/**
+	 * Gets the system dns servers.
+	 *
+	 * @return the system dns servers
+	 */
 	static public List<String> getSystemDnsServers()
 	{
 		List<String> servers = new UniqueList<String>(false);
@@ -70,6 +81,8 @@ public class SystemDnsServers
 	 * Parses the output of getprop, which is the only way to get DNS
 	 * info on Android. getprop might disappear in future releases, so
 	 * this code comes with a use-by date.
+	 *
+	 * @param servers the servers
 	 */
 	private static void findAndroid(List<String> servers)
 	{
@@ -108,7 +121,9 @@ public class SystemDnsServers
 	 * Looks in /etc/resolv.conf to find servers and a search path.
 	 * "nameserver" lines specify servers. "domain" and "search" lines
 	 * define the search path.
-	 * @throws IOException 
+	 *
+	 * @param file the file
+	 * @param servers the servers
 	 */
 	private static void findResolvConf(String file, List<String> servers)
 	{
@@ -146,54 +161,78 @@ public class SystemDnsServers
 	}
 
 
+	/**
+	 * Find unix.
+	 *
+	 * @param servers the servers
+	 */
 	private static void findUnix(List<String> servers) 
 	{
 		findResolvConf("/etc/resolv.conf", servers);
 	}
 
 
+	/**
+	 * Find netware.
+	 *
+	 * @param servers the servers
+	 */
 	private static void findNetware(List<String> servers)
 	{
 		findResolvConf("sys:/etc/resolv.cfg", servers);
 	}
 
 
-	// Derived from dnsjava
-	private static void getJvmDnsServers(List<String> servers)
-	{
-		try
-		{
-			Class<?> resConfClass = Class.forName("sun.net.dns.ResolverConfiguration");
+//	/**
+//	 * Gets the jvm dns servers.
+//	 *
+//	 * @param servers the servers
+//	 * @return the jvm dns servers
+//	 */
+//	// Derived from dnsjava
+//	private static void getJvmDnsServers(List<String> servers)
+//	{
+//		try
+//		{
+//			Class<?> resConfClass = Class.forName("sun.net.dns.ResolverConfiguration");
+//
+//			Object resConf;
+//			Class<?>[] noClasses = new Class[0];
+//			Object[] noObjects = new Object[0];
+//
+//			// ResolverConfiguration resConf = ResolverConfiguration.open();
+//			Method open = resConfClass.getDeclaredMethod("open", noClasses);
+//			resConf = open.invoke(null, noObjects);
+//
+//			// lserver_tmp = resConf.nameservers();
+//			Method nameservers = resConfClass.getMethod("nameservers",
+//					noClasses);
+//			List<String> s = (List<String>) nameservers.invoke(resConf, noObjects);
+//			if (s != null && !s.isEmpty())
+//				servers.addAll(s);
+//		}
+//		catch (Exception e)
+//		{
+//			logger.debug("Failed to get DNS configuration from JVM: " + e.getLocalizedMessage(), e);
+//		}
+//	}
 
-			Object resConf;
-			Class<?>[] noClasses = new Class[0];
-			Object[] noObjects = new Object[0];
-
-			// ResolverConfiguration resConf = ResolverConfiguration.open();
-			Method open = resConfClass.getDeclaredMethod("open", noClasses);
-			resConf = open.invoke(null, noObjects);
-
-			// lserver_tmp = resConf.nameservers();
-			Method nameservers = resConfClass.getMethod("nameservers",
-					noClasses);
-			List<String> s = (List<String>) nameservers.invoke(resConf, noObjects);
-			if (s != null && !s.isEmpty())
-				servers.addAll(s);
-		}
-		catch (Exception e)
-		{
-			logger.debug("Failed to get DNS configuration from JVM: " + e.getLocalizedMessage(), e);
-		}
-	}
-
+	/** The Constant dnsLanguages. */
 	// English, Polish, Japanese, French, and German
 	private static final String dnsLanguages = "(?:DNS Servers|Serwery DNS|DNS \u30b5\u30fc\u30d0\u30fc|Serveurs DNS|DNS-Server)";
 	
+	/** The Constant ip4or6Address. */
 	private static final String ip4or6Address = 								
 			"(?:\\d{1,3}\\.){3}\\d{1,3}" // IPv4 address
 			+ "|" // or
 			+ "(?:[0-9a-f]{0,4}:){5,7}[0-9a-f]{0,4}(?:%\\d)?"; // IPv6 address
 	
+	/**
+	 * Parses the windows output.
+	 *
+	 * @param servers the servers
+	 * @param output the output
+	 */
 	private static void parseWindowsOutput(List<String> servers, String output)
 	{
 		String pstring = dnsLanguages + "[ \\.]+: "
@@ -218,6 +257,11 @@ public class SystemDnsServers
 		}
 	}
 
+	/**
+	 * Find win nt.
+	 *
+	 * @param servers the servers
+	 */
 	private static void findWinNt(List<String> servers)
 	{
 		try
@@ -246,7 +290,10 @@ public class SystemDnsServers
 
 
 	
-	private SystemDnsServers()
+	/**
+ * Instantiates a new system dns servers.
+ */
+private SystemDnsServers()
 	{
 	}
 }

@@ -9,10 +9,21 @@ import space.dcce.commons.dns.io.DnsDecodingUtils;
 import space.dcce.commons.dns.io.DnsEncodingUtils;
 import space.dcce.commons.dns.messages.RecordClass;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AbstractStringRecord.
+ */
 public abstract class AbstractStringRecord extends ResourceRecord
 {
+	
+	/** The data. */
 	private String data;
 
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int hashCode()
 	{
@@ -20,6 +31,12 @@ public abstract class AbstractStringRecord extends ResourceRecord
 	}
 
 
+	/**
+	 * Equals.
+	 *
+	 * @param obj the obj
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -32,6 +49,11 @@ public abstract class AbstractStringRecord extends ResourceRecord
 		return new EqualsBuilder().appendSuper(super.equals(obj)).append(a.data, data).isEquals();
 	}
 	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{
@@ -39,12 +61,26 @@ public abstract class AbstractStringRecord extends ResourceRecord
 	}
 
 
+	/**
+	 * Instantiates a new abstract string record.
+	 *
+	 * @param domainName the domain name
+	 * @param recordType the record type
+	 * @param recordClass the record class
+	 * @param timeToLive the time to live
+	 */
 	public AbstractStringRecord(String domainName, RecordType recordType, RecordClass recordClass, int timeToLive)
 	{
 		super(domainName, recordType, recordClass, timeToLive);
 	}
 
 
+	/**
+	 * Decode data.
+	 *
+	 * @param byteBuffer the byte buffer
+	 * @param length the length
+	 */
 	@Override
 	public void decodeData(IoBuffer byteBuffer, short length)
 	{
@@ -52,6 +88,11 @@ public abstract class AbstractStringRecord extends ResourceRecord
 	}
 
 
+	/**
+	 * Encode data.
+	 *
+	 * @param byteBuffer the byte buffer
+	 */
 	@Override
 	protected void encodeData(IoBuffer byteBuffer)
 	{
@@ -59,12 +100,22 @@ public abstract class AbstractStringRecord extends ResourceRecord
 	}
 
 
+	/**
+	 * Gets the data.
+	 *
+	 * @return the data
+	 */
 	public String getData()
 	{
 		return data;
 	}
 
 
+	/**
+	 * Sets the data.
+	 *
+	 * @param data the new data
+	 */
 	public void setData(String data)
 	{
 		this.data = data;

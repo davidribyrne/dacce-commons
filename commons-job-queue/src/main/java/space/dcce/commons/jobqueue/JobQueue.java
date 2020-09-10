@@ -9,15 +9,30 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JobQueue.
+ */
 public class JobQueue implements BlockingQueue<Runnable>
 {
+	
+	/** The jobs. */
 	private final List<Job> jobs;
 
+	/**
+	 * Instantiates a new job queue.
+	 */
 	public JobQueue()
 	{
 		jobs = new ArrayList<Job>();
 	}
 
+	/**
+	 * Unsynched get next job.
+	 *
+	 * @param remove the remove
+	 * @return the job
+	 */
 	private Job unsynchedGetNextJob(boolean remove)
 	{
 		Job currentCandidate = null;
@@ -31,11 +46,24 @@ public class JobQueue implements BlockingQueue<Runnable>
 		return currentCandidate;
 	}
 
+	/**
+	 * Checks if is job ready.
+	 *
+	 * @param job the job
+	 * @return true, if is job ready
+	 */
 	private boolean isJobReady(Job job)
 	{
 		return checkPrerequisites(job.getHardPrerequisites(), true) && checkPrerequisites(job.getSoftPrerequisites(), false);
 	}
 
+	/**
+	 * Check prerequisites.
+	 *
+	 * @param prerequisites the prerequisites
+	 * @param hard the hard
+	 * @return true, if successful
+	 */
 	private boolean checkPrerequisites(List<Job> prerequisites, boolean hard)
 	{
 		if (prerequisites == null || prerequisites.isEmpty())
@@ -54,6 +82,12 @@ public class JobQueue implements BlockingQueue<Runnable>
 	}
 
 
+	/**
+	 * Removes the.
+	 *
+	 * @return the job
+	 * @throws NoSuchElementException the no such element exception
+	 */
 	@Override
 	public Job remove() throws NoSuchElementException
 	{
@@ -66,6 +100,11 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Poll.
+	 *
+	 * @return the job
+	 */
 	@Override
 	public Job poll()
 	{
@@ -75,6 +114,12 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Element.
+	 *
+	 * @return the job
+	 * @throws NoSuchElementException the no such element exception
+	 */
 	@Override
 	public Job element() throws NoSuchElementException
 	{
@@ -87,6 +132,11 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Peek.
+	 *
+	 * @return the job
+	 */
 	@Override
 	public Job peek()
 	{
@@ -96,6 +146,11 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Size.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int size()
 	{
@@ -105,6 +160,11 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Checks if is empty.
+	 *
+	 * @return true, if is empty
+	 */
 	@Override
 	public boolean isEmpty()
 	{
@@ -115,6 +175,11 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Iterator.
+	 *
+	 * @return the iterator
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Iterator iterator()
@@ -125,6 +190,11 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * To array.
+	 *
+	 * @return the object[]
+	 */
 	@Override
 	public Object[] toArray()
 	{
@@ -134,6 +204,13 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * To array.
+	 *
+	 * @param <T> the generic type
+	 * @param a the a
+	 * @return the t[]
+	 */
 	@Override
 	public <T> T[] toArray(T[] a)
 	{
@@ -143,6 +220,12 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Contains all.
+	 *
+	 * @param c the c
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean containsAll(Collection<?> c)
 	{
@@ -152,6 +235,12 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Adds the all.
+	 *
+	 * @param c the c
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean addAll(Collection<? extends Runnable> c)
 	{
@@ -170,6 +259,12 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Removes the all.
+	 *
+	 * @param c the c
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean removeAll(Collection<?> c)
 	{
@@ -179,6 +274,12 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Retain all.
+	 *
+	 * @param c the c
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean retainAll(Collection<?> c)
 	{
@@ -188,6 +289,9 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Clear.
+	 */
 	@Override
 	public void clear()
 	{
@@ -197,36 +301,77 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Adds the.
+	 *
+	 * @param e the e
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean add(Runnable e)
 	{
 		return addAll(Collections.singletonList(e));
 	}
 
+	/**
+	 * Offer.
+	 *
+	 * @param e the e
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean offer(Runnable e)
 	{
 		return add(e);
 	}
 
+	/**
+	 * Put.
+	 *
+	 * @param e the e
+	 * @throws InterruptedException the interrupted exception
+	 */
 	@Override
 	public void put(Runnable e) throws InterruptedException
 	{
 		add(e);
 	}
 
+	/**
+	 * Offer.
+	 *
+	 * @param e the e
+	 * @param timeout the timeout
+	 * @param unit the unit
+	 * @return true, if successful
+	 * @throws InterruptedException the interrupted exception
+	 */
 	@Override
 	public boolean offer(Runnable e, long timeout, TimeUnit unit) throws InterruptedException
 	{
 		return add(e);
 	}
 
+	/**
+	 * Take.
+	 *
+	 * @return the job
+	 * @throws InterruptedException the interrupted exception
+	 */
 	@Override
 	public Job take() throws InterruptedException
 	{
 		return poll(Long.MAX_VALUE, TimeUnit.DAYS);
 	}
 
+	/**
+	 * Poll.
+	 *
+	 * @param timeout the timeout
+	 * @param unit the unit
+	 * @return the job
+	 * @throws InterruptedException the interrupted exception
+	 */
 	@Override
 	public Job poll(long timeout, TimeUnit unit) throws InterruptedException
 	{
@@ -244,12 +389,23 @@ public class JobQueue implements BlockingQueue<Runnable>
 		return job;
 	}
 
+	/**
+	 * Remaining capacity.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int remainingCapacity()
 	{
 		return Integer.MAX_VALUE;
 	}
 
+	/**
+	 * Removes the.
+	 *
+	 * @param o the o
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean remove(Object o)
 	{
@@ -259,6 +415,12 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Contains.
+	 *
+	 * @param o the o
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean contains(Object o)
 	{
@@ -268,6 +430,12 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Drain to.
+	 *
+	 * @param c the c
+	 * @return the int
+	 */
 	@Override
 	public int drainTo(Collection<? super Runnable> c)
 	{
@@ -280,6 +448,13 @@ public class JobQueue implements BlockingQueue<Runnable>
 		}
 	}
 
+	/**
+	 * Drain to.
+	 *
+	 * @param c the c
+	 * @param maxElements the max elements
+	 * @return the int
+	 */
 	@Override
 	public int drainTo(Collection<? super Runnable> c, int maxElements)
 	{

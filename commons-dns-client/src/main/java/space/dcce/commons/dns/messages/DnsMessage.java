@@ -30,6 +30,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import space.dcce.commons.dns.records.ResourceRecord;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * All communications inside of the domain protocol are carried in a single
  * format called a message.  The top level format of message is divided
@@ -58,40 +59,64 @@ public class DnsMessage
      * other opcode, etc.
      */
     private int transactionId;
+    
+    /** The message type. */
     private MessageType messageType;
+    
+    /** The op code. */
     private OpCode opCode;
+    
+    /** The authoritative answer. */
     private boolean authoritativeAnswer;
+    
+    /** The truncated. */
     private boolean truncated;
+    
+    /** The recursion desired. */
     private boolean recursionDesired;
+    
+    /** The recursion available. */
     private boolean recursionAvailable;
+    
+    /** The reserved. */
     private boolean reserved;
+    
+    /** The accept non authenticated data. */
     private boolean acceptNonAuthenticatedData;
 
+    /** The response code. */
     private ResponseCode responseCode;
 
+    /** The question records. */
     private List<QuestionRecord> questionRecords;
+    
+    /** The answer records. */
     private List<ResourceRecord> answerRecords;
+    
+    /** The authority records. */
     private List<ResourceRecord> authorityRecords;
+    
+    /** The additional records. */
     private List<ResourceRecord> additionalRecords;
 
 
     /**
      * Creates a new instance of DnsMessage.
      *
-     * @param transactionId
-     * @param messageType
-     * @param opCode
-     * @param authoritativeAnswer
-     * @param truncated
-     * @param recursionDesired
-     * @param recursionAvailable
-     * @param reserved
-     * @param acceptNonAuthenticatedData
-     * @param responseCode
-     * @param question
-     * @param answer
-     * @param authority
-     * @param additional
+     * @param transactionId the transaction id
+     * @param messageType the message type
+     * @param opCode the op code
+     * @param authoritativeAnswer the authoritative answer
+     * @param truncated the truncated
+     * @param recursionDesired the recursion desired
+     * @param recursionAvailable the recursion available
+     * @param reserved the reserved
+     * @param acceptNonAuthenticatedData the accept non authenticated data
+     * @param responseCode the response code
+     * @param question the question
+     * @param answer the answer
+     * @param authority the authority
+     * @param additional the additional
      */
     public DnsMessage( int transactionId, MessageType messageType, OpCode opCode, boolean authoritativeAnswer,
         boolean truncated, boolean recursionDesired, boolean recursionAvailable, boolean reserved,
@@ -114,12 +139,17 @@ public class DnsMessage
         this.additionalRecords = additional;
     }
 
+    /**
+     * Instantiates a new dns message.
+     */
     public DnsMessage()
     {
     	
     }
 
     /**
+     * Checks if is accept non authenticated data.
+     *
      * @return Returns the acceptNonAuthenticatedData.
      */
     public boolean isAcceptNonAuthenticatedData()
@@ -129,6 +159,8 @@ public class DnsMessage
 
 
     /**
+     * Gets the additional records.
+     *
      * @return Returns the additional.
      */
     public List<ResourceRecord> getAdditionalRecords()
@@ -138,6 +170,8 @@ public class DnsMessage
 
 
     /**
+     * Gets the answer records.
+     *
      * @return Returns the answers.
      */
     public List<ResourceRecord> getAnswerRecords()
@@ -147,6 +181,8 @@ public class DnsMessage
 
 
     /**
+     * Checks if is authoritative answer.
+     *
      * @return Returns the authoritativeAnswer.
      */
     public boolean isAuthoritativeAnswer()
@@ -156,6 +192,8 @@ public class DnsMessage
 
 
     /**
+     * Gets the authority records.
+     *
      * @return Returns the authority.
      */
     public List<ResourceRecord> getAuthorityRecords()
@@ -165,6 +203,8 @@ public class DnsMessage
 
 
     /**
+     * Gets the message type.
+     *
      * @return Returns the messageType.
      */
     public MessageType getMessageType()
@@ -174,6 +214,8 @@ public class DnsMessage
 
 
     /**
+     * Gets the op code.
+     *
      * @return Returns the opCode.
      */
     public OpCode getOpCode()
@@ -183,6 +225,8 @@ public class DnsMessage
 
 
     /**
+     * Gets the question records.
+     *
      * @return Returns the question.
      */
     public List<QuestionRecord> getQuestionRecords()
@@ -192,6 +236,8 @@ public class DnsMessage
 
 
     /**
+     * Checks if is recursion available.
+     *
      * @return Returns the recursionAvailable.
      */
     public boolean isRecursionAvailable()
@@ -201,6 +247,8 @@ public class DnsMessage
 
 
     /**
+     * Checks if is recursion desired.
+     *
      * @return Returns the recursionDesired.
      */
     public boolean isRecursionDesired()
@@ -210,6 +258,8 @@ public class DnsMessage
 
 
     /**
+     * Checks if is reserved.
+     *
      * @return Returns the reserved.
      */
     public boolean isReserved()
@@ -219,6 +269,8 @@ public class DnsMessage
 
 
     /**
+     * Gets the response code.
+     *
      * @return Returns the responseCode.
      */
     public ResponseCode getResponseCode()
@@ -228,6 +280,8 @@ public class DnsMessage
 
 
     /**
+     * Gets the transaction id.
+     *
      * @return Returns the transactionId.
      */
     public int getTransactionId()
@@ -237,6 +291,8 @@ public class DnsMessage
 
 
     /**
+     * Checks if is truncated.
+     *
      * @return Returns the truncated.
      */
     public boolean isTruncated()
@@ -246,6 +302,10 @@ public class DnsMessage
 
 
     /**
+     * Equals.
+     *
+     * @param object the object
+     * @return true, if successful
      * @see java.lang.Object#equals(Object)
      */
     public boolean equals( Object object )
@@ -271,8 +331,10 @@ public class DnsMessage
 
 
     /**
+     * Hash code.
+     *
+     * @return the instance's hash code
      * @see java.lang.Object#hashCode()
-     * @return the instance's hash code 
      */
     public int hashCode()
     {
@@ -285,6 +347,9 @@ public class DnsMessage
 
 
     /**
+     * To string.
+     *
+     * @return the string
      * @see java.lang.Object#toString()
      */
     public String toString()
@@ -299,71 +364,141 @@ public class DnsMessage
             .append( "reserved", this.reserved ).toString();
     }
 
+	/**
+	 * Sets the transaction id.
+	 *
+	 * @param transactionId the new transaction id
+	 */
 	public void setTransactionId(int transactionId)
 	{
 		this.transactionId = transactionId;
 	}
 
+	/**
+	 * Sets the message type.
+	 *
+	 * @param messageType the new message type
+	 */
 	public void setMessageType(MessageType messageType)
 	{
 		this.messageType = messageType;
 	}
 
+	/**
+	 * Sets the op code.
+	 *
+	 * @param opCode the new op code
+	 */
 	public void setOpCode(OpCode opCode)
 	{
 		this.opCode = opCode;
 	}
 
+	/**
+	 * Sets the authoritative answer.
+	 *
+	 * @param authoritativeAnswer the new authoritative answer
+	 */
 	public void setAuthoritativeAnswer(boolean authoritativeAnswer)
 	{
 		this.authoritativeAnswer = authoritativeAnswer;
 	}
 
+	/**
+	 * Sets the truncated.
+	 *
+	 * @param truncated the new truncated
+	 */
 	public void setTruncated(boolean truncated)
 	{
 		this.truncated = truncated;
 	}
 
+	/**
+	 * Sets the recursion desired.
+	 *
+	 * @param recursionDesired the new recursion desired
+	 */
 	public void setRecursionDesired(boolean recursionDesired)
 	{
 		this.recursionDesired = recursionDesired;
 	}
 
+	/**
+	 * Sets the recursion available.
+	 *
+	 * @param recursionAvailable the new recursion available
+	 */
 	public void setRecursionAvailable(boolean recursionAvailable)
 	{
 		this.recursionAvailable = recursionAvailable;
 	}
 
+	/**
+	 * Sets the reserved.
+	 *
+	 * @param reserved the new reserved
+	 */
 	public void setReserved(boolean reserved)
 	{
 		this.reserved = reserved;
 	}
 
+	/**
+	 * Sets the accept non authenticated data.
+	 *
+	 * @param acceptNonAuthenticatedData the new accept non authenticated data
+	 */
 	public void setAcceptNonAuthenticatedData(boolean acceptNonAuthenticatedData)
 	{
 		this.acceptNonAuthenticatedData = acceptNonAuthenticatedData;
 	}
 
+	/**
+	 * Sets the response code.
+	 *
+	 * @param responseCode the new response code
+	 */
 	public void setResponseCode(ResponseCode responseCode)
 	{
 		this.responseCode = responseCode;
 	}
 
+	/**
+	 * Sets the question records.
+	 *
+	 * @param questionRecords the new question records
+	 */
 	public void setQuestionRecords(List<QuestionRecord> questionRecords)
 	{
 		this.questionRecords = questionRecords;
 	}
 
+	/**
+	 * Sets the answer records.
+	 *
+	 * @param answerRecords the new answer records
+	 */
 	public void setAnswerRecords(List<ResourceRecord> answerRecords)
 	{
 		this.answerRecords = answerRecords;
 	}
 
+	/**
+	 * Sets the authority records.
+	 *
+	 * @param authorityRecords the new authority records
+	 */
 	public void setAuthorityRecords(List<ResourceRecord> authorityRecords)
 	{
 		this.authorityRecords = authorityRecords;
 	}
 
+	/**
+	 * Sets the additional records.
+	 *
+	 * @param additionalRecords the new additional records
+	 */
 	public void setAdditionalRecords(List<ResourceRecord> additionalRecords)
 	{
 		this.additionalRecords = additionalRecords;

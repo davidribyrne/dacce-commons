@@ -30,6 +30,7 @@ import space.dcce.commons.dns.io.DnsMessageEncoder;
 import space.dcce.commons.dns.messages.DnsMessage;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * A ProtocolEncoder for use in the MINA framework that uses the 
  * DnsMessageEncoder to encode DnsMessages.
@@ -38,9 +39,18 @@ import space.dcce.commons.dns.messages.DnsMessage;
  */
 public class DnsTcpEncoder extends ProtocolEncoderAdapter
 {
+    
+    /** The encoder. */
     private DnsMessageEncoder encoder = new DnsMessageEncoder();
 
 
+    /**
+     * Encode.
+     *
+     * @param session the session
+     * @param message the message
+     * @param out the out
+     */
     public void encode( IoSession session, Object message, ProtocolEncoderOutput out )
     {
         IoBuffer buf = IoBuffer.allocate( 1024 );

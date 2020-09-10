@@ -40,7 +40,7 @@ public class CommandLine
 	 *            the command line to process.
 	 * @return the command line broken into strings.
 	 *         An empty or null toProcess parameter results in a zero sized array.
-	 * @throws ParseException 
+	 * @throws ParseException for invalid formats
 	 */
 	public static String[] translateCommandline(String toProcess) throws ParseException
 	{

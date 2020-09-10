@@ -2,9 +2,19 @@ package space.dcce.commons.netaddr;
 
 import space.dcce.commons.general.UnexpectedException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SimpleInet4Address.
+ */
 public class SimpleInet4Address extends SimpleInetAddress
 {
 
+	/**
+	 * Instantiates a new simple inet 4 address.
+	 *
+	 * @param address the address
+	 * @throws InvalidIPAddressFormatException the invalid IP address format exception
+	 */
 	public SimpleInet4Address(byte[] address) throws InvalidIPAddressFormatException
 	{
 		super(address);
@@ -14,6 +24,11 @@ public class SimpleInet4Address extends SimpleInetAddress
 		}
 	}
 
+	/**
+	 * To long.
+	 *
+	 * @return the long
+	 */
 	public long toLong()
 	{
 		try
@@ -27,7 +42,8 @@ public class SimpleInet4Address extends SimpleInetAddress
 	}
 	
 	/**
-	 * 
+	 * Gets the network address.
+	 *
 	 * @param mask The number of bits in the subnet mask
 	 * @return Network address based on mask
 	 */
@@ -53,6 +69,12 @@ public class SimpleInet4Address extends SimpleInetAddress
 	}
 
 
+	/**
+	 * Gets the host address.
+	 *
+	 * @param mask the mask
+	 * @return the host address
+	 */
 	@Override
 	public SimpleInet4Address getHostAddress(int mask)
 	{
@@ -75,6 +97,13 @@ public class SimpleInet4Address extends SimpleInetAddress
 	}
 
 
+	/**
+	 * Address addition.
+	 *
+	 * @param increment the increment
+	 * @return the simple inet 4 address
+	 * @throws InvalidIPAddressFormatException the invalid IP address format exception
+	 */
 	@Override
 	public SimpleInet4Address addressAddition(long increment) throws InvalidIPAddressFormatException
 	{

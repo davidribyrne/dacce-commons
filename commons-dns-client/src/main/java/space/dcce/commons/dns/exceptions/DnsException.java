@@ -24,6 +24,7 @@ package space.dcce.commons.dns.exceptions;
 import space.dcce.commons.dns.messages.ResponseCode;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * The root of the DNS exception hierarchy.
  *
@@ -31,11 +32,11 @@ import space.dcce.commons.dns.messages.ResponseCode;
  */
 public class DnsException extends Exception
 {
+    
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 7493573233290707069L;
 
-    /**
-     * The DNS response code associated with this exception
-     */
+    /** The DNS response code associated with this exception. */
     private final int responseCode;
 
 

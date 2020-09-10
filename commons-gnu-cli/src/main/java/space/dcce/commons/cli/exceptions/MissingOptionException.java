@@ -23,6 +23,7 @@ import java.util.Iterator;
 import space.dcce.commons.cli.OptionContainer;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * Thrown when a required option has not been provided.
  *
@@ -33,7 +34,7 @@ public class MissingOptionException extends ParseException
 	/** This exception {@code serialVersionUID}. */
 	private static final long serialVersionUID = 8161889051578563249L;
 
-	/** The list of missing options and groups */
+	/**  The list of missing options and groups. */
 	private Collection<OptionContainer> missingOptions;
 
 
@@ -80,8 +81,8 @@ public class MissingOptionException extends ParseException
 	/**
 	 * Build the exception message from the specified list of options.
 	 *
-	 * @param missingOptions
-	 *            the list of missing options and groups
+	 * @param missingOptions            the list of missing options and groups
+	 * @return the string
 	 * @since 1.2
 	 */
 	private static String createMessage(Collection<OptionContainer> missingOptions)

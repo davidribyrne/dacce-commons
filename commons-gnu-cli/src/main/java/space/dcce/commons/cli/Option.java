@@ -30,6 +30,7 @@ import space.dcce.commons.validators.ValidationException;
 import space.dcce.commons.validators.Validator;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * Describes a single command-line option. It maintains
  * information regarding the short-name of the option, the long-name,
@@ -42,10 +43,9 @@ import space.dcce.commons.validators.Validator;
  * <b>Note:</b> once an {@link Option} has been added to an instance of {@link RootOptions}, it's required flag may not be
  * changed anymore.
  *
- * @see space.dcce.commons.cli.RootOptions
- * @see org.apache.commons.CommandLine.CommandLine
- *
  * @version $Id: Option.java 1677406 2015-05-03 14:27:31Z britter $
+ * @see space.dcce.commons.cli.RootOptions
+ * see org.apache.commons.CommandLine.CommandLine
  */
 public class Option extends OptionContainer implements Cloneable, Serializable 
 {
@@ -53,34 +53,54 @@ public class Option extends OptionContainer implements Cloneable, Serializable
 	/** The serial version UID. */
 	private static final long serialVersionUID = 1L;
 
-	/** the long representation of the option */
+	/**  the long representation of the option. */
 	private final String longOpt;
 
+	/** The short opt. */
 	private final String shortOpt;
 
-	/** the name of the argument for this option */
+	/**  the name of the argument for this option. */
 	private String argTypeDescriptor;
 
-	/** description of the option */
+	/**  description of the option. */
 	private String description;
 
-	/** specifies whether this option is required to be present */
+	/**  specifies whether this option is required to be present. */
 	private boolean required;
 
-	/** specifies whether the argument value of this Option is optional */
+	/**  specifies whether the argument value of this Option is optional. */
 	private boolean argRequired;
+	
+	/** The multiple calls. */
 	private boolean multipleCalls;
+	
+	/** The arg accepted. */
 	private boolean argAccepted;
+	
+	/** The force enabled. */
 	private boolean forceEnabled;
 
-	/** the list of argument values **/
+	/**  the list of argument values *. */
 	private final List<String> values = new ArrayList<String>();
+	
+	/** The default value. */
 	private String defaultValue;
 
+	/** The call count. */
 	private int callCount = 0;
 
+	/** The validators. */
 	private final List<Validator> validators = new ArrayList<Validator>(1);
 
+	/**
+	 * Instantiates a new option.
+	 *
+	 * @param root the root
+	 * @param shortOption the short option
+	 * @param longOption the long option
+	 * @param description the description
+	 * @throws IllegalArgumentException the illegal argument exception
+	 */
 	protected Option(RootOptions root, String shortOption, String longOption, String description)
 			throws IllegalArgumentException
 	{
@@ -88,6 +108,19 @@ public class Option extends OptionContainer implements Cloneable, Serializable
 	}
 
 
+	/**
+	 * Instantiates a new option.
+	 *
+	 * @param root the root
+	 * @param shortOption the short option
+	 * @param longOption the long option
+	 * @param description the description
+	 * @param argAccepted the arg accepted
+	 * @param argRequired the arg required
+	 * @param defaultValue the default value
+	 * @param argDescription the arg description
+	 * @throws IllegalArgumentException the illegal argument exception
+	 */
 	protected Option(RootOptions root, String shortOption, String longOption, String description, boolean argAccepted, boolean argRequired, String defaultValue, String argDescription)
 			throws IllegalArgumentException
 	{
@@ -119,11 +152,21 @@ public class Option extends OptionContainer implements Cloneable, Serializable
 		argTypeDescriptor = argDescription;
 	}
 
+	/**
+	 * Adds the validator.
+	 *
+	 * @param validator the validator
+	 */
 	public void addValidator(Validator validator)
 	{
 		validators.add(validator);
 	}
 	
+	/**
+	 * Validate option.
+	 *
+	 * @param s the s
+	 */
 	private void validateOption(String s)
 	{
 		if (!s.isEmpty() && !s.matches("^(?:[?@a-zA-Z0-9]|[\\-_a-zA-Z0-9]+)$"))
@@ -144,7 +187,7 @@ public class Option extends OptionContainer implements Cloneable, Serializable
 
 	
 	/**
-	 * Query to see if this Option has a long name
+	 * Query to see if this Option has a long name.
 	 *
 	 * @return boolean flag indicating existence of a long name
 	 */
@@ -154,12 +197,20 @@ public class Option extends OptionContainer implements Cloneable, Serializable
 	}
 
 
+	/**
+	 * Notify call.
+	 */
 	void notifyCall()
 	{
 		callCount++;
 	}
 
 
+	/**
+	 * Checks for short opt.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean hasShortOpt()
 	{
 		return !StringUtils.isEmptyOrNull(shortOpt);
@@ -167,7 +218,7 @@ public class Option extends OptionContainer implements Cloneable, Serializable
 
 
 	/**
-	 * Retrieve the self-documenting description of this Option
+	 * Retrieve the self-documenting description of this Option.
 	 *
 	 * @return The string description of this option
 	 */
@@ -178,10 +229,9 @@ public class Option extends OptionContainer implements Cloneable, Serializable
 
 
 	/**
-	 * Sets the self-documenting description of this Option
+	 * Sets the self-documenting description of this Option.
 	 *
-	 * @param description
-	 *            The description of this option
+	 * @param description            The description of this option
 	 * @since 1.1
 	 */
 	public void setDescription(String description)
@@ -191,7 +241,7 @@ public class Option extends OptionContainer implements Cloneable, Serializable
 
 
 	/**
-	 * Query to see if this Option is mandatory
+	 * Query to see if this Option is mandatory.
 	 *
 	 * @return boolean flag indicating whether this Option is mandatory
 	 */
@@ -247,12 +297,24 @@ public class Option extends OptionContainer implements Cloneable, Serializable
 	}
 
 
+	/**
+	 * Adds the value.
+	 *
+	 * @param value the value
+	 * @throws ParseException the parse exception
+	 */
 	public void addValue(String value) throws ParseException
 	{
+		if (value == null)
+			return;
 		if (!argAccepted)
 		{
-			throw new ParseException("The " + getName() + " option does not accept arguments.");
+			throw new ParseException("The " + getName() + " option does not accept an argument.");
 		}
+//		if (argRequired && value == null)
+//		{
+//			throw new ParseException("The " + getName() + " option requires an argument.");
+//		}
 		if ((values.size() > 0) && !multipleCalls)
 		{
 			throw new ParseException("The " + getName() + " option may only be called once.");
@@ -273,8 +335,10 @@ public class Option extends OptionContainer implements Cloneable, Serializable
 	}
 
 	/**
-	 * Is a non-default value set
-	 * @return
+	 * Is a non-default value set.
+	 *
+	 * @param includeDefault the include default
+	 * @return true, if is value set
 	 */
 	public boolean isValueSet(boolean includeDefault)
 	{
@@ -287,6 +351,11 @@ public class Option extends OptionContainer implements Cloneable, Serializable
 		return true;
 	}
 	
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public String getValue()
 	{
 		if (values.isEmpty())
@@ -300,7 +369,7 @@ public class Option extends OptionContainer implements Cloneable, Serializable
 
 	/**
 	 * Return the values of this Option as a String array
-	 * or null if there are no values
+	 * or null if there are no values.
 	 *
 	 * @return the values of this Option as a String array
 	 *         or null if there are no values
@@ -383,71 +452,129 @@ public class Option extends OptionContainer implements Cloneable, Serializable
 	}
 
 
+	/**
+	 * Gets the short opt.
+	 *
+	 * @return the short opt
+	 */
 	public String getShortOpt()
 	{
 		return shortOpt;
 	}
 
 
+	/**
+	 * Checks if is arg required.
+	 *
+	 * @return true, if is arg required
+	 */
 	public boolean isArgRequired()
 	{
 		return argRequired;
 	}
 
 
+	/**
+	 * Sets the arg required.
+	 *
+	 * @param argRequired the new arg required
+	 */
 	public void setArgRequired(boolean argRequired)
 	{
 		this.argRequired = argRequired;
 	}
 
 
+	/**
+	 * Checks if is arg accepted.
+	 *
+	 * @return true, if is arg accepted
+	 */
 	public boolean isArgAccepted()
 	{
 		return argAccepted;
 	}
 
 
+	/**
+	 * Sets the arg accepted.
+	 *
+	 * @param argAccepted the new arg accepted
+	 */
 	public void setArgAccepted(boolean argAccepted)
 	{
 		this.argAccepted = argAccepted;
 	}
 
 
+	/**
+	 * Checks if is multiple calls.
+	 *
+	 * @return true, if is multiple calls
+	 */
 	public boolean isMultipleCalls()
 	{
 		return multipleCalls;
 	}
 
 
+	/**
+	 * Sets the multiple calls.
+	 *
+	 * @param multipleCalls the new multiple calls
+	 */
 	public void setMultipleCalls(boolean multipleCalls)
 	{
 		this.multipleCalls = multipleCalls;
 	}
 
 
+	/**
+	 * Gets the default value.
+	 *
+	 * @return the default value
+	 */
 	public String getDefaultValue()
 	{
 		return defaultValue;
 	}
 
 
+	/**
+	 * Sets the default value.
+	 *
+	 * @param defaultValue the new default value
+	 */
 	public void setDefaultValue(String defaultValue)
 	{
 		this.defaultValue = defaultValue;
 	}
 
 
+	/**
+	 * Gets the call count.
+	 *
+	 * @return the call count
+	 */
 	public int getCallCount()
 	{
 		return callCount;
 	}
 
 
+	/**
+	 * Force enabled.
+	 */
 	public void forceEnabled()
 	{
 		forceEnabled = true;
 	}
 	
+	/**
+	 * Checks if is enabled.
+	 *
+	 * @return true, if is enabled
+	 */
 	public boolean isEnabled()
 	{
 		return forceEnabled || (callCount > 0) || (values.size() > 0);

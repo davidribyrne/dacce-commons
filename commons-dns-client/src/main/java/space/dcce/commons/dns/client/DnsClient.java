@@ -22,23 +22,56 @@ import space.dcce.commons.dns.messages.ResponseCode;
 import space.dcce.commons.dns.records.RecordType;
 import space.dcce.commons.general.EventCounter;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DnsClient.
+ */
 public class DnsClient 
 {
+	
+	/** The Constant logger. */
 	private final static Logger logger = LoggerFactory.getLogger(DnsClient.class);
+	
+	/** The random. */
 	private SecureRandom random;
 
+	/** The unanswered requests. */
 	private Map<RequestKey, DnsTransaction> unansweredRequests;
+	
+	/** The max requests per second. */
 	private int maxRequestsPerSecond = 30;
+	
+	/** The request counter. */
 	private EventCounter requestCounter;
+	
+	/** The connect timeout. */
 	private int connectTimeout = 5000;
 
+	/** The count. */
 	private int count;
+	
+	/** The pad second request. */
 	private boolean padSecondRequest;
+	
+	/** The udp connection. */
 	private DnsUdpConnection udpConnection;
+	
+	/** The tcp connections. */
 	private final Map<DnsTcpConnection, RequestKey> tcpConnections;
+	
+	/** The server address. */
 	private final InetSocketAddress serverAddress;
+	
+	/** The force tcp zone transfer. */
 	private boolean forceTcpZoneTransfer = true;
 	
+	/**
+	 * Instantiates a new dns client.
+	 *
+	 * @param serverAddress the server address
+	 * @param padSecondRequest the pad second request
+	 * @throws DnsClientConnectException the dns client connect exception
+	 */
 	protected DnsClient(InetSocketAddress serverAddress, boolean padSecondRequest) throws DnsClientConnectException 
 	{
 		this.serverAddress = serverAddress;
@@ -50,6 +83,11 @@ public class DnsClient
 		udpConnection = new DnsUdpConnection(this, serverAddress);
 	}
 	
+	/**
+	 * Connection closed.
+	 *
+	 * @param connection the connection
+	 */
 	public void connectionClosed(DnsConnection connection)
 	{
 		// If the TCP connection closed without a response
@@ -65,6 +103,13 @@ public class DnsClient
 		}
 	}
 	
+	/**
+	 * Message received.
+	 *
+	 * @param connection the connection
+	 * @param response the response
+	 * @throws Exception the exception
+	 */
 	public void messageReceived(DnsConnection connection, DnsMessage response) throws Exception
 	{
 		logger.trace("DnsClient has received response message.");
@@ -106,18 +151,25 @@ public class DnsClient
 	}
 
 	
+	/**
+	 * Send query.
+	 *
+	 * @param transaction the transaction
+	 * @return the write future
+	 * @throws DnsClientConnectException the dns client connect exception
+	 */
 	public synchronized WriteFuture sendQuery(DnsTransaction transaction) throws DnsClientConnectException
 	{
 		return sendQuery(transaction, false);
 	}
 	
 	/**
-	 * 
 	 * Query is asynchronous, but the connection is not. 
-	 * @param question
-	 * @param recurse
+	 *
+	 * @param transaction the transaction
+	 * @param tcp the tcp
 	 * @return DNS transaction ID
-	 * @throws DnsClientConnectException 
+	 * @throws DnsClientConnectException the dns client connect exception
 	 */
 	public synchronized WriteFuture sendQuery(DnsTransaction transaction, boolean tcp) throws DnsClientConnectException
 	{
@@ -176,6 +228,11 @@ public class DnsClient
 		return connection.sendMessage(message);
 	}
 
+	/**
+	 * Close.
+	 *
+	 * @param immediately the immediately
+	 */
 	public void close(boolean immediately)
 	{
 		udpConnection.close(immediately);
@@ -186,21 +243,47 @@ public class DnsClient
 	}
 	
 	
+	/**
+	 * The Class RequestKey.
+	 */
 	private class RequestKey
 	{
+		
+		/** The question. */
 		QuestionRecord question;
+		
+		/** The transaction id. */
 		int transactionId;
+		
+		/**
+		 * Instantiates a new request key.
+		 *
+		 * @param question the question
+		 * @param transactionId the transaction id
+		 */
 		RequestKey(QuestionRecord question, int transactionId)
 		{
 			this.question = question;
 			this.transactionId = transactionId;
 		}
+		
+		/**
+		 * Hash code.
+		 *
+		 * @return the int
+		 */
 		@Override
 		public int hashCode()
 		{
 			return new HashCodeBuilder().append(question).append(transactionId).toHashCode();
 		}
 		
+		/**
+		 * Equals.
+		 *
+		 * @param obj the obj
+		 * @return true, if successful
+		 */
 		@Override
 		public boolean equals(Object obj)
 		{
@@ -213,7 +296,9 @@ public class DnsClient
 	
 	
 	/**
-	 * For Google bug
+	 * For Google bug.
+	 *
+	 * @return the write future
 	 */
 	private WriteFuture sendDummyQuery()
 	{
@@ -230,56 +315,111 @@ public class DnsClient
 
 	
 
+	/**
+	 * Gets the timeout.
+	 *
+	 * @return the timeout
+	 */
 	public int getTimeout()
 	{
 		return connectTimeout;
 	}
 
+	/**
+	 * Sets the timeout.
+	 *
+	 * @param timeout the new timeout
+	 */
 	public void setTimeout(int timeout)
 	{
 		this.connectTimeout = timeout;
 	}
 
+	/**
+	 * Gets the connect timeout.
+	 *
+	 * @return the connect timeout
+	 */
 	public int getConnectTimeout()
 	{
 		return connectTimeout;
 	}
 
+	/**
+	 * Sets the connect timeout.
+	 *
+	 * @param connectTimeout the new connect timeout
+	 */
 	public void setConnectTimeout(int connectTimeout)
 	{
 		this.connectTimeout = connectTimeout;
 	}
 
+	/**
+	 * Gets the max requests per second.
+	 *
+	 * @return the max requests per second
+	 */
 	public int getMaxRequestsPerSecond()
 	{
 		return maxRequestsPerSecond;
 	}
 
+	/**
+	 * Sets the max requests per second.
+	 *
+	 * @param maxRequestsPerSecond the new max requests per second
+	 */
 	public void setMaxRequestsPerSecond(int maxRequestsPerSecond)
 	{
 		this.maxRequestsPerSecond = maxRequestsPerSecond;
 	}
 
+	/**
+	 * Checks if is pad second request.
+	 *
+	 * @return true, if is pad second request
+	 */
 	public boolean isPadSecondRequest()
 	{
 		return padSecondRequest;
 	}
 
+	/**
+	 * Sets the pad second request.
+	 *
+	 * @param padSecondRequest the new pad second request
+	 */
 	public void setPadSecondRequest(boolean padSecondRequest)
 	{
 		this.padSecondRequest = padSecondRequest;
 	}
 
+	/**
+	 * Checks if is force tcp zone transfer.
+	 *
+	 * @return true, if is force tcp zone transfer
+	 */
 	public boolean isForceTcpZoneTransfer()
 	{
 		return forceTcpZoneTransfer;
 	}
 
+	/**
+	 * Sets the force tcp zone transfer.
+	 *
+	 * @param forceTcpZoneTransfer the new force tcp zone transfer
+	 */
 	public void setForceTcpZoneTransfer(boolean forceTcpZoneTransfer)
 	{
 		this.forceTcpZoneTransfer = forceTcpZoneTransfer;
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{
@@ -297,6 +437,11 @@ public class DnsClient
 				.build();
 	}
 
+	/**
+	 * Gets the server address.
+	 *
+	 * @return the server address
+	 */
 	public InetSocketAddress getServerAddress()
 	{
 		return serverAddress;

@@ -10,31 +10,61 @@ import space.dcce.commons.general.NotImplementedException;
 import space.dcce.commons.general.UnexpectedException;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NodeDatabase.
+ */
 public class NodeDatabase
 {
 
 
+	/** The storage. */
 	public final NodeDatabaseStorage storage;
 
+	/** The connection cache. */
 	public final UniqueDatumCache<Connection> connectionCache = new UniqueDatumCache<Connection>();
+	
+	/** The node cache. */
 	public final UniqueDatumCache<Node> nodeCache = new UniqueDatumCache<Node>();
+	
+	/** The node types. */
 	private final Map<UUID, NodeType> nodeTypes = new HashMap<UUID, NodeType>(5);
 
+	/** The node creation listener. */
 	private NodeCreationListener nodeCreationListener;
+	
+	/** The connection creation listener. */
 	private ConnectionCreationListener connectionCreationListener;
 
+	/**
+	 * Instantiates a new node database.
+	 */
 	public NodeDatabase()
 	{
 		storage = new NodeDatabaseStorage(this);
 	}
 
 
+	/**
+	 * Initialize storage.
+	 *
+	 * @param path the path
+	 * @throws SQLException the SQL exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void initializeStorage(String path) throws SQLException, IOException
 	{
 		storage.loadOrCreate(path);
 	}
 
 
+	/**
+	 * Creates the node if possible.
+	 *
+	 * @param nodeType the node type
+	 * @param value the value
+	 * @return true, if successful
+	 */
 	public boolean createNodeIfPossible(NodeType nodeType, String value)
 	{
 		synchronized (this)
@@ -52,8 +82,9 @@ public class NodeDatabase
 
 
 	/**
-	 * 
-	 * @param uuid
+	 * Gets the connection.
+	 *
+	 * @param uuid the uuid
 	 * @return Null if connection not found
 	 */
 	public Connection getConnection(UUID uuid)
@@ -76,8 +107,9 @@ public class NodeDatabase
 
 
 	/**
-	 * 
-	 * @param uuid
+	 * Gets the node.
+	 *
+	 * @param uuid the uuid
 	 * @return Null if node not found
 	 */
 	public Node getNode(UUID uuid)
@@ -100,11 +132,10 @@ public class NodeDatabase
 
 
 	/**
-	 * 
-	 * Requires complete match of all nodes
-	 * 
-	 * @param nodes
-	 * @return
+	 * Requires complete match of all nodes.
+	 *
+	 * @param nodes the nodes
+	 * @return the or create connection
 	 */
 	public Connection getOrCreateConnection(Node... nodes)
 	{
@@ -113,11 +144,11 @@ public class NodeDatabase
 
 
 	/**
-	 * 
-	 * @param acceptPartial
-	 *            Return a connection that contains all of the specified nodes, but may contain other nodes too
-	 * @param nodes
-	 * @return
+	 * Gets the or create connection.
+	 *
+	 * @param acceptPartial            Return a connection that contains all of the specified nodes, but may contain other nodes too
+	 * @param nodes the nodes
+	 * @return the or create connection
 	 */
 	public Connection getOrCreateConnection(boolean acceptPartial, Node... nodes)
 	{
@@ -159,6 +190,13 @@ public class NodeDatabase
 	}
 
 
+	/**
+	 * Gets the or create node.
+	 *
+	 * @param nodeType the node type
+	 * @param value the value
+	 * @return the or create node
+	 */
 	public Node getOrCreateNode(NodeType nodeType, String value)
 	{
 		synchronized (this)
@@ -177,6 +215,13 @@ public class NodeDatabase
 	}
 
 
+	/**
+	 * Gets the node.
+	 *
+	 * @param nodeType the node type
+	 * @param value the value
+	 * @return the node
+	 */
 	public Node getNode(NodeType nodeType, String value)
 	{
 		UUID id = Node.constructUUID(nodeType, value);
@@ -197,6 +242,11 @@ public class NodeDatabase
 	}
 
 
+	/**
+	 * Store new node type.
+	 *
+	 * @param nodeType the node type
+	 */
 	public void storeNewNodeType(NodeType nodeType)
 	{
 		synchronized (this)
@@ -206,6 +256,13 @@ public class NodeDatabase
 	}
 
 
+	/**
+	 * Node exists.
+	 *
+	 * @param nodeType the node type
+	 * @param value the value
+	 * @return true, if successful
+	 */
 	private boolean nodeExists(NodeType nodeType, String value)
 	{
 		UUID id = Node.constructUUID(nodeType, value);
@@ -214,6 +271,13 @@ public class NodeDatabase
 
 
 
+	/**
+	 * Gets the by name.
+	 *
+	 * @param name the name
+	 * @param description the description
+	 * @return the by name
+	 */
 	public synchronized NodeType getByName(String name, String description)
 	{
 		UUID uuid = UUID.nameUUIDFromBytes(name.getBytes());
@@ -225,35 +289,66 @@ public class NodeDatabase
 		return new NodeType(this, uuid, name, description);
 	}
 
+	/**
+	 * Gets the by ID.
+	 *
+	 * @param id the id
+	 * @return the by ID
+	 */
 	public synchronized NodeType getByID(UUID id)
 	{
 		return nodeTypes.get(id);
 	}
 
+	/**
+	 * Gets the node types.
+	 *
+	 * @return the node types
+	 */
 	public Map<UUID, NodeType> getNodeTypes()
 	{
 		return nodeTypes;
 	}
 
 
+	/**
+	 * Gets the node creation listener.
+	 *
+	 * @return the node creation listener
+	 */
 	public NodeCreationListener getNodeCreationListener()
 	{
 		return nodeCreationListener;
 	}
 
 
+	/**
+	 * Sets the node creation listener.
+	 *
+	 * @param nodeCreationListener the new node creation listener
+	 */
 	public void setNodeCreationListener(NodeCreationListener nodeCreationListener)
 	{
 		this.nodeCreationListener = nodeCreationListener;
 	}
 
 
+	/**
+	 * Gets the connection creation listener.
+	 *
+	 * @return the connection creation listener
+	 */
 	public ConnectionCreationListener getConnectionCreationListener()
 	{
 		return connectionCreationListener;
 	}
 
 
+	/**
+	 * Sets the connection creation listener.
+	 *
+	 * @param connectionCreationListener the new connection creation listener
+	 */
 	public void setConnectionCreationListener(ConnectionCreationListener connectionCreationListener)
 	{
 		this.connectionCreationListener = connectionCreationListener;

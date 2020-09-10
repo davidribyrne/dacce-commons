@@ -9,14 +9,26 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import space.dcce.commons.dns.messages.QuestionRecord;
 import space.dcce.commons.dns.records.ResourceRecord;
+// TODO: Auto-generated Javadoc
+
+/**
+ * The Class SimpleDnsCache.
+ */
 public class SimpleDnsCache implements DnsCache 
 {
+	
+	/** The any cache. */
 	private final RecordCache<String> anyCache;
+	
+	/** The question cache. */
 	private final RecordCache<QuestionRecord> questionCache;
 //	private final List<QuestionRecord> negativeCache;
 //	private final boolean cacheNegativeResponses;
 	
-	public SimpleDnsCache()
+	/**
+ * Instantiates a new simple dns cache.
+ */
+public SimpleDnsCache()
 	{
 //		this.cacheNegativeResponses = cacheNegativeResponses;
 //		if (cacheNegativeResponses)
@@ -28,6 +40,12 @@ public class SimpleDnsCache implements DnsCache
 	}
 
 
+	/**
+	 * Gets the.
+	 *
+	 * @param question the question
+	 * @return the list
+	 */
 	/* (non-Javadoc)
 	 * @see space.dcce.commons.dns.client.cache.DnsCache#get(space.dcce.commons.dns.messages.QuestionRecord)
 	 */
@@ -41,6 +59,12 @@ public class SimpleDnsCache implements DnsCache
 		return questionCache.getRecords(question);
 	}
 	
+	/**
+	 * Adds the.
+	 *
+	 * @param question the question
+	 * @param records the records
+	 */
 	/* (non-Javadoc)
 	 * @see space.dcce.commons.dns.client.cache.DnsCache#add(space.dcce.commons.dns.messages.QuestionRecord, java.util.List)
 	 */
@@ -52,6 +76,12 @@ public class SimpleDnsCache implements DnsCache
 		anyCache.addRecords(question.getDomainName(), records);
 	}
 
+	/**
+	 * Contains.
+	 *
+	 * @param question the question
+	 * @return true, if successful
+	 */
 	/* (non-Javadoc)
 	 * @see space.dcce.commons.dns.client.cache.DnsCache#contains(space.dcce.commons.dns.messages.QuestionRecord)
 	 */
@@ -61,6 +91,12 @@ public class SimpleDnsCache implements DnsCache
 		return questionCache.containsKey(question); // || negativeCache.contains(question);
 	}
 	
+	/**
+	 * Gets the any.
+	 *
+	 * @param domainName the domain name
+	 * @return the any
+	 */
 	/* (non-Javadoc)
 	 * @see space.dcce.commons.dns.client.cache.DnsCache#getAny(java.lang.String)
 	 */
@@ -70,6 +106,11 @@ public class SimpleDnsCache implements DnsCache
 		return anyCache.getRecords(domainName);
 	}
 	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{
@@ -80,6 +121,11 @@ public class SimpleDnsCache implements DnsCache
 	}
 
 
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int hashCode()
 	{
@@ -90,6 +136,12 @@ public class SimpleDnsCache implements DnsCache
 	}
 
 
+	/**
+	 * Equals.
+	 *
+	 * @param obj the obj
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{

@@ -25,151 +25,167 @@ import space.dcce.commons.general.EnumConverter;
 import space.dcce.commons.general.ReverseEnumMap;
 
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Enum ProtocolType.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public enum ProtocolType implements EnumConverter<Byte>
 {
-    /** Null */
+    
+    /**  Null. */
     NULL(0),
 
-    /** Internet Conrol Message */
+    /**  Internet Conrol Message. */
     ICMP(1),
 
-    /** Internet Group Management */
+    /**  Internet Group Management. */
     IGMP(2),
 
-    /** Gateway-to-Gateway */
+    /**  Gateway-to-Gateway. */
     GGP(3),
 
-    /** Stream */
+    /**  Stream. */
     ST(5),
 
-    /** Transmission control */
+    /**  Transmission control. */
     TCP(6),
 
-    /** UCL */
+    /**  UCL. */
     UCL(7),
 
-    /** Exterior Gateway Protocol */
+    /**  Exterior Gateway Protocol. */
     EGP(8),
 
-    /** any private interior gateway */
+    /**  any private interior gateway. */
     IGP(9),
 
-    /** BBN RCC Monitoring */
+    /**  BBN RCC Monitoring. */
     BBN_RCC_MON(10),
 
-    /** Network Voice Protocol */
+    /**  Network Voice Protocol. */
     NVP_II(11),
 
-    /** PUP */
+    /**  PUP. */
     PUP(12),
 
-    /** ARGUS */
+    /**  ARGUS. */
     ARGUS(13),
 
-    /** EMCON */
+    /**  EMCON. */
     EMCON(14),
 
-    /** Cross Net Debugger */
+    /**  Cross Net Debugger. */
     XNET(15),
 
-    /** Chaos */
+    /**  Chaos. */
     CHAOS(16),
 
-    /** User Datagram */
+    /**  User Datagram. */
     UDP(17),
 
-    /** Multiplexing */
+    /**  Multiplexing. */
     MUX(18),
 
-    /** DCN Measurement Subsystems */
+    /**  DCN Measurement Subsystems. */
     DCN_MEAS(19),
 
-    /** Host Monitoring */
+    /**  Host Monitoring. */
     HMP(20),
 
-    /** Packet Radio Measurement */
+    /**  Packet Radio Measurement. */
     PRM(21),
 
-    /** XEROX NS IDP */
+    /**  XEROX NS IDP. */
     XNS_IDP(22),
 
-    /** Trunk-1 */
+    /**  Trunk-1. */
     TRUNK_1(23),
 
-    /** Trunk-2 */
+    /**  Trunk-2. */
     TRUNK_2(24),
 
-    /** Leaf-1 */
+    /**  Leaf-1. */
     LEAF_1(25),
 
-    /** Leaf-2 */
+    /**  Leaf-2. */
     LEAF_2(26),
 
-    /** Reliable Data Protocol */
+    /**  Reliable Data Protocol. */
     RDP(27),
 
-    /** Internet Reliable Transaction */
+    /**  Internet Reliable Transaction. */
     IRTP(28),
 
-    /** ISO Transport Protocol Class 4 */
+    /**  ISO Transport Protocol Class 4. */
     ISO_TP4(29),
 
-    /** Bulk Data Transfer Protocol */
+    /**  Bulk Data Transfer Protocol. */
     NETBLT(30),
 
-    /** MFE Network Services Protocol */
+    /**  MFE Network Services Protocol. */
     MFE_NSP(31),
 
-    /** MERIT Internodal Protocol */
+    /**  MERIT Internodal Protocol. */
     MERIT_INP(32),
 
-    /** Sequential Exchange Protocol */
+    /**  Sequential Exchange Protocol. */
     SEP(33),
 
-    /** CFTP */
+    /**  CFTP. */
     CFTP(62),
 
-    /** SATNET and Backroom EXPAK */
+    /**  SATNET and Backroom EXPAK. */
     SAT_EXPAK(64),
 
-    /** MIT Subnet Support */
+    /**  MIT Subnet Support. */
     MIT_SUBNET(65),
 
-    /** MIT Remote Virtual Disk Protocol */
+    /**  MIT Remote Virtual Disk Protocol. */
     RVD(66),
 
-    /** Internet Pluribus Packet Core */
+    /**  Internet Pluribus Packet Core. */
     IPPC(67),
 
-    /** SATNET Monitoring */
+    /**  SATNET Monitoring. */
     SAT_MON(69),
 
-    /** Internet Packet Core Utility */
+    /**  Internet Packet Core Utility. */
     IPCV(71),
 
-    /** Backroom SETNET Monitoring */
+    /**  Backroom SETNET Monitoring. */
     BR_SAT_MON(76),
 
-    /** WIDEBAND Monitoring */
+    /**  WIDEBAND Monitoring. */
     WB_MON(78),
 
-    /** WIDEBAND EXPAK */
+    /**  WIDEBAND EXPAK. */
     WB_EXPAK(79);
 
+    /** The map. */
     private static ReverseEnumMap<Byte, ProtocolType> map = new ReverseEnumMap<Byte, ProtocolType>( ProtocolType.class );
 
+    /** The value. */
     private final byte value;
 
 
+    /**
+     * Instantiates a new protocol type.
+     *
+     * @param value the value
+     */
     private ProtocolType( int value )
     {
         this.value = ( byte ) value;
     }
 
 
+    /**
+     * Convert.
+     *
+     * @return the byte
+     */
     public Byte convert()
     {
         return this.value;
@@ -179,7 +195,7 @@ public enum ProtocolType implements EnumConverter<Byte>
     /**
      * Converts an ordinal value into a {@link ProtocolType}.
      *
-     * @param value
+     * @param value the value
      * @return The {@link ProtocolType}.
      */
     public static ProtocolType convert( byte value )

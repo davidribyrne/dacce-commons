@@ -6,10 +6,22 @@ import java.security.NoSuchAlgorithmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CryptoUtils.
+ */
 public class CryptoUtils
 {
+	
+	/** The Constant logger. */
 	private final static Logger logger = LoggerFactory.getLogger(CryptoUtils.class);
 
+	/**
+	 * Sha 1.
+	 *
+	 * @param data the data
+	 * @return the byte[]
+	 */
 	public static byte[] sha1(byte[] data)
 	{
 		try
@@ -24,6 +36,12 @@ public class CryptoUtils
 	}
 
 
+	/**
+	 * Md 5.
+	 *
+	 * @param data the data
+	 * @return the byte[]
+	 */
 	public static byte[] md5(byte[] data)
 	{
 		try
@@ -37,6 +55,9 @@ public class CryptoUtils
 		}
 	}
 
+	/**
+	 * Instantiates a new crypto utils.
+	 */
 	private CryptoUtils()
 	{
 	}

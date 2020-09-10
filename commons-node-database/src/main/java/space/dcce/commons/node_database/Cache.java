@@ -5,31 +5,60 @@ import java.util.HashMap;
 
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Cache.
+ *
+ * @param <T> the generic type
+ */
 public abstract class Cache<T>
 {
 
 
+	/** The cache lock. */
 	protected final Object cacheLock = new Object();
 
 
+	/** The operation count. */
 	private int operationCount = 0;
 
+	/**
+	 * Gets the key.
+	 *
+	 * @param value the value
+	 * @return the key
+	 */
 	protected abstract Object getKey(T value);
 
 
+	/** The cache. */
 	protected HashMap<Object, SoftReference<T>> cache;
 
 
+	/**
+	 * Instantiates a new cache.
+	 */
 	protected Cache()
 	{
 		cache = new HashMap<Object, SoftReference<T>>(1000);
 	}
 
+	/**
+	 * Contains key.
+	 *
+	 * @param key the key
+	 * @return true, if successful
+	 */
 	public boolean containsKey(Object key)
 	{
 		return cache.containsKey(key);
 	}
 
+	/**
+	 * Adds the item.
+	 *
+	 * @param item the item
+	 */
 	public void addItem(T item)
 	{
 
@@ -48,6 +77,9 @@ public abstract class Cache<T>
 	}
 
 
+	/**
+	 * Prune.
+	 */
 	protected synchronized void prune()
 	{
 		if (++operationCount >= 1000)

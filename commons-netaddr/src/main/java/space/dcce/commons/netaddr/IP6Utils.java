@@ -5,10 +5,17 @@ import java.util.Arrays;
 import java.util.List;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class IP6Utils.
+ */
 public class IP6Utils
 {
 
 
+	/**
+	 * Instantiates a new IP 6 utils.
+	 */
 	private IP6Utils()
 	{
 
@@ -17,10 +24,10 @@ public class IP6Utils
 
 	/**
 	 * Based on Inet6Address.numericToTextFormat()
-	 * 
-	 * @param address
-	 * @return
-	 * @throws InvalidIPAddressFormatException
+	 *
+	 * @param address the address
+	 * @return the string
+	 * @throws InvalidIPAddressFormatException the invalid IP address format exception
 	 */
 	public static String bytesToString(byte[] address) throws InvalidIPAddressFormatException
 	{
@@ -42,9 +49,10 @@ public class IP6Utils
 	}
 
 	/**
-	 * From Apache Commons Validator
-	 * @param inet6Address
-	 * @return
+	 * From Apache Commons Validator.
+	 *
+	 * @param inet6Address the inet 6 address
+	 * @return true, if is valid inet 6 address
 	 */
 	public static boolean isValidInet6Address(String inet6Address)
 	{

@@ -8,15 +8,32 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import space.dcce.commons.dns.records.ResourceRecord;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RecordCache.
+ *
+ * @param <K> the key type
+ */
 public class RecordCache <K> extends HashMap<K, List<ResourceRecord>>
 {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 
+	/**
+	 * Instantiates a new record cache.
+	 */
 	public RecordCache()
 	{
 	}
 	
+	/**
+	 * Gets the records.
+	 *
+	 * @param key the key
+	 * @return the records
+	 */
 	public List<ResourceRecord> getRecords(K key)
 	{
 		if (containsKey(key))
@@ -28,6 +45,12 @@ public class RecordCache <K> extends HashMap<K, List<ResourceRecord>>
 		return r;
 	}
 	
+	/**
+	 * Adds the records.
+	 *
+	 * @param key the key
+	 * @param records the records
+	 */
 	public void addRecords(K key, List<ResourceRecord> records)
 	{
 		if (!containsKey(key))
@@ -41,6 +64,11 @@ public class RecordCache <K> extends HashMap<K, List<ResourceRecord>>
 	}
 
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{

@@ -2,13 +2,27 @@ package space.dcce.commons.dns.io;
 
 import org.apache.mina.core.buffer.IoBuffer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DnsDecodingUtils.
+ */
 public class DnsDecodingUtils
 {
 
+	/**
+	 * Instantiates a new dns decoding utils.
+	 */
 	private DnsDecodingUtils()
 	{
 	}
 	
+	/**
+	 * Gets the character string.
+	 *
+	 * @param byteBuffer the byte buffer
+	 * @param length the length
+	 * @return the character string
+	 */
 	public static String getCharacterString(IoBuffer byteBuffer, int length)
 	{
 		StringBuilder sb = new StringBuilder(length);
@@ -25,6 +39,12 @@ public class DnsDecodingUtils
         return sb.toString();
 	}
 
+    /**
+     * Gets the domain name.
+     *
+     * @param byteBuffer the byte buffer
+     * @return the domain name
+     */
     public static String getDomainName( IoBuffer byteBuffer )
     {
         StringBuffer domainName = new StringBuffer();
@@ -34,6 +54,12 @@ public class DnsDecodingUtils
     }
 
 
+    /**
+     * Recurse domain name.
+     *
+     * @param byteBuffer the byte buffer
+     * @param domainName the domain name
+     */
     static void recurseDomainName( IoBuffer byteBuffer, StringBuffer domainName )
     {
         int length = byteBuffer.getUnsigned();
@@ -58,18 +84,37 @@ public class DnsDecodingUtils
     }
     
 
+    /**
+     * Checks if is offset.
+     *
+     * @param length the length
+     * @return true, if is offset
+     */
     static boolean isOffset( int length )
     {
         return ( ( length & 0xc0 ) == 0xc0 );
     }
 
 
+    /**
+     * Checks if is label.
+     *
+     * @param length the length
+     * @return true, if is label
+     */
     static boolean isLabel( int length )
     {
         return ( length != 0 && ( length & 0xc0 ) == 0 );
     }
 
 
+    /**
+     * Gets the label.
+     *
+     * @param byteBuffer the byte buffer
+     * @param domainName the domain name
+     * @param labelLength the label length
+     */
     static void getLabel( IoBuffer byteBuffer, StringBuffer domainName, int labelLength )
     {
         for ( int jj = 0; jj < labelLength; jj++ )

@@ -4,15 +4,28 @@ import org.apache.mina.core.buffer.IoBuffer;
 
 import space.dcce.commons.general.StringUtils;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DnsEncodingUtils.
+ */
 public class DnsEncodingUtils
 {
 
+	/**
+	 * Instantiates a new dns encoding utils.
+	 */
 	private DnsEncodingUtils()
 	{
 	}
 	
 	
 
+	/**
+	 * Put data size.
+	 *
+	 * @param byteBuffer the byte buffer
+	 * @param startPosition the start position
+	 */
 	public static void putDataSize( IoBuffer byteBuffer, int startPosition )
     {
         int endPosition = byteBuffer.position();
@@ -25,7 +38,7 @@ public class DnsEncodingUtils
 
 
     /**
-     * <domain-name> is a domain name represented as a series of labels, and
+     * domain-name is a domain name represented as a series of labels, and
      * terminated by a label with zero length.
      * 
      * @param byteBuffer the ByteBuffer to encode the domain name into
@@ -60,7 +73,8 @@ public class DnsEncodingUtils
 
 
     /**
-     * 
+     * Put character string.
+     *
      * @param byteBuffer The byte buffer to encode the character string into.
      * @param characterString the character string to encode
      */

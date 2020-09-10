@@ -23,22 +23,53 @@ import org.apache.commons.lang3.text.WordUtils;
 import space.dcce.commons.general.StringUtils;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class HelpFormatter.
+ */
 public class HelpFormatter
 {
 
+	/** The new line. */
 	private String newLine = System.getProperty("line.separator");
+	
+	/** The group seperator. */
 	private String groupSeperator = "->";
 
 
+	/** The cmd line syntax. */
 	private String cmdLineSyntax;
+	
+	/** The header. */
 	private String header;
+	
+	/** The root options. */
 	private RootOptions rootOptions;
+	
+	/** The footer. */
 	private String footer;
+	
+	/** The width. */
 	private int width = 90;
+	
+	/** The left pad. */
 	private int leftPad = 1;
+	
+	/** The usage. */
 	private boolean usage;
 
 
+	/**
+	 * Instantiates a new help formatter.
+	 *
+	 * @param width the width
+	 * @param cmdLineSyntax the cmd line syntax
+	 * @param header the header
+	 * @param rootOptions the root options
+	 * @param leftPad the left pad
+	 * @param footer the footer
+	 * @param usage the usage
+	 */
 	public HelpFormatter(int width, String cmdLineSyntax,
 			String header, RootOptions rootOptions, int leftPad,
 			String footer, boolean usage)
@@ -53,6 +84,17 @@ public class HelpFormatter
 	}
 
 
+	/**
+	 * Make help.
+	 *
+	 * @param width the width
+	 * @param cmdLineSyntax the cmd line syntax
+	 * @param header the header
+	 * @param options the options
+	 * @param leftPad the left pad
+	 * @param footer the footer
+	 * @return the string
+	 */
 	public static String makeHelp(int width, String cmdLineSyntax,
 			String header, RootOptions options, int leftPad,
 			String footer)
@@ -62,6 +104,11 @@ public class HelpFormatter
 	}
 
 
+	/**
+	 * Prints the help.
+	 *
+	 * @return the string
+	 */
 	public String printHelp()
 	{
 		StringBuffer sb = new StringBuffer();
@@ -92,6 +139,12 @@ public class HelpFormatter
 	}
 
 
+	/**
+	 * Clean string.
+	 *
+	 * @param s the s
+	 * @return the string
+	 */
 	private String cleanString(String s)
 	{
 		if (s == null)
@@ -100,6 +153,11 @@ public class HelpFormatter
 	}
 
 
+	/**
+	 * Generate usage line.
+	 *
+	 * @return the string
+	 */
 	private String generateUsageLine()
 	{
 		StringBuffer buff = new StringBuffer("Usage: ").append(cmdLineSyntax).append(" ");
@@ -167,6 +225,13 @@ public class HelpFormatter
 	}
 
 
+	/**
+	 * Gets the arg text.
+	 *
+	 * @param option the option
+	 * @param longOpt the long opt
+	 * @return the arg text
+	 */
 	private String getArgText(Option option, boolean longOpt)
 	{
 		if (!option.isArgAccepted())
@@ -179,6 +244,11 @@ public class HelpFormatter
 	}
 
 
+	/**
+	 * Prints the options.
+	 *
+	 * @return the string
+	 */
 	private String printOptions()
 	{
 		StringBuffer sb = new StringBuffer();
@@ -191,6 +261,12 @@ public class HelpFormatter
 	}
 
 
+	/**
+	 * Prints the option.
+	 *
+	 * @param option the option
+	 * @return the string
+	 */
 	private String printOption(Option option)
 	{
 		StringBuffer sb = new StringBuffer();
@@ -229,6 +305,13 @@ public class HelpFormatter
 	}
 
 
+	/**
+	 * Prints the option container.
+	 *
+	 * @param container the container
+	 * @param groupChain the group chain
+	 * @param sb the sb
+	 */
 	private void printOptionContainer(OptionContainer container, String groupChain, StringBuffer sb)
 	{
 		if (container instanceof OptionGroup)

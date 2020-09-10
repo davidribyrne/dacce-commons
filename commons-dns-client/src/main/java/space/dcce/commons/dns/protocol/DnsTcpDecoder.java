@@ -29,6 +29,7 @@ import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import space.dcce.commons.dns.io.DnsMessageDecoder;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * A {@link CumulativeProtocolDecoder} which supports DNS operation over TCP,
  * by reassembling split packets prior to decoding.
@@ -37,8 +38,11 @@ import space.dcce.commons.dns.io.DnsMessageDecoder;
  */
 public class DnsTcpDecoder extends CumulativeProtocolDecoder
 {
+    
+    /** The decoder. */
     private DnsMessageDecoder decoder = new DnsMessageDecoder();
 
+    /** The max object size. */
     private int maxObjectSize = 16384; // 16KB
 
 
@@ -57,9 +61,9 @@ public class DnsTcpDecoder extends CumulativeProtocolDecoder
      * Sets the allowed maximum size of the object to be decoded.
      * If the size of the object to be decoded exceeds this value, this
      * decoder will throw a {@link IllegalArgumentException}.  The default
-     * value is <tt>16384</tt> (16KB).
-     * 
-     * @param maxObjectSize 
+     * value is <code>16384</code> (16KB).
+     *
+     * @param maxObjectSize the new max object size
      */
     public void setMaxObjectSize( int maxObjectSize )
     {
@@ -72,6 +76,15 @@ public class DnsTcpDecoder extends CumulativeProtocolDecoder
     }
 
 
+    /**
+     * Do decode.
+     *
+     * @param session the session
+     * @param in the in
+     * @param out the out
+     * @return true, if successful
+     * @throws Exception the exception
+     */
     @Override
     protected boolean doDecode( IoSession session, IoBuffer in, ProtocolDecoderOutput out ) throws Exception
     {

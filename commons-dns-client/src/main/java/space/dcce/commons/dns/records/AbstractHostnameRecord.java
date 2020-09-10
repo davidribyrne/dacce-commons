@@ -9,17 +9,35 @@ import space.dcce.commons.dns.io.DnsDecodingUtils;
 import space.dcce.commons.dns.io.DnsEncodingUtils;
 import space.dcce.commons.dns.messages.RecordClass;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AbstractHostnameRecord.
+ */
 public abstract class AbstractHostnameRecord extends ResourceRecord
 {
 
+	/** The value. */
 	private String value;
 	
+	/**
+	 * Instantiates a new abstract hostname record.
+	 *
+	 * @param domainName the domain name
+	 * @param recordType the record type
+	 * @param recordClass the record class
+	 * @param timeToLive the time to live
+	 */
 	protected AbstractHostnameRecord(String domainName, RecordType recordType, RecordClass recordClass, int timeToLive)
 	{
 		super(domainName, recordType, recordClass, timeToLive);
 	}
 
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{
@@ -27,6 +45,11 @@ public abstract class AbstractHostnameRecord extends ResourceRecord
 	}
 
 
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int hashCode()
 	{
@@ -34,6 +57,12 @@ public abstract class AbstractHostnameRecord extends ResourceRecord
 	}
 
 
+	/**
+	 * Equals.
+	 *
+	 * @param obj the obj
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -48,6 +77,12 @@ public abstract class AbstractHostnameRecord extends ResourceRecord
 
 
 
+	/**
+	 * Decode data.
+	 *
+	 * @param byteBuffer the byte buffer
+	 * @param length the length
+	 */
 	@Override
 	public void decodeData(IoBuffer byteBuffer, short length)
 	{
@@ -55,6 +90,11 @@ public abstract class AbstractHostnameRecord extends ResourceRecord
 	}
 
 
+	/**
+	 * Encode data.
+	 *
+	 * @param byteBuffer the byte buffer
+	 */
 	@Override
 	protected void encodeData(IoBuffer byteBuffer)
 	{
@@ -62,12 +102,22 @@ public abstract class AbstractHostnameRecord extends ResourceRecord
 	}
 
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public String getValue()
 	{
 		return value;
 	}
 
 
+	/**
+	 * Sets the value.
+	 *
+	 * @param value the new value
+	 */
 	public void setValue(String value)
 	{
 		this.value = value;

@@ -30,6 +30,7 @@ import space.dcce.commons.dns.io.DnsEncodingUtils;
 import space.dcce.commons.dns.messages.RecordClass;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * The answer, authority, and additional sections all share the same
  * format: a variable number of resource records, where the number of
@@ -94,11 +95,10 @@ public abstract class ResourceRecord
     /**
      * Creates a new instance of ResourceRecordImpl.
      *
-     * @param domainName
-     * @param recordType
-     * @param recordClass
-     * @param timeToLive
-     * @param attributes
+     * @param domainName the domain name
+     * @param recordType the record type
+     * @param recordClass the record class
+     * @param timeToLive the time to live
      */
     protected ResourceRecord( String domainName, RecordType recordType, RecordClass recordClass, int timeToLive)
     {
@@ -108,6 +108,11 @@ public abstract class ResourceRecord
         this.timeToLive = timeToLive;
     }
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{
@@ -117,6 +122,8 @@ public abstract class ResourceRecord
 
 
     /**
+     * Gets the domain name.
+     *
      * @return Returns the domainName.
      */
     public String getDomainName()
@@ -126,6 +133,8 @@ public abstract class ResourceRecord
 
 
     /**
+     * Gets the record type.
+     *
      * @return Returns the recordType.
      */
     public RecordType getRecordType()
@@ -135,6 +144,8 @@ public abstract class ResourceRecord
 
 
     /**
+     * Gets the record class.
+     *
      * @return Returns the recordClass.
      */
     public RecordClass getRecordClass()
@@ -144,6 +155,8 @@ public abstract class ResourceRecord
 
 
     /**
+     * Gets the time to live.
+     *
      * @return Returns the timeToLive.
      */
     public int getTimeToLive()
@@ -154,6 +167,12 @@ public abstract class ResourceRecord
 
 
 
+    /**
+     * Equals.
+     *
+     * @param o the o
+     * @return true, if successful
+     */
     public boolean equals( Object o )
     {
     	if (!(o instanceof ResourceRecord))
@@ -167,17 +186,38 @@ public abstract class ResourceRecord
     }
 
 
+    /**
+     * Hash code.
+     *
+     * @return the int
+     */
     public int hashCode()
     {
     	return new HashCodeBuilder().append(domainName).append(recordType).append(recordClass).append(timeToLive).hashCode();
     }
     
 
+    /**
+     * Decode data.
+     *
+     * @param byteBuffer the byte buffer
+     * @param length the length
+     */
     public abstract void decodeData(IoBuffer byteBuffer, short length);
     
+    /**
+     * Encode data.
+     *
+     * @param byteBuffer the byte buffer
+     */
     protected abstract void encodeData( IoBuffer byteBuffer);
 
 
+    /**
+     * Encode.
+     *
+     * @param byteBuffer the byte buffer
+     */
     public void encode ( IoBuffer byteBuffer)
     {
     	DnsEncodingUtils.putDomainName( byteBuffer, getDomainName() );
@@ -189,6 +229,11 @@ public abstract class ResourceRecord
     }
 
 
+    /**
+     * Put resource record.
+     *
+     * @param byteBuffer the byte buffer
+     */
     protected void putResourceRecord( IoBuffer byteBuffer )
     {
         int startPosition = byteBuffer.position();

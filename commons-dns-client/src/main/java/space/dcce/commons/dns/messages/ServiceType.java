@@ -25,262 +25,278 @@ import space.dcce.commons.general.EnumConverter;
 import space.dcce.commons.general.ReverseEnumMap;
 
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Enum ServiceType.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public enum ServiceType implements EnumConverter<Byte>
 {
-    /** Null */
+    
+    /**  Null. */
     NULL(0),
 
-    /** Remote job entry */
+    /**  Remote job entry. */
     RJE(5),
 
-    /** Echo */
+    /**  Echo. */
     ECHO(7),
 
-    /** Discard */
+    /**  Discard. */
     DISCARD(9),
 
-    /** Active users */
+    /**  Active users. */
     USERS(11),
 
-    /** Daytime */
+    /**  Daytime. */
     DAYTIME(13),
 
-    /** Quote of the day */
+    /**  Quote of the day. */
     QUOTE(17),
 
-    /** Character generator */
+    /**  Character generator. */
     CHARGEN(19),
 
-    /** File Transfer [Default Data] */
+    /**  File Transfer [Default Data]. */
     FTP_DATA(20),
 
-    /** File Transfer [Control] */
+    /**  File Transfer [Control]. */
     FTP(21),
 
-    /** Telnet */
+    /**  Telnet. */
     TELNET(23),
 
-    /** Simple Mail Transfer */
+    /**  Simple Mail Transfer. */
     SMTP(25),
 
-    /** NSW User System FE */
+    /**  NSW User System FE. */
     NSW_FE(27),
 
-    /** MSG ICP */
+    /**  MSG ICP. */
     MSG_ICP(29),
 
-    /** MSG Authentication */
+    /**  MSG Authentication. */
     MSG_AUTH(31),
 
-    /** Display Support Protocol */
+    /**  Display Support Protocol. */
     DSP(33),
 
-    /** Time */
+    /**  Time. */
     TIME(37),
 
-    /** Resource Location Protocol */
+    /**  Resource Location Protocol. */
     RLP(39),
 
-    /** Graphics */
+    /**  Graphics. */
     GRAPHICS(41),
 
-    /** Host Name Server */
+    /**  Host Name Server. */
     NAMESERVER(42),
 
-    /** Who Is */
+    /**  Who Is. */
     NICKNAME(43),
 
-    /** MPM FLAGS Protocol */
+    /**  MPM FLAGS Protocol. */
     MPM_FLAGS(44),
 
-    /** Message Processing Module [recv] */
+    /**  Message Processing Module [recv]. */
     MPM(45),
 
-    /** MPM [default send] */
+    /**  MPM [default send]. */
     MPM_SND(46),
 
-    /** NI FTP */
+    /**  NI FTP. */
     NI_FTP(47),
 
-    /** Login Host Protocol */
+    /**  Login Host Protocol. */
     LOGIN(49),
 
-    /** IMP Logical Address Maintenance */
+    /**  IMP Logical Address Maintenance. */
     LA_MAINT(51),
 
-    /** Domain Name Server */
+    /**  Domain Name Server. */
     DOMAIN(53),
 
-    /** ISI Graphics Language */
+    /**  ISI Graphics Language. */
     ISI_GL(55),
 
-    /** NI MAIL */
+    /**  NI MAIL. */
     NI_MAIL(61),
 
-    /** VIA Systems - FTP */
+    /**  VIA Systems - FTP. */
     VIA_FTP(63),
 
-    /** TACACS-Database Service */
+    /**  TACACS-Database Service. */
     TACACS_DS(65),
 
-    /** Bootstrap Protocol Server */
+    /**  Bootstrap Protocol Server. */
     BOOTPS(67),
 
-    /** Bootstrap Protocol Client */
+    /**  Bootstrap Protocol Client. */
     BOOTPC(68),
 
-    /** Trivial File Transfer */
+    /**  Trivial File Transfer. */
     TFTP(69),
 
-    /** Remote Job Service */
+    /**  Remote Job Service. */
     NETRJS_1(71),
 
-    /** Remote Job Service */
+    /**  Remote Job Service. */
     NETRJS_2(72),
 
-    /** Remote Job Service */
+    /**  Remote Job Service. */
     NETRJS_3(73),
 
-    /** Remote Job Service */
+    /**  Remote Job Service. */
     NETRJS_4(74),
 
-    /** Finger */
+    /**  Finger. */
     FINGER(79),
 
-    /** HOSTS2 Name Server */
+    /**  HOSTS2 Name Server. */
     HOSTS2_NS(81),
 
-    /** SU/MIT Telnet Gateway */
+    /**  SU/MIT Telnet Gateway. */
     SU_MIT_TG(89),
 
-    /** MIT Dover Spooler */
+    /**  MIT Dover Spooler. */
     MIT_DOV(91),
 
-    /** Device Control Protocol */
+    /**  Device Control Protocol. */
     DCP(93),
 
-    /** SUPDUP */
+    /**  SUPDUP. */
     SUPDUP(95),
 
-    /** Swift Remote Virtual File Protocol */
+    /**  Swift Remote Virtual File Protocol. */
     SWIFT_RVF(97),
 
-    /** TAC News */
+    /**  TAC News. */
     TACNEWS(98),
 
-    /** Metagram Relay */
+    /**  Metagram Relay. */
     METAGRAM(99),
 
-    /** NIC Host Name Server */
+    /**  NIC Host Name Server. */
     HOSTNAME(101),
 
-    /** ISO-TSAP */
+    /**  ISO-TSAP. */
     ISO_TSAP(102),
 
-    /** X400 */
+    /**  X400. */
     X400(103),
 
-    /** X400-SND */
+    /**  X400-SND. */
     X400_SND(104),
 
-    /** Mailbox Name Nameserver */
+    /**  Mailbox Name Nameserver. */
     CSNET_NS(105),
 
-    /** Remote Telnet Service */
+    /**  Remote Telnet Service. */
     RTELNET(107),
 
-    /** Post Office Protocol - Version 2 */
+    /**  Post Office Protocol - Version 2. */
     POP_2(109),
 
-    /** SUN Remote Procedure Call */
+    /**  SUN Remote Procedure Call. */
     SUNRPC(111),
 
-    /** Authentication Service */
+    /**  Authentication Service. */
     AUTH(113),
 
-    /** Simple File Transfer Protocol */
+    /**  Simple File Transfer Protocol. */
     SFTP(115),
 
-    /** UUCP Path Service */
+    /**  UUCP Path Service. */
     UUCP_PATH(117),
 
-    /** Network News Transfer Protocol */
+    /**  Network News Transfer Protocol. */
     NNTP(119),
 
-    /** HYDRA Expedited Remote Procedure */
+    /**  HYDRA Expedited Remote Procedure. */
     ERPC(121),
 
-    /** Network Time Protocol */
+    /**  Network Time Protocol. */
     NTP(123),
 
-    /** Locus PC-Interface Net Map Server */
+    /**  Locus PC-Interface Net Map Server. */
     LOCUS_MAP(125),
 
-    /** Locus PC-Interface Conn Server */
+    /**  Locus PC-Interface Conn Server. */
     LOCUS_CON(127),
 
-    /** Password Generator Protocol */
+    /**  Password Generator Protocol. */
     PWDGEN(129),
 
-    /** CISCO FNATIVE */
+    /**  CISCO FNATIVE. */
     CISCO_FNA(130),
 
-    /** CISCO TNATIVE */
+    /**  CISCO TNATIVE. */
     CISCO_TNA(131),
 
-    /** CISCO SYSMAINT */
+    /**  CISCO SYSMAINT. */
     CISCO_SYS(132),
 
-    /** Statistics Service */
+    /**  Statistics Service. */
     STATSRV(133),
 
-    /** INGRES-NET Service */
+    /**  INGRES-NET Service. */
     INGRES_NET(134),
 
-    /** Location Service */
+    /**  Location Service. */
     LOC_SRV(135),
 
-    /** PROFILE Naming System */
+    /**  PROFILE Naming System. */
     PROFILE(136),
 
-    /** NETBIOS Name Service */
+    /**  NETBIOS Name Service. */
     NETBIOS_NS(137),
 
-    /** NETBIOS Datagram Service */
+    /**  NETBIOS Datagram Service. */
     NETBIOS_DGM(138),
 
-    /** NETBIOS Session Service */
+    /**  NETBIOS Session Service. */
     NETBIOS_SSN(139),
 
-    /** EMFIS Data Service */
+    /**  EMFIS Data Service. */
     EMFIS_DATA(140),
 
-    /** EMFIS Control Service */
+    /**  EMFIS Control Service. */
     EMFIS_CNTL(141),
 
-    /** Britton-Lee IDM */
+    /**  Britton-Lee IDM. */
     BL_IDM(142),
 
-    /** Survey Measurement */
+    /**  Survey Measurement. */
     SUR_MEAS(243),
 
-    /** LINK */
+    /**  LINK. */
     LINK(245);
 
+    /** The map. */
     private static ReverseEnumMap<Byte, ServiceType> map = new ReverseEnumMap<Byte, ServiceType>( ServiceType.class );
 
+    /** The value. */
     private final byte value;
 
 
+    /**
+     * Instantiates a new service type.
+     *
+     * @param value the value
+     */
     private ServiceType( int value )
     {
         this.value = ( byte ) value;
     }
 
 
+    /**
+     * Convert.
+     *
+     * @return the byte
+     */
     public Byte convert()
     {
         return this.value;
@@ -290,7 +306,7 @@ public enum ServiceType implements EnumConverter<Byte>
     /**
      * Converts an ordinal value into a {@link ServiceType}.
      *
-     * @param value
+     * @param value the value
      * @return The {@link ServiceType}.
      */
     public static ServiceType convert( byte value )

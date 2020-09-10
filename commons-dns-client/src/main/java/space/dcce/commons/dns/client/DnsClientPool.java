@@ -11,16 +11,39 @@ import org.slf4j.LoggerFactory;
 import space.dcce.commons.dns.exceptions.DnsClientConnectException;
 import space.dcce.commons.general.UnexpectedException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DnsClientPool.
+ */
 public class DnsClientPool
 {
+	
+	/** The Constant logger. */
 	private final static Logger logger = LoggerFactory.getLogger(DnsClientPool.class);
 	
 	
+	/** The clients. */
 	private final List<DnsClient> clients;
+	
+	/** The round robin. */
 	private boolean roundRobin;
+	
+	/** The round robin duplicate count. */
 	private int roundRobinDuplicateCount;
+	
+	/** The last server index. */
 	private int lastServerIndex = -1;
 
+	/**
+	 * Instantiates a new dns client pool.
+	 *
+	 * @param serverAddresses the server addresses
+	 * @param padSecondRequest the pad second request
+	 * @param maxRequestsPerServerPerSecond the max requests per server per second
+	 * @param roundRobin the round robin
+	 * @param roundRobinDuplicateCount the round robin duplicate count
+	 * @throws IllegalArgumentException the illegal argument exception
+	 */
 	public DnsClientPool(List<String> serverAddresses, boolean padSecondRequest, int maxRequestsPerServerPerSecond, 
 			boolean roundRobin, int roundRobinDuplicateCount) throws IllegalArgumentException
 	{
@@ -58,6 +81,11 @@ public class DnsClientPool
 	}
 	
 	
+	/**
+	 * Choose next clients.
+	 *
+	 * @return the list
+	 */
 	public synchronized List<DnsClient> chooseNextClients()
 	{
 		if (!roundRobin)
@@ -74,6 +102,9 @@ public class DnsClientPool
 		return nextClients;
 	}
 	
+	/**
+	 * Close.
+	 */
 	public void close()
 	{
 		for (DnsClient client: clients)
@@ -82,6 +113,11 @@ public class DnsClientPool
 		}
 	}
 	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{

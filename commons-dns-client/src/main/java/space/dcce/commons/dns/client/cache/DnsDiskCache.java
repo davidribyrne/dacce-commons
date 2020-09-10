@@ -14,13 +14,30 @@ import space.dcce.commons.dns.messages.QuestionRecord;
 import space.dcce.commons.dns.records.ResourceRecord;
 import space.dcce.commons.general.YamlUtils;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DnsDiskCache.
+ */
 public class DnsDiskCache implements DnsCache
 {
+	
+	/** The Constant logger. */
 	private final static Logger logger = LoggerFactory.getLogger(DnsDiskCache.class);
+	
+	/** The add count. */
 	private int addCount = 0;
+	
+	/** The filename. */
 	private String filename;
+	
+	/** The internal cache. */
 	private SimpleDnsCache internalCache;
 	
+	/**
+	 * Instantiates a new dns disk cache.
+	 *
+	 * @param filename the filename
+	 */
 	public DnsDiskCache(String filename)
 	{
 		this.filename = filename;
@@ -41,11 +58,22 @@ public class DnsDiskCache implements DnsCache
 			internalCache = new SimpleDnsCache();
 	}
 
+	/**
+	 * Write to disk.
+	 *
+	 * @throws YamlException the yaml exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void writeToDisk() throws YamlException, IOException
 	{
 		YamlUtils.writeObject(filename, internalCache);
 	}
 	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{
@@ -78,11 +106,23 @@ public class DnsDiskCache implements DnsCache
 //				.isEquals();
 //	}
 
-	public List<ResourceRecord> get(QuestionRecord question)
+	/**
+ * Gets the.
+ *
+ * @param question the question
+ * @return the list
+ */
+public List<ResourceRecord> get(QuestionRecord question)
 	{
 		return internalCache.get(question);
 	}
 
+	/**
+	 * Adds the.
+	 *
+	 * @param question the question
+	 * @param records the records
+	 */
 	public void add(QuestionRecord question, List<ResourceRecord> records)
 	{
 		internalCache.add(question, records);
@@ -97,11 +137,23 @@ public class DnsDiskCache implements DnsCache
 			}
 	}
 
+	/**
+	 * Contains.
+	 *
+	 * @param question the question
+	 * @return true, if successful
+	 */
 	public boolean contains(QuestionRecord question)
 	{
 		return internalCache.contains(question);
 	}
 
+	/**
+	 * Gets the any.
+	 *
+	 * @param domainName the domain name
+	 * @return the any
+	 */
 	public List<ResourceRecord> getAny(String domainName)
 	{
 		return internalCache.getAny(domainName);

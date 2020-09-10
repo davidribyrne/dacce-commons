@@ -8,16 +8,31 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class IndexedCache.
+ *
+ * @param <ValueType> the generic type
+ */
 // TODO: Make this thread safe
 public class IndexedCache<ValueType> extends UniqueList<ValueType>
 {
-	/** Each key has only one value */
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**  Each key has only one value. */
 	transient private final ConcurrentMap<Field, SingleValueIndex> singleValueIndexes;
 	
-	/** Each key can have multiple values */
+	/**  Each key can have multiple values. */
 	transient private final ConcurrentMap<Field, MultiValueIndex> multiValueIndexes;
 
 
+	/**
+	 * Instantiates a new indexed cache.
+	 */
 	public IndexedCache()
 	{
 		super(false);
@@ -25,15 +40,31 @@ public class IndexedCache<ValueType> extends UniqueList<ValueType>
 		multiValueIndexes = new ConcurrentHashMap<Field, MultiValueIndex>(1);
 	}
 
+	/**
+	 * The Class SingleValueIndex.
+	 */
 	private class SingleValueIndex extends ConcurrentHashMap<Object, ValueType>
 	{
+		
+		/** The Constant serialVersionUID. */
 		private static final long serialVersionUID = 1L;
 	}
 
+	/**
+	 * The Class MultiValueIndex.
+	 */
 	private class MultiValueIndex extends ConcurrentHashMap<Object, List<ValueType>>
 	{
+		
+		/** The Constant serialVersionUID. */
 		private static final long serialVersionUID = 1L;
 
+		/**
+		 * Adds the item.
+		 *
+		 * @param key the key
+		 * @param value the value
+		 */
 		void addItem(Object key, ValueType value)
 		{
 			List<ValueType> list = get(key);
@@ -47,6 +78,11 @@ public class IndexedCache<ValueType> extends UniqueList<ValueType>
 	}
 
 
+	/**
+	 * Adds the all.
+	 *
+	 * @param objects the objects
+	 */
 	public void addAll(Iterable<ValueType> objects)
 	{
 		for (ValueType object : objects)
@@ -55,6 +91,12 @@ public class IndexedCache<ValueType> extends UniqueList<ValueType>
 		}
 	}
 
+	/**
+	 * Adds the.
+	 *
+	 * @param object the object
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean add(ValueType object)
 	{
@@ -90,16 +132,37 @@ public class IndexedCache<ValueType> extends UniqueList<ValueType>
 
 
 
+	/**
+	 * Contains key.
+	 *
+	 * @param field the field
+	 * @param key the key
+	 * @return true, if successful
+	 */
 	public boolean containsKey(Field field, Object key)
 	{
 		return getMember(field, key) != null;
 	}
 
+	/**
+	 * Contains value.
+	 *
+	 * @param value the value
+	 * @return true, if successful
+	 */
 	public boolean containsValue(Object value)
 	{
 		return super.contains(value);
 	}
 
+	/**
+	 * Generate single value index.
+	 *
+	 * @param index the index
+	 * @param field the field
+	 * @throws IllegalArgumentException the illegal argument exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	private void generateSingleValueIndex(SingleValueIndex index, Field field) throws IllegalArgumentException, IllegalAccessException
 	{
 		for (ValueType object : this)
@@ -122,6 +185,14 @@ public class IndexedCache<ValueType> extends UniqueList<ValueType>
 
 
 
+	/**
+	 * Generate multivalue index.
+	 *
+	 * @param index the index
+	 * @param field the field
+	 * @throws IllegalArgumentException the illegal argument exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	private void generateMultivalueIndex(MultiValueIndex index, Field field) throws IllegalArgumentException,
 			IllegalAccessException
 	{
@@ -153,12 +224,25 @@ public class IndexedCache<ValueType> extends UniqueList<ValueType>
 	}
 
 
+	/**
+	 * Gets the members.
+	 *
+	 * @param field the field
+	 * @param key the key
+	 * @return the members
+	 */
 	public List<ValueType> getMembers(Field field, Object key)
 	{
 		// field = address, key = hostname object, field(key) = address
 		return getMultiValueIndex(field).get(key);
 	}
 
+	/**
+	 * Gets the multi value index.
+	 *
+	 * @param field the field
+	 * @return the multi value index
+	 */
 	private MultiValueIndex getMultiValueIndex(Field field)
 	{
 		field.setAccessible(true);
@@ -179,12 +263,25 @@ public class IndexedCache<ValueType> extends UniqueList<ValueType>
 		return index;
 	}
 
+	/**
+	 * Gets the member.
+	 *
+	 * @param field the field
+	 * @param key the key
+	 * @return the member
+	 */
 	public ValueType getMember(Field field, Object key)
 	{
 		return getSingleValueIndex(field).get(key);
 	}
 
 
+	/**
+	 * Gets the single value index.
+	 *
+	 * @param field the field
+	 * @return the single value index
+	 */
 	private SingleValueIndex getSingleValueIndex(Field field)
 	{
 		field.setAccessible(true);
@@ -209,6 +306,11 @@ public class IndexedCache<ValueType> extends UniqueList<ValueType>
 
 
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{

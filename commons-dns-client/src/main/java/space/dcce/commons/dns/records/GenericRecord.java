@@ -6,10 +6,21 @@ import org.apache.mina.core.buffer.IoBuffer;
 
 import space.dcce.commons.dns.messages.RecordClass;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GenericRecord.
+ */
 public class GenericRecord extends ResourceRecord
 {
+	
+	/** The data. */
 	private byte[] data;
 	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{
@@ -19,6 +30,11 @@ public class GenericRecord extends ResourceRecord
 	}
 
 
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int hashCode()
 	{
@@ -26,6 +42,12 @@ public class GenericRecord extends ResourceRecord
 	}
 
 
+	/**
+	 * Equals.
+	 *
+	 * @param obj the obj
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -39,12 +61,26 @@ public class GenericRecord extends ResourceRecord
 	}
 
 
+	/**
+	 * Instantiates a new generic record.
+	 *
+	 * @param domainName the domain name
+	 * @param recordType the record type
+	 * @param recordClass the record class
+	 * @param timeToLive the time to live
+	 */
 	public GenericRecord(String domainName, RecordType recordType, RecordClass recordClass, int timeToLive)
 	{
 		super(domainName, recordType, recordClass, timeToLive);
 	}
 
 
+	/**
+	 * Decode data.
+	 *
+	 * @param byteBuffer the byte buffer
+	 * @param length the length
+	 */
 	@Override
 	public void decodeData(IoBuffer byteBuffer, short length)
 	{
@@ -53,6 +89,11 @@ public class GenericRecord extends ResourceRecord
 	}
 
 
+	/**
+	 * Encode data.
+	 *
+	 * @param byteBuffer the byte buffer
+	 */
 	@Override
 	protected void encodeData(IoBuffer byteBuffer)
 	{
@@ -60,12 +101,22 @@ public class GenericRecord extends ResourceRecord
 	}
 
 
+	/**
+	 * Gets the data.
+	 *
+	 * @return the data
+	 */
 	public byte[] getData()
 	{
 		return data;
 	}
 
 
+	/**
+	 * Sets the data.
+	 *
+	 * @param data the new data
+	 */
 	public void setData(byte[] data)
 	{
 		this.data = data;

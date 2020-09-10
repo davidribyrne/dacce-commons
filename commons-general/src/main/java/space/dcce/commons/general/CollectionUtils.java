@@ -19,12 +19,10 @@ public class CollectionUtils
 
 
 	/**
-	 * Join objects using toString()
+	 * Join objects using toString().
 	 *
-	 * @param delimiter
-	 *            the delimiter
-	 * @param objects
-	 *            the objects
+	 * @param delimiter            the delimiter
+	 * @param objects            the objects
 	 * @return the string
 	 */
 	public static String joinObjects(String delimiter, Iterable<?> objects)
@@ -47,6 +45,12 @@ public class CollectionUtils
 	}
 
 
+	/**
+	 * Adds the array.
+	 *
+	 * @param collection the collection
+	 * @param array the array
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void addArray(Collection collection, Object[] array)
 	{

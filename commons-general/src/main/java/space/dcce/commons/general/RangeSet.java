@@ -9,17 +9,37 @@ import com.google.common.collect.Iterables;
 import java.util.*;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RangeSet.
+ */
 public class RangeSet
 {
+	
+	/** The Constant logger. */
 	private final static Logger logger = LoggerFactory.getLogger(RangeSet.class);
 
+	/** The original ranges. */
 	private final List<Range> originalRanges;
+	
+	/** The flattened ranges. */
 	private List<Range> flattenedRanges;
+	
+	/** The changed. */
 	private boolean changed;
+	
+	/** The size. */
 	protected int size;
+	
+	/** The name. */
 	private final String name;
 
 
+	/**
+	 * Instantiates a new range set.
+	 *
+	 * @param name the name
+	 */
 	public RangeSet(String name)
 	{
 		this.name = name;
@@ -29,8 +49,10 @@ public class RangeSet
 
 
 	/**
-	 * 
-	 * @param ranges
+	 * Instantiates a new range set.
+	 *
+	 * @param name the name
+	 * @param ranges the ranges
 	 * @param flattenFirst if true, combine overlapping or adjacent ranges; don't track original ranges
 	 */
 	public RangeSet(String name, List<Range> ranges, boolean flattenFirst)
@@ -45,6 +67,11 @@ public class RangeSet
 	}
 
 
+	/**
+	 * Size.
+	 *
+	 * @return the int
+	 */
 	public int size()
 	{
 		synchronized (this)
@@ -55,6 +82,11 @@ public class RangeSet
 	}
 
 
+	/**
+	 * Checks if is empty.
+	 *
+	 * @return true, if is empty
+	 */
 	public boolean isEmpty()
 	{
 		return originalRanges.isEmpty();
@@ -62,10 +94,10 @@ public class RangeSet
 
 
 	/**
-	 * Returns a union of both ranges; basically, a logical OR
-	 * 
-	 * @param target
-	 * @return
+	 * Returns a union of both ranges; basically, a logical OR.
+	 *
+	 * @param target the target
+	 * @return the range set
 	 */
 	public RangeSet union(RangeSet target)
 	{
@@ -78,7 +110,8 @@ public class RangeSet
 
 
 	/**
-	 * 
+	 * Complement.
+	 *
 	 * @return A logical NOT
 	 */
 	public RangeSet complement()
@@ -99,6 +132,12 @@ public class RangeSet
 	}
 
 
+	/**
+	 * Difference.
+	 *
+	 * @param target the target
+	 * @return the range set
+	 */
 	public RangeSet difference(RangeSet target)
 	{
 		return intersection(target.complement());
@@ -108,9 +147,9 @@ public class RangeSet
 	/**
 	 * Returns a RangeSet of ranges of values that are in both sets;
 	 * basically a logical AND.
-	 * 
-	 * @param target
-	 * @return
+	 *
+	 * @param target the target
+	 * @return the range set
 	 */
 	public RangeSet intersection(RangeSet target)
 	{
@@ -187,7 +226,8 @@ public class RangeSet
 
 
 	/**
-	 * 
+	 * Gets the flattend ranges.
+	 *
 	 * @return Sorted
 	 */
 	public List<Range> getFlattendRanges()
@@ -200,6 +240,9 @@ public class RangeSet
 	}
 
 
+	/**
+	 * Check rebuild.
+	 */
 	protected final synchronized void checkRebuild()
 	{
 		if (changed)
@@ -216,6 +259,7 @@ public class RangeSet
 	}
 
 
+	/** The start comparator. */
 	private static Comparator<Range> startComparator = new Comparator<Range>()
 	{
 		@Override
@@ -226,6 +270,12 @@ public class RangeSet
 	};
 
 
+	/**
+	 * Contains.
+	 *
+	 * @param value the value
+	 * @return true, if successful
+	 */
 	public boolean contains(long value)
 	{
 		int i = Collections.binarySearch(getFlattendRanges(), new Range(value), startComparator);
@@ -233,6 +283,12 @@ public class RangeSet
 	}
 
 
+	/**
+	 * Flatten ranges.
+	 *
+	 * @param originalRanges the original ranges
+	 * @return the list
+	 */
 	private static List<Range> flattenRanges(List<Range> originalRanges)
 	{
 		List<Range> flattenedRanges = new ArrayList<Range>();
@@ -279,6 +335,11 @@ public class RangeSet
 	}
 
 
+	/**
+	 * Adds the.
+	 *
+	 * @param range the range
+	 */
 	public void add(Range range)
 	{
 		synchronized (this)
@@ -289,6 +350,11 @@ public class RangeSet
 	}
 
 
+	/**
+	 * Adds the all.
+	 *
+	 * @param ranges the ranges
+	 */
 	public void addAll(Collection<Range> ranges)
 	{
 		synchronized (this)
@@ -299,6 +365,11 @@ public class RangeSet
 	}
 
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString()
 	{
@@ -307,6 +378,11 @@ public class RangeSet
 	}
 
 
+	/**
+	 * Gets the original ranges.
+	 *
+	 * @return the original ranges
+	 */
 	public List<Range> getOriginalRanges()
 	{
 		checkRebuild();
@@ -314,6 +390,11 @@ public class RangeSet
 	}
 
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName()
 	{
 		return name;

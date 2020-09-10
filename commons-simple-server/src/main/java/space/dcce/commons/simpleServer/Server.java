@@ -9,18 +9,42 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Server.
+ */
 public abstract class Server implements Runnable
 {
+	
+	/** The Constant logger. */
 	private final static Logger logger = LoggerFactory.getLogger(Server.class);
 
+	/** The host address. */
 	private InetAddress hostAddress;
+	
+	/** The port. */
 	private int port;
+	
+	/** The server socket. */
 	private ServerSocket serverSocket;
+	
+	/** The server thread. */
 	private Thread serverThread;
+	
+	/** The running. */
 	private boolean running;
+	
+	/** The thread group. */
 	private ThreadGroup threadGroup;
 
 
+	/**
+	 * Instantiates a new server.
+	 *
+	 * @param hostAddress the host address
+	 * @param port the port
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public Server(InetAddress hostAddress, int port) throws IOException
 	{
 		this.hostAddress = hostAddress;
@@ -35,15 +59,28 @@ public abstract class Server implements Runnable
 	}
 
 
+	/**
+	 * Checks if is running.
+	 *
+	 * @return true, if is running
+	 */
 	public boolean isRunning()
 	{
 		return running;
 	}
 
 
+	/**
+	 * Creates the worker.
+	 *
+	 * @return the worker
+	 */
 	protected abstract Worker createWorker();
 
 
+	/**
+	 * Run.
+	 */
 	@Override
 	public void run()
 	{
@@ -75,6 +112,11 @@ public abstract class Server implements Runnable
 	}
 
 
+	/**
+	 * Sets the running.
+	 *
+	 * @param running the new running
+	 */
 	public void setRunning(boolean running)
 	{
 		this.running = running;

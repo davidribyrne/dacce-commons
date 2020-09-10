@@ -40,6 +40,7 @@ import space.dcce.commons.dns.records.RecordType;
 import space.dcce.commons.dns.records.ResourceRecord;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * A decoder for DNS messages.  The primary usage of the DnsMessageDecoder is by
  * calling the <code>decode(ByteBuffer)</code> method which will read the 
@@ -51,6 +52,7 @@ import space.dcce.commons.dns.records.ResourceRecord;
 public class DnsMessageDecoder
 {
 
+    /** The logger. */
     private final Logger logger = LoggerFactory.getLogger( DnsMessageDecoder.class );
 
 
@@ -58,9 +60,9 @@ public class DnsMessageDecoder
     /**
      * Decode the {@link IoBuffer} into a {@link DnsMessage}.
      *
-     * @param in
+     * @param in the in
      * @return The {@link DnsMessage}.
-     * @throws IOException
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public DnsMessage decode( IoBuffer in ) throws IOException
     {
@@ -100,6 +102,13 @@ public class DnsMessageDecoder
     }
 
 
+    /**
+     * Gets the records.
+     *
+     * @param byteBuffer the byte buffer
+     * @param recordCount the record count
+     * @return the records
+     */
     private List<ResourceRecord> getRecords( IoBuffer byteBuffer, short recordCount )
     {
         List<ResourceRecord> records = new ArrayList<ResourceRecord>( recordCount );
@@ -124,6 +133,13 @@ public class DnsMessageDecoder
 
 
 
+    /**
+     * Gets the questions.
+     *
+     * @param byteBuffer the byte buffer
+     * @param questionCount the question count
+     * @return the questions
+     */
     private List<QuestionRecord> getQuestions( IoBuffer byteBuffer, short questionCount )
     {
         List<QuestionRecord> questions = new ArrayList<QuestionRecord>( questionCount );
@@ -142,6 +158,12 @@ public class DnsMessageDecoder
     }
 
 
+    /**
+     * Gets the domain name.
+     *
+     * @param byteBuffer the byte buffer
+     * @return the domain name
+     */
     static String getDomainName( IoBuffer byteBuffer )
     {
         StringBuffer domainName = new StringBuffer();
@@ -151,6 +173,12 @@ public class DnsMessageDecoder
     }
 
 
+    /**
+     * Recurse domain name.
+     *
+     * @param byteBuffer the byte buffer
+     * @param domainName the domain name
+     */
     static void recurseDomainName( IoBuffer byteBuffer, StringBuffer domainName )
     {
         int length = byteBuffer.getUnsigned();
@@ -175,18 +203,37 @@ public class DnsMessageDecoder
     }
 
 
+    /**
+     * Checks if is offset.
+     *
+     * @param length the length
+     * @return true, if is offset
+     */
     static boolean isOffset( int length )
     {
         return ( ( length & 0xc0 ) == 0xc0 );
     }
 
 
+    /**
+     * Checks if is label.
+     *
+     * @param length the length
+     * @return true, if is label
+     */
     static boolean isLabel( int length )
     {
         return ( length != 0 && ( length & 0xc0 ) == 0 );
     }
 
 
+    /**
+     * Gets the label.
+     *
+     * @param byteBuffer the byte buffer
+     * @param domainName the domain name
+     * @param labelLength the label length
+     */
     static void getLabel( IoBuffer byteBuffer, StringBuffer domainName, int labelLength )
     {
         for ( int jj = 0; jj < labelLength; jj++ )
@@ -202,42 +249,84 @@ public class DnsMessageDecoder
     }
 
 
+    /**
+     * Decode message type.
+     *
+     * @param header the header
+     * @return the message type
+     */
     private MessageType decodeMessageType( byte header )
     {
         return MessageType.convert( ( byte ) ( ( header & 0x80 ) >>> 7 ) );
     }
 
 
+    /**
+     * Decode op code.
+     *
+     * @param header the header
+     * @return the op code
+     */
     private OpCode decodeOpCode( byte header )
     {
         return OpCode.convert( ( byte ) ( ( header & 0x78 ) >>> 3 ) );
     }
 
 
+    /**
+     * Decode authoritative answer.
+     *
+     * @param header the header
+     * @return true, if successful
+     */
     private boolean decodeAuthoritativeAnswer( byte header )
     {
         return ( ( header & 0x04 ) >>> 2 ) == 1;
     }
 
 
+    /**
+     * Decode truncated.
+     *
+     * @param header the header
+     * @return true, if successful
+     */
     private boolean decodeTruncated( byte header )
     {
         return ( ( header & 0x02 ) >>> 1 ) == 1;
     }
 
 
+    /**
+     * Decode recursion desired.
+     *
+     * @param header the header
+     * @return true, if successful
+     */
     private boolean decodeRecursionDesired( byte header )
     {
         return ( ( header & 0x01 ) ) == 1;
     }
 
 
+    /**
+     * Decode recursion available.
+     *
+     * @param header the header
+     * @return true, if successful
+     */
     private boolean decodeRecursionAvailable( byte header )
     {
         return ( ( header & 0x80 ) >>> 7 ) == 1;
     }
 
 
+    /**
+     * Decode response code.
+     *
+     * @param header the header
+     * @return the response code
+     */
     private ResponseCode decodeResponseCode( byte header )
     {
         return ResponseCode.convert( ( byte ) ( header & 0x0F ) );

@@ -25,7 +25,10 @@ import space.dcce.commons.general.EnumConverter;
 import space.dcce.commons.general.ReverseEnumMap;
 
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Enum MessageType.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public enum MessageType implements EnumConverter<Byte>
@@ -36,17 +39,29 @@ public enum MessageType implements EnumConverter<Byte>
     /** A response message. */
     RESPONSE(1);
 
+    /** The map. */
     private static ReverseEnumMap<Byte, MessageType> map = new ReverseEnumMap<Byte, MessageType>( MessageType.class );
 
+    /** The value. */
     private final byte value;
 
 
+    /**
+     * Instantiates a new message type.
+     *
+     * @param value the value
+     */
     private MessageType( int value )
     {
         this.value = ( byte ) value;
     }
 
 
+    /**
+     * Convert.
+     *
+     * @return the byte
+     */
     public Byte convert()
     {
         return this.value;
@@ -56,7 +71,7 @@ public enum MessageType implements EnumConverter<Byte>
     /**
      * Converts an ordinal value into a {@link MessageType}.
      *
-     * @param value
+     * @param value the value
      * @return The {@link MessageType}.
      */
     public static MessageType convert( byte value )

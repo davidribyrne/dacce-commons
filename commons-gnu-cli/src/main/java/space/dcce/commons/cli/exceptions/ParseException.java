@@ -17,6 +17,7 @@
 
 package space.dcce.commons.cli.exceptions;
 
+// TODO: Auto-generated Javadoc
 /**
  * Base for Exceptions thrown during parsing of a command-line.
  *
@@ -24,6 +25,13 @@ package space.dcce.commons.cli.exceptions;
  */
 public class ParseException extends Exception
 {
+	
+	/**
+	 * Instantiates a new parses the exception.
+	 *
+	 * @param message the message
+	 * @param cause the cause
+	 */
 	public ParseException(String message, Throwable cause)
 	{
 		super(message, cause);

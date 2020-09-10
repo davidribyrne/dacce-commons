@@ -9,14 +9,27 @@ import org.sqlite.SQLiteConfig;
 import org.sqlite.SQLiteDataSource;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Test.
+ */
 public class Test
 {
 
+	/**
+	 * Instantiates a new test.
+	 */
 	public Test()
 	{
 	}
 
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 * @throws Exception the exception
+	 */
 	public static void main(String[] args) throws Exception
 	{
 		Class.forName("org.sqlite.JDBC");
@@ -28,7 +41,7 @@ public class Test
 		ScriptRunner sr = new ScriptRunner(connection);
 		sr.setEscapeProcessing(false);
 		sr.runScript(new FileReader(Test.class.getClassLoader().getResource("schema.sql").getFile()));
-		Persistence p = new Persistence(dataSource);
+		new Persistence(dataSource);
 		
 	}
 }

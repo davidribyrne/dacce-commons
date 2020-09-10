@@ -4,14 +4,26 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OSUtils.
+ */
 public class OSUtils
 {
 
+	/**
+	 * Instantiates a new OS utils.
+	 */
 	private OSUtils()
 	{
 	}
 
 
+	/**
+	 * Checks if is windows.
+	 *
+	 * @return true, if is windows
+	 */
 	static public boolean isWindows()
 	{
 		return System.getProperty("os.name").toLowerCase().contains("windows");
@@ -19,7 +31,8 @@ public class OSUtils
 
 
 	/**
-	 * 
+	 * Checks if is root.
+	 *
 	 * @return true if process is running as root or administrator
 	 */
 	static public boolean isRoot()

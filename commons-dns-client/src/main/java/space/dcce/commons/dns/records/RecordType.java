@@ -25,279 +25,300 @@ import space.dcce.commons.general.EnumConverter;
 import space.dcce.commons.general.ReverseEnumMap;
 
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Enum RecordType.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public enum RecordType implements EnumConverter<Short>
 {
-    /** Host address */
+    
+    /**  Host address. */
     A(1),
 
-    /** Authoritative name server */
+    /**  Authoritative name server. */
     NS(2),
 
-    /** Mail destination */
+    /**  Mail destination. */
     MD(3),
 
-    /** Mail forwarder */
+    /**  Mail forwarder. */
     MF(4),
 
-    /** Canonical name for an alias */
+    /**  Canonical name for an alias. */
     CNAME(5),
 
-    /** Start of a zone of authority */
+    /**  Start of a zone of authority. */
     SOA(6),
 
-    /** Mailbox domain name */
+    /**  Mailbox domain name. */
     MB(7),
 
-    /** Mail group member */
+    /**  Mail group member. */
     MG(8),
 
-    /** Mail rename domain name */
+    /**  Mail rename domain name. */
     MR(9),
 
-    /** Null resource record */
+    /**  Null resource record. */
     NULL(10),
 
-    /** Well know service description */
+    /**  Well know service description. */
     WKS(11),
 
-    /** Domain name pointer */
+    /**  Domain name pointer. */
     PTR(12),
 
-    /** Host information */
+    /**  Host information. */
     HINFO(13),
 
-    /** Mailbox or mail list information */
+    /**  Mailbox or mail list information. */
     MINFO(14),
 
-    /** Mail exchange */
+    /**  Mail exchange. */
     MX(15),
 
-    /** Text strings */
+    /**  Text strings. */
     TXT(16),
 
-    /** Responsible person */
+    /**  Responsible person. */
     RP(17),
 
-    /** AFS cell database */
+    /**  AFS cell database. */
     AFSDB(18),
 
     /** X.25 calling address */
     X25(19),
 
-    /** ISDN calling address */
+    /**  ISDN calling address. */
     ISDN(20),
 
-    /** Router */
+    /**  Router. */
     RT(21),
 
-    /** NSAP address */
+    /**  NSAP address. */
     NSAP(22),
 
-    /** Reverse NSAP address (deprecated) */
+    /**  Reverse NSAP address (deprecated). */
     NSAP_PTR(23),
 
-    /** Signature */
+    /**  Signature. */
     SIG(24),
 
-    /** Key */
+    /**  Key. */
     KEY(25),
 
     /** X.400 mail mapping */
     PX(26),
 
-    /** Geographical position (withdrawn) */
+    /**  Geographical position (withdrawn). */
     GPOS(27),
 
-    /** IPv6 address */
+    /**  IPv6 address. */
     AAAA(28),
 
-    /** Location */
+    /**  Location. */
     LOC(29),
 
-    /** Next valid name in zone */
+    /**  Next valid name in zone. */
     NXT(30),
 
-    /** Endpoint identifier */
+    /**  Endpoint identifier. */
     EID(31),
 
-    /** Nimrod locator */
+    /**  Nimrod locator. */
     NIMLOC(32),
 
-    /** Server selection */
+    /**  Server selection. */
     SRV(33),
 
-    /** ATM address */
+    /**  ATM address. */
     ATMA(34),
 
-    /** Naming authority pointer */
+    /**  Naming authority pointer. */
     NAPTR(35),
 
-    /** Key exchange */
+    /**  Key exchange. */
     KX(36),
 
-    /** Certificate */
+    /**  Certificate. */
     CERT(37),
 
-    /** IPv6 address (experimental) */
+    /**  IPv6 address (experimental). */
     A6(38),
 
-    /** Non-terminal name redirection */
+    /**  Non-terminal name redirection. */
     DNAME(39),
 
-    /** SINK */
+    /**  SINK. */
     SINK(40),
     
-    /** Options - contains EDNS metadata */
+    /**  Options - contains EDNS metadata. */
     OPT(41),
 
-    /** Address Prefix List */
+    /**  Address Prefix List. */
     APL(42),
 
-    /** Delegation Signer */
+    /**  Delegation Signer. */
     DS(43),
 
-    /** SSH Key Fingerprint */
+    /**  SSH Key Fingerprint. */
     SSHFP(44),
 
-    /** IPSec key */
+    /**  IPSec key. */
     IPSECKEY(45),
     
-    /** Resource Record Signature */
+    /**  Resource Record Signature. */
     RRSIG(46),
 
-    /** Next Secure Name */
+    /**  Next Secure Name. */
     NSEC(47),
 
-    /** DNSSEC Key */
+    /**  DNSSEC Key. */
     DNSKEY(48),
 
-    /** DHCID */
+    /**  DHCID. */
     DHCID(49),
     
-    /** NSEC3 */
+    /**  NSEC3. */
     NSEC3(50),
     
-    /** NSEC3 parameter */
+    /**  NSEC3 parameter. */
     NSEC3PARAM(51),
     
-    /** TLSA */
+    /**  TLSA. */
     TLSA(52),
     
     // 53,54 unassigned
     
-    /** Host identity protocol */
+    /**  Host identity protocol. */
     HIP(55),
     
-    /** NINFO */
+    /**  NINFO. */
     NINFO(56),
     
+    /** The rkey. */
     RKEY(57),
     
-    /** Trust anchor LINK */
+    /**  Trust anchor LINK. */
     TALINK(58),
     
-    /** Child DS */
+    /**  Child DS. */
     CDS(59),
     
-    /** DNSKEY(s) the child wants reflected in DS */
+    /**  DNSKEY(s) the child wants reflected in DS. */
     CDNSKEY(60),
     
-    /** OpenPGP key */
+    /**  OpenPGP key. */
     OPENPGPKEY(61),
     
-    /** Child-to-parent synchronization */
+    /**  Child-to-parent synchronization. */
     CSYNC(62),
     
     // 63-98 unassigned
     
-    /** SPF */
+    /**  SPF. */
     SPF(99),
     
-    /** IANA reserved */
+    /**  IANA reserved. */
     UINFO(100),
     
-    /** IANA reserved */
+    /**  IANA reserved. */
     UID(101),
 
-    /** IANA reserved */
+    /**  IANA reserved. */
     GID(102),
 
-    /** IANA reserved */
+    /**  IANA reserved. */
     UNSPEC(103),
     
+    /** The nid. */
     NID(104),
     
+    /** The l32. */
     L32(105),
     
+    /** The l64. */
     L64(106),
     
+    /** The lp. */
     LP(107),
     
-    /** An EUI-48 address */
+    /**  An EUI-48 address. */
     EUI48(108),
     
-    /** An EUI-64 address */
+    /**  An EUI-64 address. */
     EUI64(109),
     
     // 110-248 unassigned
     
     
     
-    /** Transaction key - used to compute a shared secret or exchange a key */
+    /**  Transaction key - used to compute a shared secret or exchange a key. */
     TKEY(249),
 
-    /** Transaction signature */
+    /**  Transaction signature. */
     TSIG(250),
 
-    /** Incremental zone transfer */
+    /**  Incremental zone transfer. */
     IXFR(251),
 
-    /** Request for transfer of an entire zone */
+    /**  Request for transfer of an entire zone. */
     AXFR(252),
 
-    /** Request for mailbox-related records */
+    /**  Request for mailbox-related records. */
     MAILB(253),
 
-    /** Request for mail agent resource records */
+    /**  Request for mail agent resource records. */
     MAILA(254),
 
-    /** Request for all records */
+    /**  Request for all records. */
     ANY(255),
     
-    /** URI */
+    /**  URI. */
     URI(256),
     
-    /** Certificate authority restriction */
+    /**  Certificate authority restriction. */
     CAA(257),
     
     // 258-32767 unassigned
     
-    /** DNSSEC trust authorities */
+    /**  DNSSEC trust authorities. */
     TA(32768),
     
-    /** DNSSEC lookaside validation */
+    /**  DNSSEC lookaside validation. */
     DLV(32769),
     
     // 32770-64279 unassigned
     // 65280-65534 private use
+    /** The map. */
     // 65535 reserved
     ;
     
     
     private static ReverseEnumMap<Short, RecordType> map = new ReverseEnumMap<Short, RecordType>( RecordType.class );
 
+    /** The value. */
     private final short value;
 
 
+    /**
+     * Instantiates a new record type.
+     *
+     * @param value the value
+     */
     private RecordType( int value )
     {
         this.value = ( short ) value;
     }
 
 
+    /**
+     * Convert.
+     *
+     * @return the short
+     */
     public Short convert()
     {
         return this.value;
@@ -307,7 +328,7 @@ public enum RecordType implements EnumConverter<Short>
     /**
      * Converts an ordinal value into a {@link RecordType}.
      *
-     * @param value
+     * @param value the value
      * @return The {@link RecordType}.
      */
     public static RecordType convert( short value )
@@ -319,7 +340,7 @@ public enum RecordType implements EnumConverter<Short>
     /**
      * Returns whether a given {@link RecordType} is a {@link ResourceRecord}.
      *
-     * @param resourceType
+     * @param resourceType the resource type
      * @return true of the {@link RecordType} is a {@link ResourceRecord}.
      */
     public static boolean isResourceRecord( RecordType resourceType )

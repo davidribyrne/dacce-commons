@@ -22,16 +22,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FileUtils.
+ */
 public class FileUtils extends org.apache.commons.io.FileUtils
 {
+	
+	/** The Constant logger. */
 	final static Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
 
 	/**
-	 * Adds quotes if needed
-	 * 
-	 * @param file
-	 * @return
+	 * Adds quotes if needed.
+	 *
+	 * @param file the file
+	 * @return the string
 	 */
 	public static String formatFileName(String file)
 	{
@@ -43,6 +49,13 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 	}
 
 
+	/**
+	 * Read config file lines.
+	 *
+	 * @param url the url
+	 * @return the list
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static List<String> readConfigFileLines(URL url) throws IOException
 	{
 		InputStream is = url.openStream();
@@ -50,6 +63,14 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 	}
 
 
+	/**
+	 * Read config file lines.
+	 *
+	 * @param file the file
+	 * @return the list
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static List<String> readConfigFileLines(String file) throws FileNotFoundException, IOException
 	{
 		File f = new File(file);
@@ -57,6 +78,14 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 	}
 
 
+	/**
+	 * Read config file lines.
+	 *
+	 * @param file the file
+	 * @return the list
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static List<String> readConfigFileLines(File file) throws FileNotFoundException, IOException
 	{
 		InputStream is = new FileInputStream(file);
@@ -65,11 +94,11 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 
 
 	/**
-	 * Ignores empty lines and lines that start with octothorpe (#) or semicolon (;)
-	 * 
-	 * @param is
-	 * @return
-	 * @throws IOException
+	 * Ignores empty lines and lines that start with octothorpe (#) or semicolon (;).
+	 *
+	 * @param is the is
+	 * @return the list
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public static List<String> readConfigFileLines(InputStream is) throws IOException
 	{
@@ -134,6 +163,12 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 	}
 
 
+	/**
+	 * Exists.
+	 *
+	 * @param filepath the filepath
+	 * @return true, if successful
+	 */
 	public static boolean exists(String filepath)
 	{
 		File file = new File(filepath);
@@ -142,12 +177,11 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 
 
 	/**
-	 * Creates the directory if it doesn't exist
+	 * Creates the directory if it doesn't exist.
 	 *
-	 * @param file
-	 *            the file
-	 * @throws IllegalArgumentException
-	 *             thrown if the name exists, but isn't a directory
+	 * @param file            the file
+	 * @throws FileAlreadyExistsException the file already exists exception
+	 * @throws IllegalArgumentException             thrown if the name exists, but isn't a directory
 	 */
 	public static void createDirectory(File file) throws FileAlreadyExistsException
 	{
@@ -162,12 +196,28 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 	}
 
 
+	/**
+	 * Write to file.
+	 *
+	 * @param fileName the file name
+	 * @param string the string
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void writeToFile(String fileName, String string) throws FileNotFoundException, IOException
 	{
 		writeToFile(fileName, string.getBytes());
 	}
 
 
+	/**
+	 * Write to file.
+	 *
+	 * @param fileName the file name
+	 * @param bytes the bytes
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void writeToFile(String fileName, byte[] bytes) throws FileNotFoundException, IOException
 	{
 		OutputStream outfile = new FileOutputStream(fileName);
@@ -175,33 +225,68 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 		outfile.close();
 	}
 
+	/** The Constant BAD_FILENAME_CHARACTERS. */
 	private static final String BAD_FILENAME_CHARACTERS = "[^0-9a-zA-Z\\-_\\.]+";
 
 
+	/**
+	 * Escape filename.
+	 *
+	 * @param filename the filename
+	 * @return the string
+	 */
 	public static String escapeFilename(String filename)
 	{
 		return filename.replaceAll(BAD_FILENAME_CHARACTERS, "-");
 	}
 
 
+	/**
+	 * Legal filename.
+	 *
+	 * @param filename the filename
+	 * @return true, if successful
+	 */
 	public static boolean legalFilename(String filename)
 	{
 		return !filename.matches(BAD_FILENAME_CHARACTERS);
 	}
 
 
+	/**
+	 * Read file to string.
+	 *
+	 * @param path the path
+	 * @return the string
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static String readFileToString(String path) throws IOException
 	{
 		return readFileToString(new File(path));
 	}
 
 
+	/**
+	 * Read lines.
+	 *
+	 * @param path the path
+	 * @return the list
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static List<String> readLines(String path) throws IOException
 	{
 		return readLines(new File(path));
 	}
 
 
+	/**
+	 * Read lines.
+	 *
+	 * @param path the path
+	 * @param bufferSize the buffer size
+	 * @return the list
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static List<String> readLines(String path, int bufferSize) throws IOException
 	{
 		InputStream in = null;
@@ -226,6 +311,14 @@ public class FileUtils extends org.apache.commons.io.FileUtils
 	}
 
 
+	/**
+	 * Export resource.
+	 *
+	 * @param classLoader the class loader
+	 * @param resourceName the resource name
+	 * @return the file
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	static public File ExportResource(ClassLoader classLoader, String resourceName) throws IOException
 	{
 		File sourceFile = new File(classLoader.getResource(resourceName).getFile());

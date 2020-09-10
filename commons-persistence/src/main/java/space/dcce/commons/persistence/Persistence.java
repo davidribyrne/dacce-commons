@@ -12,11 +12,24 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Persistence.
+ */
 public class Persistence
 {
+	
+	/** The Constant logger. */
 	private final static Logger logger = LoggerFactory.getLogger(Persistence.class);
+	
+	/** The data source. */
 	private DataSource dataSource;
 	
+	/**
+	 * Instantiates a new persistence.
+	 *
+	 * @param dataSource the data source
+	 */
 	public Persistence(DataSource dataSource)
 	{
 		TransactionFactory transactionFactory = new JdbcTransactionFactory();

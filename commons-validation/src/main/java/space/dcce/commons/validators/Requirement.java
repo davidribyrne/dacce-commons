@@ -1,7 +1,17 @@
 package space.dcce.commons.validators;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Enum Requirement.
+ */
 public enum Requirement
 {
-	MUST, MUST_NOT, DOES_NOT_MATTER
+	
+	/** The must. */
+	MUST, 
+ /** The must not. */
+ MUST_NOT, 
+ /** The does not matter. */
+ DOES_NOT_MATTER
 }

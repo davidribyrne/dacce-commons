@@ -25,7 +25,10 @@ import space.dcce.commons.general.EnumConverter;
 import space.dcce.commons.general.ReverseEnumMap;
 
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Enum ResponseCode.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public enum ResponseCode implements EnumConverter<Byte>
@@ -51,68 +54,80 @@ public enum ResponseCode implements EnumConverter<Byte>
     /** The name server refuses to perform the specified operation for policy reasons. */
     REFUSED(5),
     
-    /** Name exists when it should not */
+    /**  Name exists when it should not. */
 	YX_DOMAIN(6), 
 	
-	/** RR set exists when it should not */
+	/**  RR set exists when it should not. */
 	YX_RR_SET(7),
 	
-	/** RR set that should exist does not */
+	/**  RR set that should exist does not. */
 	NXRR_SET(8), 
 	
-	/** Server not authoritative for zone */
+	/**  Server not authoritative for zone. */
 	NOT_AUTHORITATIVE(9),
 	
-	/** Name not contained in zone */
+	/**  Name not contained in zone. */
 	NOT_IN_ZONE(10),
 	// 11-15 are unassigned
 	
 	// There are two 16s for some reason
-	/** Bad OPT version */
+	/**  Bad OPT version. */
 	BAD_VERSION(16),
 
-	/** TSIG signature failure */
+	/**  TSIG signature failure. */
 	BAD_SIGNATURE(16),
 	
-	/** Key not recognized */
+	/**  Key not recognized. */
 	BAD_KEY(17),
 	
-	/** Signature out of time window */
+	/**  Signature out of time window. */
 	BAD_TIME(18),
 	
-	/** Bad TKEY mode */
+	/**  Bad TKEY mode. */
 	BAD_MODE(19),
 	
-	/** Duplicate key name */
+	/**  Duplicate key name. */
 	BAD_NAME(20),
 	
-	/** Algorithm not supported */
+	/**  Algorithm not supported. */
 	BAD_ALGORITHM(21),
 	
-	/** Bad truncation */
+	/**  Bad truncation. */
 	BAD_TRUNCATION(22),
 	
-	/** Bad or missing server cookie */
+	/**  Bad or missing server cookie. */
 	BAD_COOKIE(23),
 	// 24-3840 unassigned
 	//3841-4095 reserved for private use
 	//4096-65534 unassigned
 	// 65535 rserved, can be allocated by standard
     
-    ;
+    /** The map. */
+	;
 
 
     private static ReverseEnumMap<Byte, ResponseCode> map = new ReverseEnumMap<Byte, ResponseCode>( ResponseCode.class );
 
+    /** The value. */
     private final byte value;
 
 
+    /**
+     * Instantiates a new response code.
+     *
+     * @param value the value
+     */
     private ResponseCode( int value )
     {
         this.value = ( byte ) value;
     }
 
 
+    /**
+     * Convert.
+     *
+     * @return the byte
+     */
     public Byte convert()
     {
         return this.value;
@@ -122,7 +137,7 @@ public enum ResponseCode implements EnumConverter<Byte>
     /**
      * Converts an ordinal value into a {@link ResponseCode}.
      *
-     * @param value
+     * @param value the value
      * @return The {@link ResponseCode}.
      */
     public static ResponseCode convert( byte value )

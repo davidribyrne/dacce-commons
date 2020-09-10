@@ -1,8 +1,19 @@
 package space.dcce.commons.general;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BooleanUtils.
+ */
 public class BooleanUtils
 {
 
+	/**
+	 * Friendly parse.
+	 *
+	 * @param value the value
+	 * @return true, if successful
+	 * @throws BooleanFormatException the boolean format exception
+	 */
 	public static boolean friendlyParse(String value) throws BooleanFormatException
 	{
 		String s = value.toLowerCase();

@@ -8,15 +8,22 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DomainUtils.
+ */
 public class DomainUtils
 {
+	
+	/** The Constant logger. */
 	private final static Logger logger = LoggerFactory.getLogger(DomainUtils.class);
 
 
 	/**
-	 * Returns the hostname's domain
-	 * @param hostname
-	 * @return
+	 * Returns the hostname's domain.
+	 *
+	 * @param hostname the hostname
+	 * @return the domain
 	 */
 	public static String getDomain(String hostname)
 	{
@@ -34,8 +41,9 @@ public class DomainUtils
 	/**
 	 * This will NOT return the domain. If a domain is passed as the hostname, an empty list
 	 * is returned.
-	 * @param hostname
-	 * @return
+	 *
+	 * @param hostname the hostname
+	 * @return the subdomains
 	 */
 	public static List<String> getSubdomains(String hostname)
 	{
@@ -62,6 +70,9 @@ public class DomainUtils
 		return subdomains;
 	}
 	
+	/**
+	 * Instantiates a new domain utils.
+	 */
 	private DomainUtils()
 	{
 	}

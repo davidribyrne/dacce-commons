@@ -25,44 +25,60 @@ import space.dcce.commons.general.EnumConverter;
 import space.dcce.commons.general.ReverseEnumMap;
 
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Enum RecordClass.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public enum RecordClass implements EnumConverter<Short>
 {
-    /** Internet */
+    
+    /**  Internet. */
     IN(1),
 
     // IANA says this is unassigned
-    /** CSNET class */
+    /**  CSNET class. */
     CS(2),
 
-    /** CHAOS class */
+    /**  CHAOS class. */
     CH(3),
 
-    /** Hesiod [Dyer 87] */
+    /**  Hesiod [Dyer 87]. */
     HS(4),
     
     // 5-253 unassigned
 
-    /** Special value used in dynamic update messages */
+    /**  Special value used in dynamic update messages. */
     NONE(254),
 
-    /** Any class */
+    /**  Any class. */
     ANY(255);
     // 256-65535 unassigned or reserved for private use
 
+    /** The map. */
     private static ReverseEnumMap<Short, RecordClass> map = new ReverseEnumMap<Short, RecordClass>( RecordClass.class );
 
+    /** The value. */
     private final short value;
 
 
+    /**
+     * Instantiates a new record class.
+     *
+     * @param value the value
+     */
     private RecordClass( int value )
     {
         this.value = ( short ) value;
     }
 
 
+    /**
+     * Convert.
+     *
+     * @return the short
+     */
     public Short convert()
     {
         return this.value;
@@ -72,7 +88,7 @@ public enum RecordClass implements EnumConverter<Short>
     /**
      * Converts an ordinal value into a {@link RecordClass}.
      *
-     * @param value
+     * @param value the value
      * @return The {@link RecordClass}.
      */
     public static RecordClass convert( short value )

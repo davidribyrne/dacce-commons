@@ -18,6 +18,7 @@
 package space.dcce.commons.cli.exceptions;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * Exception thrown during parsing signalling an unrecognized
  * option was seen.
@@ -31,7 +32,7 @@ public class UnrecognizedOptionException extends ParseException
 	 */
 	private static final long serialVersionUID = -252504690284625623L;
 
-	/** The unrecognized option */
+	/**  The unrecognized option. */
 	private String option;
 
 

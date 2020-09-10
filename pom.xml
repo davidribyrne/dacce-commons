@@ -14,11 +14,20 @@
 		<module>commons-gnu-cli</module>
 		<module>commons-job-queue</module>
 		<module>commons-netaddr</module>
-        <module>commons-node-database</module>
-        <module>commons-persistence</module>
+		<module>commons-node-database</module>
+		<module>commons-persistence</module>
 		<module>commons-simple-server</module>
 		<module>commons-validation</module>
 	</modules>
+
+	<distributionManagement>
+		<site>
+			<id>website</id>
+			<url>file://${project.build.directory}/mvn-repo</url>
+		</site>
+	</distributionManagement>
+
+
 	<build>
 		<plugins>
 			<plugin>
@@ -26,8 +35,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>11</source>
+					<target>11</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -42,19 +51,34 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<show>private</show>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.9.1</version>
+			</plugin>
 		</plugins>
 	</build>
+
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-
 	</dependencies>
+
+
 	<dependencyManagement>
 		<dependencies>
-            <dependency>
+			<dependency>
 				<groupId>commons-gnu-cli</groupId>
 				<artifactId>commons-gnu-cli</artifactId>
 				<version>${project.version}</version>
@@ -89,11 +113,6 @@
 				<artifactId>commons-apache-dns</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
-
-
-
-
 			<dependency>
 				<groupId>org.mybatis</groupId>
 				<artifactId>mybatis</artifactId>
@@ -147,4 +166,36 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<show>private</show>
+				</configuration>
+				<reportSets>
+
+					<reportSet>
+						<id>aggregate</id>
+						<inherited>false</inherited>
+						<reports>
+							<report>aggregate</report>
+						</reports>
+					</reportSet>
+					<reportSet>
+						<id>default</id>
+						<reports>
+							<report>javadoc</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
+
+
 </project>

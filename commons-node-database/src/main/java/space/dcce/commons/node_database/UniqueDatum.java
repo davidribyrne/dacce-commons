@@ -5,11 +5,24 @@ import java.util.UUID;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UniqueDatum.
+ */
 public abstract class UniqueDatum
 {
+	
+	/** The uuid. */
 	private UUID uuid;
+	
+	/** The database. */
 	protected final NodeDatabase database;
 
+	/**
+	 * Instantiates a new unique datum.
+	 *
+	 * @param database the database
+	 */
 	protected UniqueDatum(NodeDatabase database)
 	{
 		this.database = database;
@@ -17,6 +30,12 @@ public abstract class UniqueDatum
 	}
 
 
+	/**
+	 * Instantiates a new unique datum.
+	 *
+	 * @param database the database
+	 * @param uuid the uuid
+	 */
 	protected UniqueDatum(NodeDatabase database, UUID uuid)
 	{
 		this.database = database;
@@ -31,6 +50,11 @@ public abstract class UniqueDatum
 	}
 
 
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	public UUID getID()
 	{
 		return uuid;
@@ -38,6 +62,12 @@ public abstract class UniqueDatum
 	
 
 
+	/**
+	 * Equals.
+	 *
+	 * @param obj the obj
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -53,6 +83,11 @@ public abstract class UniqueDatum
 	}
 
 
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int hashCode()
 	{

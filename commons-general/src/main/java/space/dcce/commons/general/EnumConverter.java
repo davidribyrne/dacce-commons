@@ -21,6 +21,7 @@
 package space.dcce.commons.general;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * An interface that allows an Enum to be converted to another type, such as an
  * integer or long.  Useful in cases where the Java assigned ordinal just isn't
@@ -32,9 +33,9 @@ package space.dcce.commons.general;
  * <code>
  *   public static Enum convert (K value);
  * </code>
- * 
- * @param <K> 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @param <K> the key type
  */
 public interface EnumConverter<K>
 {

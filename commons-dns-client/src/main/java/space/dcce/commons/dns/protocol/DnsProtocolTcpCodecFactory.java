@@ -27,11 +27,16 @@ import org.apache.mina.filter.codec.ProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolEncoder;
 
 
+// TODO: Auto-generated Javadoc
 /**
+ * A factory for creating DnsProtocolTcpCodec objects.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public final class DnsProtocolTcpCodecFactory implements ProtocolCodecFactory
 {
+    
+    /** The Constant INSTANCE. */
     private static final DnsProtocolTcpCodecFactory INSTANCE = new DnsProtocolTcpCodecFactory();
 
 
@@ -46,12 +51,21 @@ public final class DnsProtocolTcpCodecFactory implements ProtocolCodecFactory
     }
 
 
+    /**
+     * Instantiates a new dns protocol tcp codec factory.
+     */
     private DnsProtocolTcpCodecFactory()
     {
         // Private constructor prevents instantiation outside this class.
     }
 
 
+    /**
+     * Gets the encoder.
+     *
+     * @param session the session
+     * @return the encoder
+     */
     public ProtocolEncoder getEncoder( IoSession session )
     {
         // Create a new encoder.
@@ -59,6 +73,12 @@ public final class DnsProtocolTcpCodecFactory implements ProtocolCodecFactory
     }
 
 
+    /**
+     * Gets the decoder.
+     *
+     * @param session the session
+     * @return the decoder
+     */
     public ProtocolDecoder getDecoder( IoSession session )
     {
         // Create a new decoder.

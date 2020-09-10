@@ -26,24 +26,27 @@ import java.util.Map;
 
 
 
+// TODO: Auto-generated Javadoc
 /**
  * A map to easily get the actual Enum instance from it's value as seen in the
  * <a href="http://www.javaspecialists.co.za/archive/newsletter.do?issue=113">
  * The JavaSpecialists newsletter</a>.
- * 
- * @param <K> 
- * @param <E> 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @param <K> the key type
+ * @param <E> the element type
  */
 public class ReverseEnumMap<K, E extends Enum<E> & EnumConverter<K>>
 {
+    
+    /** The reverse map. */
     private Map<K, E> reverseMap = new HashMap<K, E>();
 
 
     /**
      * Creates a new instance of ReverseEnumMap.
      *
-     * @param enumType
+     * @param enumType the enum type
      */
     public ReverseEnumMap( Class<E> enumType )
     {
@@ -57,7 +60,7 @@ public class ReverseEnumMap<K, E extends Enum<E> & EnumConverter<K>>
     /**
      * Return the enum given an ordinal value.
      *
-     * @param value
+     * @param value the value
      * @return The enum.
      */
     public E get( K value )

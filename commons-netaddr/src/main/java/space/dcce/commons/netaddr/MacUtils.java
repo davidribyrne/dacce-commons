@@ -3,16 +3,30 @@ package space.dcce.commons.netaddr;
 import java.util.regex.Pattern;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MacUtils.
+ */
 public class MacUtils
 {
 
+	/**
+	 * Instantiates a new mac utils.
+	 */
 	private MacUtils()
 	{
 	}
 
+	/** The Constant macPattern. */
 	private static final Pattern macPattern = Pattern.compile("^(?:[0-9a-fA-F]{2}[:\\- \\.]){5}[0-9a-fA-F]{2}$");
 
 	
+	/**
+	 * Gets the hex string.
+	 *
+	 * @param address the address
+	 * @return the hex string
+	 */
 	public static String getHexString(byte[] address)
 	{
 		if (address == null)
@@ -35,6 +49,13 @@ public class MacUtils
 		return sb.toString();
 	}
 
+	/**
+	 * Gets the mac from string.
+	 *
+	 * @param address the address
+	 * @return the mac from string
+	 * @throws IllegalArgumentException the illegal argument exception
+	 */
 	public static byte[] getMacFromString(String address) throws IllegalArgumentException
 	{
 		byte[] bytes = new byte[6];

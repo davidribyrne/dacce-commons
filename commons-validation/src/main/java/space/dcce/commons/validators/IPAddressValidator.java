@@ -6,10 +6,22 @@ import space.dcce.commons.netaddr.IP4Utils;
 import space.dcce.commons.netaddr.IPUtils;
 import space.dcce.commons.netaddr.InvalidIPAddressFormatException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class IPAddressValidator.
+ */
 public class IPAddressValidator implements Validator
 {
 
+	/** The allow blocks. */
 	private boolean allowBlocks;
+	
+	/**
+	 * Instantiates a new IP address validator.
+	 *
+	 * @param allowIPv6 the allow I pv 6
+	 * @param allowBlocks the allow blocks
+	 */
 	public IPAddressValidator(boolean allowIPv6, boolean allowBlocks)
 	{
 		this.allowBlocks = allowBlocks;
@@ -19,6 +31,12 @@ public class IPAddressValidator implements Validator
 		}
 	}
 
+	/**
+	 * Validate.
+	 *
+	 * @param value the value
+	 * @throws ValidationException the validation exception
+	 */
 	@Override
 	public void validate(String value) throws ValidationException
 	{
